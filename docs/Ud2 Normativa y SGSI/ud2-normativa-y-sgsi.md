@@ -131,7 +131,11 @@ RGPD/GDPR: ¿Qué es el Reglamento Europeo de Protección de Datos? (2:39)
 
 3. **Derechos de los Interesados (Derechos ARCO-POL):**
     * **Acceso, Rectificación, Supresión** (*"Derecho al Olvido"*), **Oposición, Portabilidad** (recibir sus datos en un formato estructurado como JSON/XML) y **Limitación del tratamiento**.
+    En los siguientes vídeos tienes información sobre estos derechos, aunque son antiguos y basados en la antigua LPDP ya derogada.
     ![type:video](https://www.youtube.com/embed/5QyTyCsq8po)
+
+    ![type:video](https://www.youtube.com/embed/wNO4kvzGM_8)
+ 
 
 4. **Figuras Clave:**
     * **Responsable del Tratamiento:** La entidad o empresa que decide los fines y medios del tratamiento de datos.
