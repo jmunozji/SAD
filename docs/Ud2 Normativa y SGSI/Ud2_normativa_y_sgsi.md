@@ -1,4 +1,4 @@
-# UD2. Normativa, Marco Legal y Estándares de Seguridad
+# UD2. Normativa y sistemas de gestión de la seguridad de la información
 
 !!! note "Objetivos de la Unidad (Duración: 4 Horas)"
     * Comprender conceptualmente qué es un Sistema de Gestión de la Seguridad de la Información (SGSI) bajo la norma ISO/IEC 27001.
