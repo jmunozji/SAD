@@ -74,7 +74,7 @@ Un **Sistema Informático**, por su parte, es el conjunto de componentes de hard
 !!! note "Para saber más: Criptored"
     Puedes visualizar el siguiente recurso audiovisual de Criptored para profundizar en la diferencia de ambos conceptos:
     
-    *   **Enlace de interés:** [Vídeo conceptual: Seguridad de la Información vs Seguridad Informática](https://www.youtube.com/embed/7MqTpfEreJ0){target="_blank"}
+    ![type:video](https://www.youtube.com/embed/7MqTpfEreJ0)
 
 
 ## 3. Citas sobre seguridad informática
@@ -114,13 +114,7 @@ Antes de profundizar en conceptos técnicos, es enriquecedor reflexionar sobre l
 
 La norma internacional **ISO/IEC 27001** define la seguridad de la información sobre la base de tres principios fundamentales, conocidos tradicionalmente como la **Tríada CIA**:
 
-```
-             [ Confidencialidad ]
-                     /\
-                    /  \
-                   /____\
-[ Disponibilidad ]        [ Integridad ]
-```
+![Interfaz de la aplicación ITACA](img/triadaCIA.jpg)
 
 ### Principios Fundamentales (Tríada CIA)
 
@@ -140,6 +134,8 @@ La norma internacional **ISO/IEC 27001** define la seguridad de la información 
 !!! note "Recurso Audiovisual"
     *   **Enlace de interés:** [Vídeo explicativo: La Tríada CIA y los Principios de Seguridad](https://www.youtube.com/embed/KWAfVhy_GQ8){target="_blank"}
 
+    ![type:video](https://www.youtube.com/embed/KWAfVhy_GQ8)
+
 ---
 
 ## 5. Conceptos clave en seguridad de la información
@@ -158,6 +154,8 @@ Para realizar un correcto análisis de seguridad, es indispensable dominar los s
     Antes de implantar un Sistema de Gestión de la Seguridad de la Información (SGSI), es obligatorio realizar un **Análisis de Riesgos** previo para identificar qué activos tenemos, a qué amenazas están expuestos y qué salvaguardas (medidas protectoras) son prioritarias y coste-efectivas para la organización.
     
     *   **Enlace de interés:** [Vídeo explicativo de Intypedia: Introducción al Análisis de Riesgos](https://www.youtube.com/embed/EgiYIIJ8WnU){target="_blank"}
+
+    ![type:video](https://www.youtube.com/embed/EgiYIIJ8WnU)
 
 ---
 
@@ -300,6 +298,8 @@ En las siguientes imágenes, se pueden observar algunas de las medidas en los ce
 
 !!! tip "Para sabaer más"
     Observa el siguiente vídeo (en inglés) sobre los CPD's de Google: [Google container data center tour](https://youtu.be/zRwPSFpLX8I?si=W8RLlCviVhGX2orN).
+
+    ![type:video](https://www.youtube.com/embed/zRwPSFpLX8I)
 
     Si deseas ampliar más información sobre los centros de datos de Google, lo puedes hacer en este enlace: [Centros de datos de Google](https://datacenters.google/)
 
