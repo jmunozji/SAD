@@ -1,0 +1,1221 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jmunozji.github.io/SAD/Ud1%20Introduccion/Ud1_introduccion/">
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../../Ud2%20Normativa%20y%20SGSI/Ud2_normativa_y_sgsi/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>UD1. Fundamentos de Seguridad Informática - Seguridad y alta disponibilidad</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-3NX5MD5C8H"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-3NX5MD5C8H",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-3NX5MD5C8H",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ud1-fundamentos-de-seguridad-informatica" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-header__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Seguridad y alta disponibilidad
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              UD1. Fundamentos de Seguridad Informática
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-orange"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-nav__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    Seguridad y alta disponibilidad
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seguridad y alta disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1. Fundamentos de Seguridad Informática
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1. Fundamentos de Seguridad Informática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-la-sociedad-de-la-informacion-en-que-vivimos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. La sociedad de la información en que vivimos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. La sociedad de la información en que vivimos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internet-de-las-cosas-iot-y-big-data-nuevos-retos-de-seguridad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internet de las cosas (IoT) y Big Data: Nuevos retos de seguridad
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-seguridad-informatica-y-seguridad-de-la-informacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Seguridad informática y seguridad de la información
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Seguridad informática y seguridad de la información">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seguridad-de-la-informacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seguridad de la Información
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seguridad-informatica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seguridad Informática
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-citas-sobre-seguridad-informatica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Citas sobre seguridad informática
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Citas sobre seguridad informática">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-existe-el-sistema-seguro-al-100" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "No existe el sistema seguro al 100%..."
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#es-mas-facil-atacar-los-puntos-debiles-de-la-comunicacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Es más fácil atacar los puntos débiles de la comunicación..."
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#el-usuario-es-el-eslabon-mas-debil-de-la-cadena" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "El usuario es el eslabón más débil de la cadena..."
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sobre-el-descuido-de-las-contrasenas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Sobre el descuido de las contraseñas..."
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-sobreconfianza-en-las-soluciones-puramente-tecnicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "La sobreconfianza en las soluciones puramente técnicas..."
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-principios-basicos-de-la-seguridad-de-la-informacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Principios básicos de la seguridad de la información
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Principios básicos de la seguridad de la información">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principios-fundamentales-triada-cia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principios Fundamentales (Tríada CIA)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#principios-adicionales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principios Adicionales
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-conceptos-clave-en-seguridad-de-la-informacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Conceptos clave en seguridad de la información
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-tipos-de-amenazas-y-atacantes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Tipos de amenazas y atacantes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Tipos de amenazas y atacantes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#origen-de-las-vulnerabilidades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Origen de las Vulnerabilidades
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clasificacion-de-las-amenazas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clasificación de las Amenazas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taxonomia-de-los-atacantes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taxonomía de los Atacantes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-el-factor-humano-y-la-ingenieria-social" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. El factor humano y la ingeniería social
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. El factor humano y la ingeniería social">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vectores-de-ataque-de-ingenieria-social-criticos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vectores de Ataque de Ingeniería Social Críticos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vectores de Ataque de Ingeniería Social Críticos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-phishing-pesca-de-credenciales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A) Phishing (Pesca de credenciales)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-vishing-phishing-por-voz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B) Vishing (Phishing por voz)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-baiting-senuelo-fisico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C) Baiting (Señuelo físico)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-clasificacion-de-medidas-de-seguridad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Clasificación de medidas de seguridad
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Clasificación de medidas de seguridad">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-criterios-de-clasificacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1. Criterios de Clasificación
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.1. Criterios de Clasificación">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-atendiendo-al-activo-que-se-desea-proteger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A) Atendiendo al activo que se desea proteger
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-atendiendo-al-momento-en-que-actua-la-medida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B) Atendiendo al momento en que actúa la medida
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-matriz-de-doble-entrada-de-medidas-de-seguridad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2. Matriz de doble entrada de medidas de seguridad
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-descripcion-detallada-de-las-tecnicas-y-medidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3. Descripción detallada de las técnicas y medidas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.3. Descripción detallada de las técnicas y medidas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#831-medidas-de-seguridad-fisica-activa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3.1. Medidas de Seguridad Física Activa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#832-medidas-de-seguridad-fisica-pasiva" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3.2. Medidas de Seguridad Física Pasiva
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#833-medidas-de-seguridad-logica-activa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3.3. Medidas de Seguridad Lógica Activa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#834-medidas-de-seguridad-logica-pasiva" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3.4. Medidas de Seguridad Lógica Pasiva
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Normativa%20y%20SGSI/Ud2_normativa_y_sgsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2. Normativa y sistemas de gestión de la seguridad de la información
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="ud1-fundamentos-de-seguridad-informatica">UD1. Fundamentos de Seguridad Informática</h1>
+<div class="admonition note">
+<p class="admonition-title">Objetivos de la Unidad</p>
+<ul>
+<li>Diferenciar con precisión la seguridad informática y la seguridad de la información.</li>
+<li>Conocer los principios básicos de la seguridad de la información (Tríada CIA).</li>
+<li>Identificar y clasificar los conceptos elementales en seguridad informática.</li>
+<li>Comprender y catalogar los distintos tipos de amenazas y atacantes.</li>
+<li>Dominar la clasificación de las medidas de seguridad (Física/Lógica, Activa/Pasiva).</li>
+<li>Comprender el impacto del factor humano y las técnicas de ingeniería social.</li>
+</ul>
+</div>
+<hr>
+<h2 id="1-la-sociedad-de-la-informacion-en-que-vivimos">1. La sociedad de la información en que vivimos</h2>
+<p>Actualmente vivimos en lo que se conoce como la <strong>Sociedad de la Información</strong>. Para cualquier organización —ya sea con ánimo de lucro o sin él, privada o pública— el activo más valioso es la <strong>información</strong>. Incluso cualquiera de nosotros, en nuestro ámbito particular, dependemos enormemente de la información que manejamos a diario para nuestras actividades cotidianas.</p>
+<p>Esta información lleva sufriendo un proceso de digitalización desde hace años, eliminando poco a poco el soporte en papel. Hoy en día es habitual recibir recibos en formato electrónico, realizar la declaración de la renta de forma telemática y salvaguardarla en formato PDF, almacenar nuestras fotos familiares en un disco duro o en la nube, o adquirir entradas, libros y servicios de manera totalmente digital a través de pasarelas de pago.</p>
+<p><img alt="Internet nos ofrece todo un mundo de servicios a nuestras manos" src="../img/sociedad_de_la_informacion.jpg"></p>
+<p>En el ámbito educativo, disponemos de aplicaciones centralizadas de gestión donde se gestionan las asistencias, expedientes y calificaciones de los alumnos, además de entornos de aprendizaje electrónico (<em>e-learning</em>) como Moodle, donde se publican contenidos, tareas, exámenes y soluciones.</p>
+<div class="admonition info">
+<p class="admonition-title">Gestión Docente Autonómica</p>
+<p>Un ejemplo de esto es la aplicación <strong>ITACA3</strong> de gestión docente empleada en la Comunitat Valenciana para centralizar toda la información administrativa y académica del alumnado.
+<img alt="Interfaz de la aplicación ITACA" src="../img/itaca.png"></p>
+</div>
+<p>Es por ello que para todos nosotros es fundamental adquirir unas nociones básicas para aprender a proteger la información con la que trabajamos diariamente. El uso masivo de redes locales, conexiones inalámbricas, dispositivos móviles e Internet abre un escenario constante de nuevas amenazas que atentan contra la seguridad de nuestros datos.</p>
+<p>Es un grave error pensar que nuestros datos o nuestro ordenador personal no son importantes para un cibercriminal. Desde un equipo infectado con software malicioso (<em>malware</em>), controlado remotamente desde un centro de mando y control (Command &amp; Control, C&amp;C), los atacantes pueden realizar ataques DDoS coordinados a sitios web globales, enviar correo basura (<em>spam</em>) de forma masiva o alojar contenidos ilícitos de forma oculta.</p>
+<div class="admonition danger">
+<p class="admonition-title">Caso Real: Infección Silenciosa</p>
+<p>Se han documentado casos reales de usuarios cuyos ordenadores personales funcionaban con lentitud y, tras un análisis con software antivirus específico, se descubrió que habían sido comprometidos e infectados para actuar de manera silenciosa como servidores de intercambio de archivos P2P cifrados con contenido ilegal en Internet.</p>
+</div>
+<p>Gran parte de los incidentes de seguridad que nos ocurren son debidos a fallos en la capa más vulnerable de todo el sistema: <strong>el factor humano</strong>. Muchas veces es mucho más efectivo aplicar el sentido común que comenzar a implementar medidas técnicas de forma descontrolada. De la misma manera que en la vida cotidiana no nos fiamos de un desconocido que llama a nuestra puerta haciéndose pasar por un revisor técnico del que no hemos sido informados previamente, en el ámbito digital no deberíamos abrir archivos adjuntos de correos electrónicos sospechosos, aceptar contactos desconocidos en redes sociales o conectarnos a redes Wi-Fi públicas abiertas sin protección adicional.</p>
+<h3 id="internet-de-las-cosas-iot-y-big-data-nuevos-retos-de-seguridad">Internet de las cosas (IoT) y Big Data: Nuevos retos de seguridad</h3>
+<p>En la actualidad, la revolución tecnológica gira en torno a dos conceptos clave: el <strong>IoT</strong> (<em>Internet of Things</em> / Internet de las cosas) o <strong>IoE</strong> (<em>Internet of Everything</em>), y el <strong>Big Data</strong>. El IoT hace referencia a un futuro inmediato (ya presente en muchos casos) en el que miles de millones de dispositivos de uso diario, procesos y personas de todo el mundo estarán interconectados a través de Internet. El Big Data se centra en la capacidad de almacenamiento, tratamiento y procesamiento masivo de la ingente cantidad de información digital que generan, entre otros, estos mismos dispositivos IoT.</p>
+<div class="admonition warning">
+<p class="admonition-title">El Internet de las Amenazas</p>
+<p>Debido a su rápido despliegue y a la falta de estándares iniciales de seguridad, en los círculos de ciberseguridad se ha bautizado informalmente al IoT como el <em>"Internet of Threats"</em> (Internet de las Amenazas). Ya se han realizado múltiples pruebas de concepto donde investigadores han logrado tomar el control de vehículos en marcha, manipular ascensores inteligentes o secuestrar televisores Smart TV conectados explotando vulnerabilidades de fábrica.</p>
+</div>
+<p>Un ejemplo crítico de estos riesgos fue el <a href="https://es.wikipedia.org/wiki/Ciberataque_a_Dyn_de_octubre_de_2016" target="_blank">ciberataque global del <strong>21 de octubre de 2016</strong></a>, que utilizó millones de dispositivos IoT domésticos infectados (cámaras IP, routers domésticos, monitores de bebés) con el malware <strong>Mirai</strong> para lanzar un ataque de denegación de servicio (DDoS) masivo contra el proveedor DNS Dyn, dejando temporalmente sin acceso a servicios como Amazon, Spotify, Twitter, Netflix y HBO. Asimismo, el concepto de <em>Smart Cities</em> (Ciudades Inteligentes) expone la infraestructura urbana a posibles acciones de ciberterrorismo, como el ataque de malware que llegó a dejar sin suministro eléctrico a cientos de miles de hogares en Ucrania.</p>
+<hr>
+<h2 id="2-seguridad-informatica-y-seguridad-de-la-informacion">2. Seguridad informática y seguridad de la información</h2>
+<p>Para estructurar correctamente nuestra materia, es imprescindible definir y delimitar conceptualmente ambos términos:</p>
+<h3 id="seguridad-de-la-informacion">Seguridad de la Información</h3>
+<p>Es el conjunto de medidas, procedimientos, políticas y controles —tanto humanos como técnicos— que permiten proteger y preservar la <strong>integridad, confidencialidad y disponibilidad</strong> de la información. </p>
+<div class="admonition info">
+<p class="admonition-title">Concepto Amplio</p>
+<p>Se trata de un concepto amplio que engloba la protección de la información de forma global, independientemente de su naturaleza, el soporte físico en el que esté almacenada (papel, soporte digital, transmisión oral) o el canal por el que se transmita.</p>
+</div>
+<h3 id="seguridad-informatica">Seguridad Informática</h3>
+<p>Es una rama específica de la seguridad de la información que se encarga exclusivamente de proteger la información que es procesada, almacenada o transmitida utilizando una <strong>infraestructura informática y de telecomunicaciones</strong>.</p>
+<div class="admonition success">
+<p class="admonition-title">Relación de Inclusión</p>
+<p>Por lo tanto, la seguridad de la información es el concepto global, mientras que la seguridad informática es la disciplina técnica que se encarga de proteger los <strong>sistemas informáticos</strong> que sirven de soporte técnico a dicho sistema de información.</p>
+</div>
+<p>Para comprenderlo mejor, analicemos la estructura de un <strong>Sistema de Información</strong>, el cual es un conjunto de elementos coordinados para alcanzar los objetivos de una organización:</p>
+<ul>
+<li><strong>Recursos:</strong> Físicos (hardware, periféricos) y lógicos (sistemas operativos, bases de datos, aplicaciones).</li>
+<li><strong>Equipo Humano:</strong> Usuarios, operadores, administradores de sistemas.</li>
+<li><strong>Información:</strong> Datos organizados con significado y valor para la entidad.</li>
+<li><strong>Procesos:</strong> Flujos de trabajo y metodologías de tratamiento de datos.</li>
+</ul>
+<p>Un <strong>Sistema Informático</strong>, por su parte, es el conjunto de componentes de hardware, software y canales de red que permiten automatizar la creación, almacenamiento y procesamiento de estos datos dentro del sistema global de información.</p>
+<p><img alt="Esquema simplificado de un sistema informático" src="../img/sistema_informatico.png" target="_blank"></p>
+<div class="admonition note">
+<p class="admonition-title">Para saber más: Criptored</p>
+<p>Puedes visualizar el siguiente recurso audiovisual de Criptored para profundizar en la diferencia de ambos conceptos:</p>
+<p><div class="video-container"><iframe src="https://www.youtube.com/embed/7MqTpfEreJ0" style="position:relative;width:100%;height:22.172vw" frameborder="0" allowfullscreen alt="type:video"></iframe></div></p>
+</div>
+<h2 id="3-citas-sobre-seguridad-informatica">3. Citas sobre seguridad informática</h2>
+<p>Antes de profundizar en conceptos técnicos, es enriquecedor reflexionar sobre las aportaciones y citas célebres de algunos de los profesionales e investigadores más influyentes de la historia de la ciberseguridad:</p>
+<h3 id="no-existe-el-sistema-seguro-al-100">"No existe el sistema seguro al 100%..."</h3>
+<div class="admonition quote">
+<p class="admonition-title">Gene Spafford (Profesor y experto en ciberseguridad)</p>
+<p>"El único sistema verdaderamente seguro es el que está apagado y desenchufado, encerrado en una caja fuerte de titanio revestido, enterrado en un búnker de hormigón, y rodeado por gas nervioso y guardias armados muy bien remunerados. Incluso entonces, no apostaría mi vida por él."</p>
+</div>
+<h3 id="es-mas-facil-atacar-los-puntos-debiles-de-la-comunicacion">"Es más fácil atacar los puntos débiles de la comunicación..."</h3>
+<div class="admonition quote">
+<p class="admonition-title">Gene Spafford</p>
+<p>"El uso de encriptación en Internet es el equivalente a usar un vehículo blindado para entregar la información de una tarjeta de crédito de alguien que vive en una caja de cartón a alguien que vive en un banco del parque."</p>
+</div>
+<h3 id="el-usuario-es-el-eslabon-mas-debil-de-la-cadena">"El usuario es el eslabón más débil de la cadena..."</h3>
+<div class="admonition quote">
+<p class="admonition-title">Kevin Mitnick (Consultor de seguridad y ex-hacker)</p>
+<p>"Las organizaciones gastan millones de dólares en firewalls y dispositivos de seguridad, pero tiran el dinero porque ninguna de estas medidas cubre el eslabón más débil de la cadena de seguridad: la gente que usa y administra los ordenadores."</p>
+</div>
+<h3 id="sobre-el-descuido-de-las-contrasenas">"Sobre el descuido de las contraseñas..."</h3>
+<div class="admonition quote">
+<p class="admonition-title">Chris Pirillo (Divulgador tecnológico)</p>
+<p>"Las contraseñas son como la ropa interior. No puedes dejar que nadie la vea, debes cambiarla regularmente y no debes compartirla con extraños."</p>
+</div>
+<h3 id="la-sobreconfianza-en-las-soluciones-puramente-tecnicas">"La sobreconfianza en las soluciones puramente técnicas..."</h3>
+<div class="admonition quote">
+<p class="admonition-title">Bruce Schneier (Criptógrafo y experto en ciberseguridad)</p>
+<p>"Si piensas que la tecnología puede solucionar tus problemas de seguridad, está claro que ni entiendes los problemas ni entiendes la tecnología."</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Análisis y Reflexión de las Citas</p>
+<ul>
+<li><strong>La primera cita</strong> de Spafford recuerda que la seguridad absoluta es una quimera utópica; siempre existirá un vector de ataque imprevisto, ya sea tecnológico o humano.</li>
+<li><strong>La segunda cita</strong> ilustra el concepto de seguridad de extremo a extremo: es inútil cifrar un canal de comunicación si el origen o el destino se encuentran en sistemas comprometidos o desprotegidos.</li>
+<li><strong>La tercera cita</strong> de Kevin Mitnick destaca la necesidad de priorizar la concienciación y formación en ciberseguridad para los empleados por encima de la mera adquisición de hardware defensivo.</li>
+<li><strong>La cuarta cita</strong> de Chris Pirillo retrata en tono humorístico las malas prácticas cotidianas con las credenciales de acceso (anotadas en post-its, compartidas o mantenidas de forma indefinida).</li>
+<li><strong>La quinta cita</strong> de Bruce Schneier combate el mito de que instalar un software de seguridad (un firewall o antivirus) soluciona automáticamente los riesgos de una organización sin un análisis organizativo previo.</li>
+</ul>
+</div>
+<hr>
+<h2 id="4-principios-basicos-de-la-seguridad-de-la-informacion">4. Principios básicos de la seguridad de la información</h2>
+<p>La norma internacional <strong>ISO/IEC 27001</strong> define la seguridad de la información sobre la base de tres principios fundamentales, conocidos tradicionalmente como la <strong>Tríada CIA</strong>:</p>
+<p><img alt="Interfaz de la aplicación ITACA" src="../img/triadaCIA.jpg"></p>
+<h3 id="principios-fundamentales-triada-cia">Principios Fundamentales (Tríada CIA)</h3>
+<ul>
+<li><strong>Confidencialidad:</strong> Garantiza que la información solo sea accesible para aquellos usuarios, procesos o entidades debidamente autorizados, impidiendo cualquier divulgación no autorizada.</li>
+<li><strong>Integridad:</strong> Garantiza la exactitud y totalidad de la información y de sus métodos de procesamiento, previniendo cualquier alteración o modificación no autorizada o accidental de los datos.</li>
+<li><strong>Disponibilidad:</strong> Asegura que los usuarios autorizados tengan acceso a la información y a los recursos asociados en el momento en que lo requieran.</li>
+</ul>
+<h3 id="principios-adicionales">Principios Adicionales</h3>
+<ul>
+<li><strong>Autenticación:</strong> Proceso que permite verificar de forma inequívoca la identidad de un usuario o emisor que interactúa con el sistema de información.</li>
+<li><strong>Control de Acceso:</strong> Mecanismo técnico u organizativo que restringe los accesos a los recursos del sistema en función de los permisos y privilegios asignados a cada identidad verificada.</li>
+<li><strong>No Repudio:</strong> Garantía de que ninguna de las partes intervinientes en una comunicación o transacción comercial puede negar su participación en la misma. Se divide en:<ul>
+<li><strong>No repudio en origen:</strong> El emisor de un mensaje no puede negar haberlo enviado, al existir pruebas técnicas de su autoría (ej. firma electrónica).</li>
+<li><strong>No repudio en destino:</strong> El receptor de un mensaje no puede negar haberlo recibido, al poseer el emisor un justificante técnico de la recepción.</li>
+</ul>
+</li>
+<li><strong>Trazabilidad (o Auditabilidad):</strong> Capacidad de registrar y auditar de forma continua todas las operaciones realizadas sobre un sistema informático, permitiendo rastrear un evento o incidente hasta su origen exacto para realizar análisis forenses posteriores.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Recurso Audiovisual</p>
+<ul>
+<li><strong>Enlace de interés:</strong> <a href="https://www.youtube.com/embed/KWAfVhy_GQ8" target="_blank">Vídeo explicativo: La Tríada CIA y los Principios de Seguridad</a></li>
+</ul>
+<p><div class="video-container"><iframe src="https://www.youtube.com/embed/KWAfVhy_GQ8" style="position:relative;width:100%;height:22.172vw" frameborder="0" allowfullscreen alt="type:video"></iframe></div></p>
+</div>
+<hr>
+<h2 id="5-conceptos-clave-en-seguridad-de-la-informacion">5. Conceptos clave en seguridad de la información</h2>
+<p>Para realizar un correcto análisis de seguridad, es indispensable dominar los siguientes términos técnicos estandarizados:</p>
+<ul>
+<li><strong>Activo:</strong> Cualquier recurso (físico, lógico, de datos, humano o procedimental) que forma parte del sistema de información y que posee un valor estimado para el correcto funcionamiento y continuidad de la organización.</li>
+<li><strong>Amenaza:</strong> Cualquier evento o acción potencial que puede desencadenar un incidente de seguridad en la organización, provocando daños materiales, lógicos o pérdidas inmateriales en sus activos.</li>
+<li><strong>Vulnerabilidad:</strong> Debilidad, fallo o brecha de seguridad inherente a un activo o a un control de seguridad que puede ser aprovechada o explotada por una amenaza para causar daños.</li>
+<li><strong>Riesgo:</strong> Estimación ponderada que mide la probabilidad de que se materialice una amenaza aprovechando una vulnerabilidad sobre un activo, evaluando el impacto potencial que causaría sobre el negocio.</li>
+<li><strong>Impacto:</strong> Medida que valora cuantitativa o cualitativamente las consecuencias y perjuicios sufridos por la organización en caso de que una amenaza se materialice con éxito sobre un activo.</li>
+<li><strong>Ataque:</strong> Acción deliberada e intencionada, exitosa o no, encaminada a vulnerar la seguridad, el rendimiento o el correcto funcionamiento de un sistema informático.</li>
+<li><strong>Desastre o Contingencia:</strong> Interrupción súbita y crítica de la capacidad de procesamiento y acceso a la información necesaria para el desarrollo de la actividad normal de la organización, obligando a activar planes de recuperación.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Análisis de Riesgos</p>
+<p>Antes de implantar un Sistema de Gestión de la Seguridad de la Información (SGSI), es obligatorio realizar un <strong>Análisis de Riesgos</strong> previo para identificar qué activos tenemos, a qué amenazas están expuestos y qué salvaguardas (medidas protectoras) son prioritarias y coste-efectivas para la organización.</p>
+<ul>
+<li><strong>Enlace de interés:</strong> <a href="https://www.youtube.com/embed/EgiYIIJ8WnU" target="_blank">Vídeo explicativo de Intypedia: Introducción al Análisis de Riesgos</a></li>
+</ul>
+<p><div class="video-container"><iframe src="https://www.youtube.com/embed/EgiYIIJ8WnU" style="position:relative;width:100%;height:22.172vw" frameborder="0" allowfullscreen alt="type:video"></iframe></div></p>
+</div>
+<hr>
+<h2 id="6-tipos-de-amenazas-y-atacantes">6. Tipos de amenazas y atacantes</h2>
+<h3 id="origen-de-las-vulnerabilidades">Origen de las Vulnerabilidades</h3>
+<p>Las vulnerabilidades o fallos de seguridad suelen tener tres causas principales de origen:</p>
+<ol>
+<li><strong>Tecnológicas:</strong> Errores de diseño o bugs de programación inherentes al propio hardware o software utilizado (ej. fallos en microprocesadores o vulnerabilidades <em>Zero-Day</em> en sistemas operativos).</li>
+<li><strong>De configuración:</strong> Dispositivos, servidores o servicios desplegados con valores inseguros de fábrica o mal configurados por el administrador de sistemas (ej. contraseñas por defecto de administrador activas o puertos innecesarios abiertos al exterior).</li>
+<li><strong>Políticas de seguridad:</strong> Inexistencia de normativas internas de seguridad o directivas desactualizadas que no contemplan los nuevos escenarios de riesgos reales de la organización.</li>
+</ol>
+<h3 id="clasificacion-de-las-amenazas">Clasificación de las Amenazas</h3>
+<ul>
+<li><strong>Físicas y Ambientales:</strong> Afectan directamente a la infraestructura de hardware y a las instalaciones del sistema (incendios, inundaciones, robos físicos, cortes en el suministro eléctrico, picos de tensión o desastres naturales). Constituyen el primer perímetro de protección.</li>
+<li><strong>Lógicas:</strong> Afectan al software, bases de datos, protocolos y flujos lógicos de datos. La inmensa mayoría de ellas están asociadas al <strong>malware</strong> (<em>software malicioso</em>): virus, troyanos, gusanos, ransomware, rootkits, rogueware, puertas traseras (<em>backdoors</em>), spyware y keyloggers.</li>
+<li><strong>Pasivas:</strong> Atentados contra el principio de <strong>confidencialidad</strong>. Consisten en técnicas de escucha y monitorización pasiva para obtener información de un flujo de comunicación sin alterar los datos (ej. realizar un análisis de tráfico de red utilizando un sniffer como Wireshark en un canal no cifrado).</li>
+<li><strong>Activas:</strong> Atentados contra los principios de <strong>integridad y disponibilidad</strong>. El atacante altera de forma activa los datos transmitidos, suplanta identidades o destruye el canal (ej. ataques Man-in-the-Middle o inyección de tráfico falso).</li>
+</ul>
+<h3 id="taxonomia-de-los-atacantes">Taxonomía de los Atacantes</h3>
+<p>Detrás de muchas de estas amenazas - obviamente excepto los desastres naturales - se encuentra toda una taxonomía de atacantes, con fines lucrativos, de chantaje, activistas o simplemente de ego personal por el impacto del ataque realizado. Algunos de ellos son:</p>
+<ul>
+<li><strong>Hacker (Sombrero Blanco / White Hat):</strong> Profesional y experto técnico en seguridad informática que utiliza sus amplios conocimientos con fines de investigación, fortificación, auditoría técnica (<em>pentesting</em>) y defensa responsable de sistemas bajo autorización expresa.</li>
+<li><strong>Cracker (Sombrero Negro / Black Hat):</strong> Individuo con conocimientos técnicos avanzados que accede ilegalmente a sistemas informáticos de forma no autorizada con fines lucrativos, de espionaje industrial, chantaje o sabotaje.</li>
+<li><strong>Grey Hat (Sombrero Gris):</strong> Perfil híbrido que, si bien accede a sistemas sin autorización explícita para buscar vulnerabilidades, lo suele hacer de manera no destructiva, ofreciendo posteriormente corregir el fallo de seguridad, a menudo solicitando una recompensa a cambio.</li>
+<li><strong>Lamer y Script Kiddies:</strong> Aficionados con escasa formación técnica o nulos conocimientos de programación que utilizan de forma indiscriminada exploits y herramientas automáticas programadas por terceros disponibles en Internet para atacar sistemas desprotegidos.</li>
+<li><strong>Phreaker:</strong> Atacante especializado en la investigación, manipulación y explotación de vulnerabilidades en las redes de telecomunicaciones y sistemas telefónicos.</li>
+<li><strong>Spammer, Phisher y Scammer:</strong> Perfiles especializados en ataques masivos por correo electrónico y plataformas digitales. El <em>Spammer</em> satura con publicidad no solicitada; el <em>Phisher</em> diseña las plantillas de suplantación de identidad; y el <em>Scammer</em> ejecuta fraudes económicos en línea.</li>
+<li><strong>Ciberterroristas y Actores Estatales (APTs):</strong> Grupos altamente organizados y financiados con el objetivo de sabotear infraestructuras críticas nacionales, desestabilizar gobiernos u obtener información gubernamental clasificada.</li>
+</ul>
+<p>Hay que destacar que en los medios, siempre se utiliza el término hacker de forma despectiva, incluyendo en este concepto a todos los ciberdelincuentes con fines maliciosos y que realmente encajan dentro de la definición de cracker. De hecho, la propia RAE definía hasta hace poco al hacker como:</p>
+<p><img alt="Antigua definición de hacker" src="../img/definicion_hacker_RAE.png"></p>
+<p>A finales de 2017, la RAE añadió una segunda acepción al término, gracias a una iniciativa dentro del propio movimiento hacker para cambiar esta definición por una más correcta en que se defina al hacker como persona experta en alguna o varias ramas de la tecnología informática y electrónica (redes, programación, sistemas operativos, dispositivos móviles, etc) y que se dedica a intervenir y/o realizar alteraciones técnicas (to hack, del inglés) sobre un producto o dispositivo.</p>
+<p>De esta manera la definición de hacker queda así:</p>
+<p><img alt="Nueva definición de hacker" src="../img/definicion_2_hacker_RAE.png"></p>
+<div class="admonition note">
+<p class="admonition-title">Película sobre la vida de Kevin Mitnick</p>
+<p>Existe una película sobre la vida de <a href="https://es.wikipedia.org/wiki/Kevin_Mitnick" target:__blank_='target:"_blank"'>Kevin Mitnick</a>, hacker para algunos, cracker para otros, muy recomendable de ver. Su nombre es  <a href="https://youtu.be/NbgDMYy9mzM" target:__blank_='target:"_blank"'>Takedown</a>, aunque es España se tradujo como <strong>Asalto final</strong>. Actualmente, tras haber estado en prisión varios años a finales de los 90, es un reconocido experto en seguridad y fundador de varias empresas de seguridad informática.</p>
+</div>
+<hr>
+<h2 id="7-el-factor-humano-y-la-ingenieria-social">7. El factor humano y la ingeniería social</h2>
+<p>Como se ha analizado, el ser humano constituye la capa de seguridad más compleja de proteger. Los atacantes se han percatado de que a menudo resulta infinitamente más rápido y barato manipular psicológicamente a un usuario legítimo para que revele información de acceso que diseñar un exploit complejo capaz de saltarse un cifrado robusto de última generación.</p>
+<p>La <strong>ingeniería social</strong> es el conjunto de técnicas de persuasión, manipulación y engaño utilizadas para explotar los sesgos de la conducta humana, tales como la buena fe de cooperar, el respeto natural ante una figura de autoridad jerárquica, la curiosidad o el pánico ante consecuencias negativas.</p>
+<h3 id="vectores-de-ataque-de-ingenieria-social-criticos">Vectores de Ataque de Ingeniería Social Críticos</h3>
+<h4 id="a-phishing-pesca-de-credenciales">A) Phishing (Pesca de credenciales)</h4>
+<p>Es el ataque más masivo en la actualidad. Consiste en el envío de correos electrónicos, SMS (<em>Smishing</em>) o mensajes directos que suplantan con total fidelidad la identidad visual y los logotipos de corporaciones o entidades de confianza (ej. bancos, agencias tributarias, servicios en la nube o empresas de mensajería).</p>
+<div class="admonition danger">
+<p class="admonition-title">Mecánica del Phishing</p>
+<p>El mensaje se redacta con un tono de urgencia crítica (ej. <em>"Acceso sospechoso detectado: verifique su cuenta en menos de 24 horas para evitar su bloqueo definitivo"</em>). Se facilita un enlace que dirige a una página web falsa idéntica a la legítima. En cuanto el usuario introduce sus credenciales, estas son capturadas en tiempo real por el atacante.</p>
+</div>
+<h4 id="b-vishing-phishing-por-voz">B) Vishing (Phishing por voz)</h4>
+<p>El <strong>vishing</strong> traslada el engaño al canal telefónico directo. Es un método sumamente efectivo y peligroso porque la voz humana permite transmitir sensaciones de autoridad, urgencia y familiaridad mucho más difíciles de simular en un texto escrito.</p>
+<div class="admonition danger">
+<p class="admonition-title">Mecánica del Vishing</p>
+<p>El atacante llama haciéndose pasar por un miembro del departamento de soporte informático de la organización, un administrador de red de la Conselleria o un gestor de seguridad bancaria. Alega una incidencia crítica y apremiante en el equipo de trabajo de la víctima y la persuade para que le dicte su contraseña de acceso o le facilite un código de doble factor (MFA) recibido en su teléfono.</p>
+</div>
+<h4 id="c-baiting-senuelo-fisico">C) Baiting (Señuelo físico)</h4>
+<p>El <strong>baiting</strong> aprovecha la curiosidad y la imprudencia física del usuario con dispositivos de almacenamiento portátiles externos.</p>
+<div class="admonition danger">
+<p class="admonition-title">Mecánica del Baiting</p>
+<p>El atacante deposita deliberadamente un pendrive USB de forma "descuidada" en un espacio muy concurrido del centro de trabajo (recepción, aseos, aparcamiento). Para despertar el interés del personal, rotula el pendrive con un texto sugerente como <em>"Salarios Dirección 2026"</em>, <em>"Evaluaciones Finales"</em> o <em>"Presupuestos"</em>. En cuanto un usuario lo recoge y lo conecta a un ordenador corporativo para ver qué contiene, se ejecuta en segundo plano un script malicioso que abre una puerta trasera en el sistema.</p>
+</div>
+<hr>
+<h2 id="8-clasificacion-de-medidas-de-seguridad">8. Clasificación de medidas de seguridad</h2>
+<p>Para proteger eficazmente un sistema de información, no basta con instalar herramientas técnicas de manera aislada. Es necesario estructurar y clasificar las diferentes medidas de protección (también denominadas <strong>salvaguardas</strong> o <strong>controles</strong>) para entender cómo interactúan y qué tipo de amenazas mitigan. </p>
+<p>Las medidas de seguridad informática se estructuran habitualmente bajo una <strong>doble clasificación</strong>, atendiendo a dos criterios fundamentales: el <strong>activo a proteger</strong> (seguridad física o lógica) y el <strong>momento de actuación</strong> de la medida (seguridad activa o pasiva).</p>
+<hr>
+<h3 id="81-criterios-de-clasificacion">8.1. Criterios de Clasificación</h3>
+<h4 id="a-atendiendo-al-activo-que-se-desea-proteger">A) Atendiendo al activo que se desea proteger</h4>
+<ul>
+<li><strong>Seguridad Física:</strong> Es el conjunto de medidas destinadas a proteger los activos tangibles, el hardware de los sistemas y las instalaciones del centro (servidores, cableado, CPD, equipos) frente a amenazas físicas y ambientales (robos, incendios, fallos de suministro, desastres naturales). Constituye el primer perímetro de defensa de cualquier organización.</li>
+<li><strong>Seguridad Lógica:</strong> Es el conjunto de medidas destinadas a proteger los activos intangibles de la organización, como el software base, las aplicaciones de gestión, los procesos y, especialmente, la información y los datos lógicos frente a accesos no autorizados, alteraciones o pérdidas.</li>
+</ul>
+<h4 id="b-atendiendo-al-momento-en-que-actua-la-medida">B) Atendiendo al momento en que actúa la medida</h4>
+<ul>
+<li><strong>Seguridad Activa:</strong> Comprende todas aquellas medidas de carácter <strong>preventivo</strong> destinadas a evitar de forma directa que un incidente de seguridad llegue a materializarse. Su objetivo es proteger el sistema antes de que ocurra cualquier ataque o fallo.</li>
+<li><strong>Seguridad Pasiva:</strong> Comprende todas aquellas medidas de carácter <strong>corrector o paliativo</strong> que entran en juego una vez que el incidente de seguridad ya ha ocurrido de forma inevitable. Su objetivo no es evitar el fallo, sino minimizar el impacto del daño y permitir la recuperación del sistema a su estado operativo seguro anterior.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">La analogía del automóvil</p>
+<p>Para comprenderlo fácilmente en clase, piensa en la seguridad de un coche:</p>
+<ul>
+<li><strong>Seguridad Activa:</strong> Los sistemas de frenado ABS o el control de estabilidad ESP (evitan que ocurra el accidente de forma preventiva).</li>
+<li><strong>Seguridad Pasiva:</strong> El cinturón de seguridad, el airbag o el chasis deformable (no evitan la colisión, pero minimizan los daños físicos y salvan vidas una vez que el accidente ya ha ocurrido).</li>
+</ul>
+</div>
+<hr>
+<h3 id="82-matriz-de-doble-entrada-de-medidas-de-seguridad">8.2. Matriz de doble entrada de medidas de seguridad</h3>
+<p>Combinando ambos criterios, cualquier control implantado en la organización se ubica de forma unívoca en alguno de los cuadrantes de la siguiente matriz:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Dimensión</th>
+<th style="text-align: left;"><strong>Seguridad Activa</strong> <br><em>(Prevención del incidente)</em></th>
+<th style="text-align: left;"><strong>Seguridad Pasiva</strong> <br><em>(Mitigación y recuperación)</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Seguridad Física</strong> <br><em>(Activos tangibles)</em></td>
+<td style="text-align: left;">- Control de accesos físicos (RFID, teclados, biometría)<br>- Vigilantes y sistemas de videovigilancia (CCTV)<br>- Mobiliario ignífugo y climatización perimetral<br>- Apantallamiento y cableado protegido (interferencias)<br>- Impermeabilización de recintos</td>
+<td style="text-align: left;">- Sistemas de Alimentación Ininterrumpida (SAI/UPS)<br>- Grupos electrógenos y estabilizadores de tensión<br>- Extintores automáticos y muros cortafuegos físicos<br>- Centros de Procesamiento de Datos (CPD) de respaldo</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Seguridad Lógica</strong> <br><em>(Software y datos)</em></td>
+<td style="text-align: left;">- Contraseñas seguras y políticas de complejidad<br>- Autenticación de múltiples factores (MFA/2FA)<br>- Listas de Control de Acceso (permisos y privilegios ACL)<br>- Cifrado activo de almacenamiento (BitLocker, VeraCrypt)<br>- Antimalware (antivirus, antirootkit) y Firewalls<br>- Cuotas de asignación de disco y borrado seguro</td>
+<td style="text-align: left;">- Copias de seguridad (Backups) e imágenes de respaldo<br>- Sistemas de almacenamiento tolerantes a fallos (RAID)<br>- Sistemas de archivos con tolerancia a fallos (<em>journaling</em>)<br>- Firma digital y chequeos lógicos de integridad (Hashes)<br>- Instantáneas de software (<em>snapshots</em>) y virtualización</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">Medidas de carácter híbrido</p>
+<p>Algunas salvaguardas actúan simultáneamente en varios cuadrantes. Por ejemplo, un sistema de vigilantes con cámaras con grabación continua actúa como <strong>seguridad física activa</strong> (su presencia disuade y evita intrusiones) y como <strong>seguridad física pasiva</strong> (las grabaciones permiten investigar, identificar intrusos y mitigar el daño tras el incidente).</p>
+</div>
+<hr>
+<h3 id="83-descripcion-detallada-de-las-tecnicas-y-medidas">8.3. Descripción detallada de las técnicas y medidas</h3>
+<p>A continuación, se describen de forma técnica las características de las principales tecnologías y metodologías que componen la matriz de seguridad:</p>
+<h4 id="831-medidas-de-seguridad-fisica-activa">8.3.1. Medidas de Seguridad Física Activa</h4>
+<p>Orientadas a blindar de forma tangible el hardware de la organización para impedir que se produzcan intrusiones físicas o averías mecánicas provocadas por el entorno:</p>
+<ul>
+<li><strong>Sistemas de Control de Accesos Físicos:</strong> Restringen la entrada física a zonas críticas como el CPD o despachos mediante cerraduras inteligentes, tarjetas magnéticas, RFID o sistemas biométricos de huella dactilar, lectura de iris o patrones de venas de la mano.</li>
+<li><strong>Vigilancia y Monitorización Continua:</strong> Uso de guardias de seguridad física coordinados con cámaras de circuito cerrado (CCTV) con analítica de detección de intrusiones perimetrales.</li>
+<li><strong>Mobiliario e Instalaciones Resistentes:</strong> Uso de racks cerrados con llave, mobiliario ignífugo, canalizaciones de cableado blindado para evitar la interceptación física y atenuación de interferencias electromagnéticas mediante jaulas de Faraday.</li>
+<li><strong>Impermeabilización y Diseño Ambiental:</strong> Evitar ubicar los sistemas centrales de red en sótanos o plantas bajas para prevenir inundaciones, aislando paredes y techos frente a filtraciones de líquidos.</li>
+</ul>
+<p>En las siguientes imágenes, se pueden observar algunas de las medidas en los centros de datos, como los suelos técnicos, falsos techos, los sistemas de acondicionamiento ambiental para controlar, la humedad, el calor o el polvo o los SAI y grupos electrógenos para proporcionar electricidad ante un fallo del suministro eléctrico:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Elemento</th>
+<th style="text-align: left;">Ilustración</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Suelo técnico</strong></td>
+<td style="text-align: left;"><img alt="Suelo técnico" height="160" src="../img/suelo_tecnico.jpg" style="object-fit: cover;" width="250"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Falso techo</strong></td>
+<td style="text-align: left;"><img alt="Falso techo" height="160" src="../img/falso_techo.jpg" style="object-fit: cover;" width="250"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Control de temperatura y humedad</strong></td>
+<td style="text-align: left;"><img alt="Control de humedad y calor" height="160" src="../img/control_humedad_y_calor.jpg" style="object-fit: cover;" width="250"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Sistema de alimentación ininterrumpida</strong></td>
+<td style="text-align: left;"><img alt="SAI" height="160" src="../img/sai.jpg" style="object-fit: cover;" width="250"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Grupo electrógeno</strong></td>
+<td style="text-align: left;"><img alt="Grupo electrógeno" height="160" src="../img/grupo%20electrogeno.jpg" style="object-fit: cover;" width="250"></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Para sabaer más</p>
+<p>Observa el siguiente vídeo (en inglés) sobre los CPD's de Google: <a href="https://youtu.be/zRwPSFpLX8I?si=W8RLlCviVhGX2orN">Google container data center tour</a>.</p>
+<p><div class="video-container"><iframe src="https://www.youtube.com/embed/zRwPSFpLX8I" style="position:relative;width:100%;height:22.172vw" frameborder="0" allowfullscreen alt="type:video"></iframe></div></p>
+<p>Si deseas ampliar más información sobre los centros de datos de Google, lo puedes hacer en este enlace: <a href="https://datacenters.google/">Centros de datos de Google</a></p>
+</div>
+<h4 id="832-medidas-de-seguridad-fisica-pasiva">8.3.2. Medidas de Seguridad Física Pasiva</h4>
+<p>Destinadas a responder ante cortes en los suministros, sobrecargas en la red eléctrica o siniestros catastróficos que afecten de manera directa a la infraestructura del sistema de información:</p>
+<ul>
+<li><strong>Sistemas de Alimentación Ininterrumpida (SAI/UPS) y Grupos Electrógenos:</strong> Suministran energía eléctrica de forma inmediata y automática cuando se produce una caída en la red eléctrica general. Los SAI profesionales incorporan filtros que eliminan picos de tensión y sobrecargas de energía, estabilizando la señal antes de suministrarla a los equipos informáticos críticos.</li>
+<li><strong>Sistemas Automáticos de Extinción de Incendios:</strong> Sensores de humo integrados con sistemas de descarga de gases limpios (como el gas Inergen) o agua nebulizada que mitigan y extinguen con rapidez los conatos de fuego en el CPD sin dañar físicamente la electrónica de red de los servidores.</li>
+<li><strong>Centros de Datos de Respaldo (Centros de Contingencia):</strong> Replicación completa de la infraestructura informática crítica de la organización en una ubicación geográfica diferente para poder derivar los flujos lógicos en caso de que ocurra una catástrofe natural destructiva que inutilice el centro principal.</li>
+</ul>
+<h4 id="833-medidas-de-seguridad-logica-activa">8.3.3. Medidas de Seguridad Lógica Activa</h4>
+<p>Mecanismos de software y configuraciones del sistema operativo orientados a impedir accesos autorizados ilegítimos o infecciones lógicas que pongan en jaque los datos:</p>
+<ul>
+<li><strong>Directivas de Contraseñas y Gestión de Acceso:</strong> Forzar políticas estrictas que impidan el uso de claves triviales mediante comprobación de diccionarios, exigir longitudes mínimas utilizando frases de contraseña (<em>passphrases</em>) y limitar temporalmente la validez de las claves obligando a renovarlas.</li>
+<li><strong>Autenticación Multifactor (MFA/2FA):</strong> Refuerza el control básico de accesos exigiendo la validación simultánea de múltiples factores independientes: algo que el usuario sabe (contraseña), algo que posee (un token físico o código OTP recibido en su dispositivo móvil) y algo que es (biometría).</li>
+<li><strong>Listas de Control de Acceso (ACL):</strong> Asignación estricta de permisos y privilegios lógicos de lectura, escritura y ejecución sobre el sistema de archivos a nivel de usuario individual o grupo de usuarios, limitándolos al mínimo necesario para el desempeño de sus tareas (<em>mínimo privilegio</em>).</li>
+<li><strong>Cifrado Activo de Datos:</strong> Conversión de la información en texto ilegible mediante algoritmos criptográficos simétricos rápidos (como AES) para proteger la confidencialidad de discos enteros o carpetas específicas. Si un intruso arranca un sistema operativo alternativo o roba el soporte de almacenamiento físico, no podrá interpretar los datos sin la contraseña.</li>
+<li><strong>Herramientas de Defensa Lógica Activa (Antimalware y Cortafuegos):</strong> Instalación de antivirus dedicados para detectar y neutralizar malware (virus, gusanos, troyanos, ransomware) en tiempo real, combinados con firewalls de filtrado de paquetes y proxies para impedir conexiones de red sospechosas por puertos específicos.</li>
+<li><strong>Borrado Seguro de Datos (Destrucción Lógica):</strong> Aplicación de algoritmos específicos de sobreescritura aleatoria de datos de disco (como el Método Gutmann o el estándar DOD 5220.22-M con herramientas como Eraser o SDelete) para impedir que se recupere información confidencial de un soporte que va a ser desechado o reutilizado.</li>
+</ul>
+<h4 id="834-medidas-de-seguridad-logica-pasiva">8.3.4. Medidas de Seguridad Lógica Pasiva</h4>
+<p>Mecanismos de protección y restauración de datos orientados a solventar fallos físicos de disco duro, pérdidas masivas de información por secuestros cibernéticos o manipulaciones de los datos:</p>
+<ul>
+<li><strong>Planes de Copias de Seguridad (Backups) e Imágenes de Respaldo:</strong> Copiado sistemático y programado de toda la información lógica (copias totales o incrementales) y creación de imágenes completas de los servidores de producción para garantizar una restauración limpia en caso de desastres lógicos o ataques destructivos de malware.</li>
+<li><strong>Sistemas de Almacenamiento Redundante RAID:</strong> Configuración lógica de agrupaciones de discos físicos redundantes (como RAID 1 o RAID 5 por software o hardware) que distribuyen y replican la información, permitiendo la continuidad de servicio y la restauración automática de los datos en caliente si se avería físicamente uno de los discos del sistema.</li>
+<li><strong>Sistemas de Archivos con Tolerancia a Fallos (<em>Journaling</em>):</strong> Registro de transacciones en disco que previene y repara la corrupción lógica del sistema de archivos en caso de caídas abruptas de tensión eléctrica.</li>
+<li><strong>Firma Digital y Funciones Hash de Integridad:</strong> Algoritmos matemáticos complejos e irreversibles (como las familias SHA-2) que generan resúmenes o firmas únicas de un archivo. Al comparar el hash actual del archivo con su hash original firmado de confianza, se detecta de forma pasiva si ha habido alguna alteración o manipulación maliciosa de los datos en tránsito.</li>
+<li><strong>Virtualización de Sistemas y Snapshots:</strong> Ejecución de servidores y sistemas de trabajo sobre entornos virtualizados controlados por un hipervisor. Facilita la toma instantánea de copias lógicas de estado (<em>snapshots</em>) que permiten volver al punto anterior de funcionamiento seguro de una máquina virtual en cuestión de segundos en caso de infección masiva o desastre lógico.</li>
+</ul></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "toc.integrate", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
