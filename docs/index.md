@@ -22,7 +22,7 @@ Apuntes y prácticas del módulo **Seguridad y alta disponibilidad** de <u>2º d
 
 | version | Autor                                                                | Comentarios                                                                                                    |
 | ------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Curso26/27    | [José Muñoz Jimeno](https://about.me/jmunozj){:target="_blank"} | Adaptación de los materiales de Roman Carceller.                               |
+| Curso26/27    | [José Muñoz Jimeno](https://about.me/jmunozj){:target="_blank"} | Adaptación de los materiales de Roman Carceller y Ramón Onrubia.                               |
 
 ## Marco normativo
 El presente módulo profesional se enmarca en el 2º curso del ciclo formativo conducente al título de Técnico Superior en Administración de Sistemas Informáticos en Red. Dicho título viene regulado por:
