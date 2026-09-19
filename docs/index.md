@@ -1,5 +1,5 @@
 ---
-title: Seguridad y alta disponibilidad
+title: Seguridad y alta disponibilidad - Índice
 ---
 ![](img/seguridad_informatica.jpeg)
 
@@ -7,16 +7,16 @@ title: Seguridad y alta disponibilidad
 
 Apuntes y prácticas del módulo **Seguridad y alta disponibilidad** de <u>2º de ASIR</u>
 
-* UT1 Introducción y normativa
-* UT2 Criptografía
-* UT3 Control de acces
-* UT4 Seguridad en redes corporativas
-* UT5 Copias de seguridad
-* UT6 Recuperación de archivos
-* UD7 Seguridad perimetral: cortafuegos y DMZ
-* UD8 Seguridad perimetral: VPN
-* UD9 Proxy
-* UD10 Alta disponibilitat
+* UD1: Fundamentos de seguridad informática
+* UD2: Normativa y sistemas de gestión de la seguridad de la información
+* UD3: Criptografía
+* UD4: Control de acceso
+* UD5: Seguridad activa y auditorías en redes corporativas
+* UD6: Copias de seguridad, recuperación ante desastres y análisis forense
+* UD7: Seguridad perimetral: cortafuegos y DMZ
+* UD8: Seguridad perimetral: Acceso remoto y Redes Privadas Virtuales (VPN)
+* UD9: Protección perimetral mediante Servidores Proxy
+* UD10: Soluciones de Alta Disponibilidad
 
 ## Tabla de versiones
 
@@ -31,11 +31,9 @@ El presente módulo profesional se enmarca en el 2º curso del ciclo formativo c
 
 El currículo y la ordenación del módulo vienen determinados por la siguiente normativa:
 
-- [DECRET 114/2025, de 29 de juliol, del Consell, pel qual s’establixen els currículums dels cicles formatius de grau mitjà i de grau superior de Formació Professional, en aplicació de la Llei orgànica 3/2022, de 31 de març, d’ordenació i integració de la Formació Professional.](https://dogv.gva.es/va/eli/es-vc/d/2025/07/29/114/dof/vci/html){:target="_blank"} Norma autonómica que fija la estructura modular del ciclo y asigna la carga horaria en la Comunitat Valenciana (133 h - 4 h/semana en 2.º curso). Deroga la Orden 36/2012.
+- [Ley Orgánica 3/2022, de 31 de marzo, de ordenación e integración de la Formación Profesional.](https://www.boe.es/eli/es/lo/2022/03/31/3){:target="_blank"}
 
-- Como referencia adicional para el desarrollo de contenidos (al no venir desglosados en el nuevo decreto autonómico):
-    - [ORDEN 36/2012, de 22 de junio, de la Conselleria de Educación, Formación y Empleo, por la que se establece para la Comunitat Valenciana el currículo del ciclo formativo de grado superior correspondiente al título de Técnico Superior en Administración de Sistemas Informáticos en Red.](https://dogv.gva.es/es/eli/es-vc/o/2012/06/22/36/dof/spa/html){:target="_blank"} (Derogada).
-    - [Orden EFD/659/2024, de 25 de junio, por la que se determina el currículo y se regulan determinados aspectos organizativos para los ciclos formativos de grado superior en el ámbito de gestión del Ministerio de Educación, Formación Profesional y Deportes.](https://www.boe.es/eli/es/o/2024/06/25/efd659){:target="_blank"} (Ámbito MEFPD, deroga la Orden EDU/392/2010).
+- [DECRET 114/2025, de 29 de juliol, del Consell, pel qual s’establixen els currículums dels cicles formatius de grau mitjà i de grau superior de Formació Professional, en aplicació de la Llei orgànica 3/2022, de 31 de març, d’ordenació i integració de la Formació Professional.](https://dogv.gva.es/va/eli/es-vc/d/2025/07/29/114/dof/vci/html){:target="_blank"} Norma autonómica que fija la estructura modular del ciclo y asigna la carga horaria en la Comunitat Valenciana (133 h - 4 h/semana en 2.º curso).
 
 ## Licencia
 
