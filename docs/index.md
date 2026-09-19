@@ -1,5 +1,5 @@
 ---
-title: Seguridad y alta disponibilidad - Índice
+title: Índice
 ---
 ![](img/seguridad_informatica.jpeg)
 
