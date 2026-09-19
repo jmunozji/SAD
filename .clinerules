@@ -5,5 +5,5 @@
    - NUNCA edites ni elimines archivos dentro de `_contexto/`. Es una fuente de verdad de solo lectura.
 
 2. Generación de contenido:
-   - Al redactar temas o prácticas en `docs/`, básate estrictamente en los Resultados de Aprendizaje (RA) y Criterios de Evaluación (CE) definidos en `_contexto/programacion/` y la legislación de `_contexto/legislacion/`.
+   - Al redactar temas o prácticas en `docs/`, básate estrictamente en los Resultados de Aprendizaje (RA) y Criterios de Evaluación (CE) definidos en `_contexto/programacion/` y la legislación de `_contexto/legislacion
    - Adapta el tono al alumnado de segundo de ciclo superior de ASIR y sigue la sintaxis de Material for MkDocs (admonitions, tabs, etc.).
