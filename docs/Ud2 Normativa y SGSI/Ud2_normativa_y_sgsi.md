@@ -28,9 +28,9 @@ En la página web de la norma ISO/IEC 27001 puedes encontrar respuestas a las si
    * ¿Por qué es importante la norma ISO/IEC 27001?
    * ¿Quién necesita la norma ISO/IEC 27001?
    * ¿Cómo beneficiará la norma ISO/IEC 27001 a mi organización?
-   * ¿Cuáles son los tres principios de seguridad de la información de la norma ISO/IEC 27001, también conocidos como la tríada de la CIA (por sus siglas in inglés)?
+   * ¿Cuáles son los tres principios de seguridad de la información de la norma ISO/IEC 27001, también conocidos como la tríada de la CIA (por sus siglas en inglés)?
    * ¿La norma ISO 27001 es la misma que la ISO/IEC 27001?
-   *  ¿Qué es la certificación ISO/IEC 27001 y qué significa estar certificado según la norma ISO 27001?
+   * ¿Qué es la certificación ISO/IEC 27001 y qué significa estar certificado según la norma ISO 27001?
 
 
 !!! info "La tríada CIA"
@@ -79,14 +79,15 @@ Fase de mejora y corrección. Basándose en los resultados de la auditoría de l
 
 Un administrador de sistemas no puede operar al margen de la ley. Toda infraestructura de red corporativa que procese datos personales o preste servicios en Internet debe cumplir de forma obligatoria con el marco legislativo vigente para evitar graves sanciones administrativas, de reputación o penales.
 
- "Las tres columnas del marco regulatorio digital" está formada por:
+!!! info "Las tres columnas del marco regulatorio digital"
+    El marco regulatorio digital está formado por:
 
-   1. **RGPD (Reglamento General de Protección de Datos - Reglamento UE 2016/679):**
-      Normativa de obligado cumplimiento a nivel europeo que regula el tratamiento de datos de carácter personal de personas físicas. Introduce principios fundamentales como la transparencia, la limitación de la finalidad, la minimización de datos (*recoger solo lo estrictamente necesario*) y la responsabilidad proactiva (*probar activamente que se protege la información*).
-   2. **LOPDGDD (Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y Garantía de los Derechos Digitales):**
-      Ley española que adapta y complementa el RGPD a nivel nacional. Entre otras aportaciones, regula el catálogo de **Derechos Digitales** de la ciudadanía (como el derecho a la desconexión digital en el ámbito laboral o el testamento digital).
-   3. **LSSI-CE (Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico):**
-      Regula las actividades y obligaciones legales de las empresas que ofrecen servicios comerciales en Internet, operan tiendas online, envían comunicaciones publicitarias por correo electrónico o alojan contenidos web. Afecta directamente al administrador de servidores web, obligando a disponer de textos legales transparentes (Aviso Legal, Política de Privacidad, Política de Cookies) e impedir el envío de publicidad no solicitada (*spam*).
+    1. **RGPD (Reglamento General de Protección de Datos - Reglamento UE 2016/679):**
+       Normativa de obligado cumplimiento a nivel europeo que regula el tratamiento de datos de carácter personal de personas físicas. Introduce principios fundamentales como la transparencia, la limitación de la finalidad, la minimización de datos (*recoger solo lo estrictamente necesario*) y la responsabilidad proactiva (*probar activamente que se protege la información*).
+    2. **LOPDGDD (Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y Garantía de los Derechos Digitales):**
+       Ley española que adapta y complementa el RGPD a nivel nacional. Entre otras aportaciones, regula el catálogo de **Derechos Digitales** de la ciudadanía (como el derecho a la desconexión digital en el ámbito laboral o el testamento digital).
+    3. **LSSI-CE (Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico):**
+       Regula las actividades y obligaciones legales de las empresas que ofrecen servicios comerciales en Internet, operan tiendas online, envían comunicaciones publicitarias por correo electrónico o alojan contenidos web. Afecta directamente al administrador de servidores web, obligando a disponer de textos legales transparentes (Aviso Legal, Política de Privacidad, Política de Cookies) e impedir el envío de publicidad no solicitada (*spam*).
 
 Vamos a ver de qué trata cada una de estas leyes con un poco más de detalle.
 
@@ -109,10 +110,10 @@ Vamos a ver de qué trata cada una de estas leyes con un poco más de detalle.
 
 El **RGPD** es la norma marco europea que regula de forma unificada el tratamiento de datos de carácter personal de las personas físicas en todos los Estados miembros de la Unión Europea.
 
-El Nuevo Reglamento de Protección de Datos en menos de 3 minutos (2:49)
+**El Nuevo Reglamento de Protección de Datos en menos de 3 minutos (2:49)**
 ![type:video](https://www.youtube.com/embed/osuQK0kP4RA)
 
-RGPD/GDPR: ¿Qué es el Reglamento Europeo de Protección de Datos? (2:39)
+**RGPD/GDPR: ¿Qué es el Reglamento Europeo de Protección de Datos? (2:39)**
 ![type:video](https://www.youtube.com/embed/heKapvVLjng)
 
 
@@ -131,7 +132,10 @@ RGPD/GDPR: ¿Qué es el Reglamento Europeo de Protección de Datos? (2:39)
 
 3. **Derechos de los Interesados (Derechos ARCO-POL):**
     * **Acceso, Rectificación, Supresión** (*"Derecho al Olvido"*), **Oposición, Portabilidad** (recibir sus datos en un formato estructurado como JSON/XML) y **Limitación del tratamiento**.
-    En los siguientes vídeos tienes información sobre estos derechos, aunque son antiguos y basados en la antigua LPDP ya derogada.
+
+    !!! info "Vídeos informativos"
+        En los siguientes vídeos tienes información sobre estos derechos, aunque son antiguos y basados en la antigua **LOPD** ya derogada.
+
     ![type:video](https://www.youtube.com/embed/5QyTyCsq8po)
 
     ![type:video](https://www.youtube.com/embed/wNO4kvzGM_8)
@@ -228,12 +232,12 @@ La teoría jurídica solo cobra verdadero sentido cuando se aplica sobre un ento
     
     La infraestructura lógica es administrada por un único técnico. Toda la infraestructura (servidores, bases de datos, páginas web, etc) se encuentran alojadas en un proveedor de servicios externo. Se ha desplegado:
     
-    1. Un servidor web apache/nginx que aloja la tienda online al que se accede por http. 
+    1. Un servidor web apache/nginx que aloja la tienda online al que se hace acceder por http. 
     2. Al registrarse en el servidor web se almacenan los datos de pago, nombres, direcciones postales, teléfonos y correos electrónicos de los clientes. No existe una casilla de consentimiento explícito para que se traten los datos facilitados. No se solicita la edad del cliente.
     3. En la web solo figura el nombre comercial de la empresa, pero no su razón social, dirección y teléfono.
     4. Los precios de la web no indican si incluyen o no impuestos aplicables.
     5. El servidor web guarda cookies en el ordenador del usuario, pero no avisa de ello.
-    3. Un sistema de envío masivo de correos de ofertas y promociones a todos los clientes registrados en la tienda on-line. No existe una casilla de consentiento explícito del cliente para aceptar esos correos.
+    6. Un sistema de envío masivo de correos de ofertas y promociones a todos los clientes registrados en la tienda on-line. No existe una casilla de consentimiento explícito del cliente para aceptar esos correos.
 
 El gerente de la pyme os ha contratado como **consultores e inspectores de seguridad** tras recibir una notificación de aviso del INCIBE advirtiéndoles de que su servidor web está enviando tráfico de spam de forma sospechosa y carece de cifrado HTTPS. Tienen pánico de recibir una denuncia que pueda derivar en una sanción económica de la AEPD.
 
@@ -260,15 +264,15 @@ En grupos de 3 o 4 alumnos, debéis investigar las leyes en los enlaces oficiale
     * ¿Qué exige el artículo 21 de la LSSI sobre las comunicaciones comerciales no solicitadas?
 2. **Textos obligatorios:** 
     * ¿Qué información mínima obligatoria debe figurar públicamente en la página web para cumplir con el artículo 10 de la LSSI (Aviso Legal)?
-    * ¿Y para guardar cookines en el ordenador del cliente (Artículo 22 de la LSSI-CE)?
+    * ¿Y para guardar **cookies** en el ordenador del cliente (Artículo 22 de la LSSI-CE)?
 3. **Seguridad técnica obligada:** 
     * Al procesar datos de pago y contraseñas lógicas, ¿qué medida técnica de cifrado perimetral es obligatoria implementar en el servidor web apache/nginx por ley?
 
 #### 📂 Bloque 3: Propuesta de un SGSI básico aplicando el Ciclo PDCA (ISO 27001)
 1. **Plan (Planificar):** Identificad al menos 2 activos críticos del escenario y calculad un riesgo hipotético para cada uno.
-2. **Do (Hacer):** Proponed al menos 1 medida técnica activas que el departamento informático deba implementar inmediatamente para blindar los activos identificados en el primer punto.
+2. **Do (Hacer):** Proponed al menos 1 medida técnica activa que el departamento informático deba implementar inmediatamente para blindar los activos identificados en el primer punto.
 3. **Check (Verificar):** Proponed qué mecanismos lógicos de monitorización y auditoría técnica utilizaréis para verificar que las medidas del paso anterior funcionan (ej. análisis de logs, escaneo de puertos o simulacros).
-4. **Act (Actuar):** Explicad qué protocolo organizativo o técnico aplicaríais en caso de que en la fase anterior detectarais en el paso anterior que uno de los activos presenta una vlnerabilidad.
+4. **Act (Actuar):** Explicad qué protocolo organizativo o técnico aplicaríais en caso de que en la fase anterior detectarais que uno de los activos presenta una **vulnerabilidad**.
 
 ---
 
