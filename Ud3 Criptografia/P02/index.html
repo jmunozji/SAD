@@ -1,0 +1,957 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jmunozji.github.io/SAD/Ud3%20Criptografia/P02/">
+      
+      
+        <link rel="prev" href="../P01/">
+      
+      
+        <link rel="next" href="../Ud3_criptografia/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Práctica 3.2: Criptografía Asimétrica y Gestión de Claves con GPG - Seguridad y alta disponibilidad</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-3NX5MD5C8H"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-3NX5MD5C8H",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-3NX5MD5C8H",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#practica-32-criptografia-asimetrica-y-gestion-de-claves-con-gpg" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-header__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Seguridad y alta disponibilidad
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Práctica 3.2: Criptografía Asimétrica y Gestión de Claves con GPG
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-orange"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-nav__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    Seguridad y alta disponibilidad
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Introduccion/Ud1_introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1. Fundamentos de Seguridad Informática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Normativa%20y%20SGSI/Ud2_normativa_y_sgsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2. Normativa y sistemas de gestión de la seguridad de la información
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud3 Criptografia
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud3 Criptografia
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Ud3_criptografia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3. Criptografía y Mecanismos de Certificación Digital
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.1: Cifrado Simétrico con GnuPG (GPG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/Ud4_control_de_acceso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4. Control de acceso
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/Ud5_seguridad_activa_y_auditorias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD5. Seguridad activa y auditorías en redes corporativas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/Ud6_copias_de_seguridad_y_recuperacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD6. Copias de seguridad, recuperación ante desastres y análisis forense
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/Ud7_seguridad_perimetral_cortafuegos_y_dmz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD7. Seguridad perimetral: cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/Ud8_seguridad_perimetral_acceso_remoto_y_vpn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD8. Seguridad perimetral: Acceso remoto y Redes Privadas Virtuales (VPN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/Ud9_proteccion_perimetral_servidores_proxy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD9. Protección perimetral mediante Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud10%20Soluciones%20de%20Alta%20Disponibilidad/Ud10_soluciones_de_alta_disponibilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD10. Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="practica-32-criptografia-asimetrica-y-gestion-de-claves-con-gpg">Práctica 3.2: Criptografía Asimétrica y Gestión de Claves con GPG</h1>
+<div class="admonition note">
+<p class="admonition-title">Objetivos de la Práctica</p>
+<ul>
+<li>Comprender el funcionamiento de la <strong>criptografía asimétrica</strong> (par de claves pública/privada) y cómo resuelve la problemática del intercambio seguro de claves.</li>
+<li>Generar, administrar y consultar pares de claves PGP mediante la herramienta de línea de comandos <code>gpg</code>.</li>
+<li>Exportar e importar claves públicas utilizando tanto archivos locales con armadura ASCII (<code>.asc</code>) como servidores remotos de claves (<em>keyservers</em>).</li>
+<li>Cifrar archivos destinados exclusivamente a un tercero utilizando su clave pública y descifrar archivos dirigidos a nosotros con nuestra clave privada.</li>
+<li>Participar en la actividad colaborativa de intercambio en Moodle, experimentando de forma práctica la seguridad del canal público.</li>
+</ul>
+</div>
+<hr>
+<h2 id="1-introduccion-de-la-clave-secreta-al-par-de-claves">1. Introducción: De la Clave Secreta al Par de Claves</h2>
+<p>En la práctica anterior comprobamos que la <strong>criptografía simétrica</strong> es extremadamente rápida y eficiente, pero presenta un inconveniente fundamental: <strong>¿cómo le hacemos llegar la contraseña secreta al destinatario sin que un tercero la intercepte en el camino?</strong> Si enviamos la contraseña por el mismo canal (Moodle, correo o mensajería), cualquier atacante que intercepte la clave podrá descifrar el mensaje.</p>
+<p>La <strong>criptografía asimétrica</strong> resuelve este problema eliminando la necesidad de compartir contraseñas secretas. Cada usuario genera un <strong>par de claves matemáticamente vinculadas</strong>:</p>
+<ul>
+<li><strong>Clave Privada (K_priv):</strong> Debe mantenerse <strong>estrictamente en secreto</strong>. Nunca se comparte ni se envía a nadie. Sirve para <strong>descifrar</strong> mensajes dirigidos a ti y para <strong>firmar</strong> digitalmente (esto ya lo veremos más adelante).</li>
+<li><strong>Clave Pública (K_pub):</strong> Es <strong>completamente pública</strong>. Se puede enviar por correo, colgar en una web o subir a un servidor de claves (<em>keyserver</em>). Sirve para que <strong>cualquiera pueda cifrarte</strong> un archivo que solo tú podrás descifrar.</li>
+</ul>
+<p><img alt="Criptografía asimétrica" src="../img/ClaveAsimetrica.png"></p>
+<hr>
+<h2 id="2-fase-1-generacion-de-tu-par-de-claves-pgp">2. Fase 1: Generación de tu Par de Claves PGP</h2>
+<p>Para empezar a trabajar con criptografía asimétrica, debes generar tu propio par de claves en tu entorno Linux.</p>
+<h3 id="tarea-1-creacion-del-par-de-claves-con-gpg">Tarea 1: Creación del par de claves con <code>gpg</code></h3>
+<p>Abre una terminal en tu sistema Linux y ejecuta el siguiente comando interactivo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>gpg<span class="w"> </span>--full-gen-key
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">¿Por qué <code>--full-gen-key</code> en lugar de <code>--gen-key</code>?</p>
+<p>El parámetro <code>--gen-key</code> utiliza opciones por defecto automatizadas. Con <code>--full-gen-key</code> podemos controlar de forma explícita el tipo de algoritmo, la longitud en bits de la clave y su fecha de caducidad.</p>
+</div>
+<p>Sigue las instrucciones en pantalla especificando los siguientes parámetros:</p>
+<ol>
+<li><strong>Tipo de clave:</strong> Selecciona la opción <code>(1) RSA y RSA (por defecto)</code>.</li>
+<li><strong>Tamaño de la clave:</strong> Introduce <code>2048</code> bits (o <code>4096</code> bits para mayor seguridad).</li>
+<li><strong>Validez de la clave:</strong> Elige que la clave caduque en <code>1y</code> (1 año).</li>
+<li><strong>Datos de identidad (UID):</strong><ul>
+<li><strong>Nombre y apellidos:</strong> Tu nombre real o el usuario de clase (ej. <code>Nombre Apellido (SAD)</code>).</li>
+<li><strong>Dirección de correo electrónico:</strong> Tu correo corporativo del centro o de clase.</li>
+<li><strong>Comentario:</strong> <code>SAD - IES El Caminàs</code> (o el nombre de tu centro).</li>
+</ul>
+</li>
+<li><strong>Frase de paso (<em>Passphrase</em>):</strong> Te pedirá una contraseña para proteger tu clave privada en el disco local. <strong>¡No la olvides!</strong> La necesitarás cada vez que quieras descifrar un archivo.</li>
+</ol>
+<hr>
+<h3 id="tarea-2-inspeccion-de-tu-anillo-de-claves-keyring">Tarea 2: Inspección de tu anillo de claves (<em>Keyring</em>)</h3>
+<p>Una vez generado el par de claves, verifica que se han creado correctamente en tu sistema ejecutando los siguientes comandos:</p>
+<ul>
+<li><strong>Listar tu anillo de claves públicas:</strong>
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>gpg<span class="w"> </span>--list-keys
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># o su sintaxis abreviada:</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>gpg<span class="w"> </span>-k
+</code></pre></div></li>
+<li><strong>Listar tu anillo de claves privadas (secretas):</strong>
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>gpg<span class="w"> </span>--list-secret-keys
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># o su sintaxis abreviada:</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>gpg<span class="w"> </span>-K
+</code></pre></div></li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Anotación de tu ID de Clave (<em>Key ID</em>)</p>
+<p>En la salida de <code>gpg -k</code>, localiza el bloque correspondiente a tu usuario. Verás una cadena hexadecimal larga (la huella digital o <em>fingerprint</em>). Los últimos 8 o 16 caracteres corresponden a tu <strong>Key ID</strong>. Anótala, la usarás en los siguientes pasos.</p>
+</div>
+<hr>
+<h2 id="3-fase-2-exportacion-e-importacion-de-claves-publicas">3. Fase 2: Exportación e Importación de Claves Públicas</h2>
+<p>Para que un compañero o el profesor pueda enviarte un archivo cifrado, necesita disponer de tu <strong>clave pública</strong>.</p>
+<h3 id="tarea-3-exportar-tu-clave-publica-a-un-archivo-ascii">Tarea 3: Exportar tu clave pública a un archivo ASCII</h3>
+<p>Exporta tu clave pública a un archivo de texto utilizando la opción de "armadura ASCII" (<code>-a</code> o <code>--armor</code>) para que pueda ser compartido fácilmente:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>gpg<span class="w"> </span>-a<span class="w"> </span>--export<span class="w"> </span><span class="s2">"tu_email@correo.com"</span><span class="w"> </span>&gt;<span class="w"> </span>mi_clave_publica.asc
+</code></pre></div>
+<p>Abre el archivo resultante <code>mi_clave_publica.asc</code> con <code>cat</code> o un editor de texto. Observa que comienza con <code>-----BEGIN PGP PUBLIC KEY BLOCK-----</code>. Este archivo no contiene ningún dato secreto; puedes compartirlo libremente.</p>
+<hr>
+<h3 id="tarea-4-servidores-de-claves-publicas-keyservers">Tarea 4: Servidores de Claves Públicas (<em>Keyservers</em>)</h3>
+<p>Los <strong>servidores de claves</strong> son bases de datos públicas distribuidas e interconectadas en Internet que permiten buscar y descargar claves públicas de usuarios de todo el mundo.</p>
+<ol>
+<li><strong>Subir tu clave pública a un servidor público:</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>gpg<span class="w"> </span>--keyserver<span class="w"> </span>keyserver.ubuntu.com<span class="w"> </span>--send-keys<span class="w"> </span>TU_KEY_ID
+</code></pre></div></li>
+<li><strong>Buscar e importar la clave pública del profesor o de un compañero desde el servidor:</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>gpg<span class="w"> </span>--keyserver<span class="w"> </span>keyserver.ubuntu.com<span class="w"> </span>--search-keys<span class="w"> </span><span class="s2">"roman@ieselcaminas.org"</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># o descargando directamente por Key ID:</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>gpg<span class="w"> </span>--keyserver<span class="w"> </span>keyserver.ubuntu.com<span class="w"> </span>--recv-keys<span class="w"> </span>ID_DE_LA_CLAVE
+</code></pre></div></li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Atención con los servidores de claves</p>
+<p>Las claves subidas a los servidores públicos PGP <strong>no se pueden eliminar</strong>, únicamente se pueden revocar si conservas el certificado de revocación. Ten cuidado con los datos personales que asocias a tu UID si vas a publicar en servidores globales.</p>
+</div>
+<hr>
+<h2 id="4-fase-3-operaciones-de-cifrado-y-descifrado-asimetrico">4. Fase 3: Operaciones de Cifrado y Descifrado Asimétrico</h2>
+<h3 id="tabla-de-modificadores-para-criptografia-asimetrica">Tabla de Modificadores para Criptografía Asimétrica</h3>
+<p>Averigua y prueba la función de los siguientes parámetros de <code>gpg</code>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parámetro</th>
+<th style="text-align: left;">Nombre Largo</th>
+<th style="text-align: left;">Descripción / Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>-e</code></td>
+<td style="text-align: left;"><code>--encrypt</code></td>
+<td style="text-align: left;">Cifra datos. Requiere especificar el destinatario.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-r</code></td>
+<td style="text-align: left;"><code>--recipient</code></td>
+<td style="text-align: left;">Especifica el destinatario (por correo, nombre o Key ID) cuya clave pública se usará.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-d</code></td>
+<td style="text-align: left;"><code>--decrypt</code></td>
+<td style="text-align: left;">Descifra un archivo cifrado (utiliza automáticamente tu clave privada).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-u</code></td>
+<td style="text-align: left;"><code>--local-user</code></td>
+<td style="text-align: left;">Selecciona qué clave privada local utilizar si se poseen varias.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>--import</code></td>
+<td style="text-align: left;"><code>--import</code></td>
+<td style="text-align: left;">Importa una clave pública o privada desde un archivo local <code>.asc</code> o <code>.key</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="tarea-5-cifrar-un-archivo-para-otra-persona">Tarea 5: Cifrar un archivo para otra persona</h3>
+<p>Imagina que quieres enviar un archivo confidencial llamado <code>mensaje_profesor.txt</code> al profesor o a un compañero cuya clave pública ya tienes en tu anillo:</p>
+<ol>
+<li>Crea el archivo de texto:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"Hola profesor, esta es mi entrega secreta mediante clave pública."</span><span class="w"> </span>&gt;<span class="w"> </span>mensaje_profesor.txt
+</code></pre></div></li>
+<li>Cifra el archivo utilizando la <strong>clave pública del destinatario</strong>:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>gpg<span class="w"> </span>-e<span class="w"> </span>-r<span class="w"> </span><span class="s2">"roman@ieselcaminas.org"</span><span class="w"> </span>-a<span class="w"> </span>mensaje_profesor.txt
+</code></pre></div></li>
+<li>Comprueba el resultado: se habrá generado el archivo <code>mensaje_profesor.txt.asc</code>.</li>
+<li><strong>Intenta descifrarlo tú mismo:</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>gpg<span class="w"> </span>-d<span class="w"> </span>mensaje_profesor.txt.asc
+</code></pre></div>
+   <em>¿Qué ocurre? ¿Por qué tú NO puedes descifrar un archivo que acabas de cifrar tú mismo si no incluiste tu propia clave como destinataria?</em></li>
+</ol>
+<hr>
+<h2 id="5-fase-4-desafio-colaborativo-en-el-foro-de-moodle-el-gran-cierre">5. Fase 4: Desafío Colaborativo en el Foro de Moodle (El Gran Cierre)</h2>
+<p>Llegó el momento de comprobar la gran ventaja de la criptografía asimétrica frente a la simétrica: <strong>Cero intercambio previo de contraseñas secretas.</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>                      +-------------------------------------------------+
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>                      |              FORO DE MOODLE (PÚBLICO)          |
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>                      +-------------------------------------------------+
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>                      | 1. Todos publican sus Claves Públicas (.asc)   |
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>                      | 2. Todos suben Archivos Cifrados para otros    |
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>                      +-------------------------------------------------+
+</code></pre></div>
+<h3 id="paso-a-publicacion-de-claves-publicas">Paso A: Publicación de Claves Públicas</h3>
+<ol>
+<li>Accede al foro de Moodle de la unidad al tema de debate <strong>"Directorio de Claves Públicas PGP"</strong>.</li>
+<li>Publica un mensaje adjuntando tu archivo <code>mi_clave_publica.asc</code> (o pega su contenido en texto plano) e indica tu Nombre y Correo asociado.</li>
+</ol>
+<h3 id="paso-b-descarga-de-clave-e-importacion">Paso B: Descarga de Clave e Importación</h3>
+<ol>
+<li>Elige a un compañero de clase en el foro.</li>
+<li>Descarga su archivo de clave pública (<code>clave_compañero.asc</code>) e impórtalo en tu sistema:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>gpg<span class="w"> </span>--import<span class="w"> </span>clave_compañero.asc
+</code></pre></div></li>
+<li>Verifica con <code>gpg -k</code> que la clave de tu compañero aparece en tu anillo público.</li>
+</ol>
+<h3 id="paso-c-cifrado-y-envio-en-el-foro">Paso C: Cifrado y Envío en el Foro</h3>
+<ol>
+<li>Crea un archivo con un mensaje personalizado para tu compañero (ej. <code>para_carlos.txt</code>).</li>
+<li>Cífralo en formato armadura ASCII con la <strong>clave pública de tu compañero</strong>:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>gpg<span class="w"> </span>-e<span class="w"> </span>-r<span class="w"> </span><span class="s2">"correo_de_tu_compañero@correo.com"</span><span class="w"> </span>-a<span class="w"> </span>para_carlos.txt
+</code></pre></div></li>
+<li>Entra en el foro de Moodle en el tema <strong>"Intercambio Asimétrico"</strong> y sube el archivo cifrado <code>para_carlos.txt.asc</code> indicando claramente en el asunto: <strong>"Mensaje cifrado para [Nombre de tu Compañero]"</strong>.</li>
+</ol>
+<h3 id="paso-d-descifrado-y-confirmacion">Paso D: Descifrado y Confirmación</h3>
+<ol>
+<li>Busca en el foro el mensaje cifrado que algún compañero te haya enviado a ti.</li>
+<li>Descarga el archivo cifrado y descífralo en tu terminal con tu <strong>clave privada</strong>:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>gpg<span class="w"> </span>-o<span class="w"> </span>mensaje_revelado.txt<span class="w"> </span>-d<span class="w"> </span>mensaje_recibido.asc
+</code></pre></div>
+   <em>(El sistema te pedirá la frase de paso / passphrase de tu clave privada).</em></li>
+<li>Responde al mensaje de tu compañero en el foro confirmando el texto que has logrado descifrar.</li>
+</ol>
+<hr>
+<h2 id="6-entregable-cheatsheet-de-criptografia-asimetrica">6. Entregable / Cheatsheet de Criptografía Asimétrica</h2>
+<p>Completa la siguiente tabla en tu cuaderno de laboratorio con los comandos exactos utilizados durante la práctica:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Operación</th>
+<th style="text-align: left;">Comando GPG</th>
+<th style="text-align: center;">Extensión de Salida</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Generar par de claves completo</strong></td>
+<td style="text-align: left;"><code>gpg --full-gen-key</code></td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Listar claves públicas del anillo</strong></td>
+<td style="text-align: left;"><code>gpg -k</code></td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Listar claves privadas del anillo</strong></td>
+<td style="text-align: left;"><code>gpg -K</code></td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Exportar clave pública en ASCII</strong></td>
+<td style="text-align: left;"><code>gpg -a --export "email" &gt; clave.asc</code></td>
+<td style="text-align: center;"><code>.asc</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Importar clave pública desde fichero</strong></td>
+<td style="text-align: left;"><code>gpg --import clave.asc</code></td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Buscar/Descargar clave de un keyserver</strong></td>
+<td style="text-align: left;"><code>gpg --keyserver server --recv-keys ID</code></td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Subir clave pública a un keyserver</strong></td>
+<td style="text-align: left;"><code>gpg --keyserver server --send-keys ID</code></td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Cifrar archivo para un tercero (ASCII)</strong></td>
+<td style="text-align: left;"><code>gpg -e -r "email" -a archivo</code></td>
+<td style="text-align: center;"><code>.asc</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Descifrar archivo con clave privada</strong></td>
+<td style="text-align: left;"><code>gpg -o salida -d archivo.asc</code></td>
+<td style="text-align: center;"><code>.txt</code> / Binario</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7-cuestiones-de-autoevaluacion">7. Cuestiones de Autoevaluación</h2>
+<p>Responde a las siguientes preguntas razonadas al final de tu informe:</p>
+<ol>
+<li><strong>El problema de la clave compartida:</strong> ¿Por qué en esta práctica hemos podido publicar libremente los archivos cifrados en un foro público de Moodle sin haber tenido que intercambiar previamente ninguna contraseña secreta en privado con el compañero?</li>
+<li><strong>Seguridad del par de claves:</strong> Si un atacante consigue tu clave pública, ¿puede descifrar los mensajes que otros te envían a ti? ¿Por qué?</li>
+<li><strong>Pérdida de la clave privada:</strong> Si se te avería el disco duro y pierdes tu clave privada, ¿podrás descifrar los archivos que tus compañeros te enviaron la semana pasada? ¿Se puede recuperar de alguna forma la clave privada a partir de la pública?</li>
+<li><strong>Doble cifrado:</strong> Si quieres cifrar un archivo de forma que <strong>tanto tú como tu compañero</strong> podáis descifrarlo en el futuro con vuestras respectivas claves privadas, ¿cómo deberías ejecutar el comando <code>gpg -e</code>? <em>(Pista: consulta las opciones del parámetro <code>-r</code> / <code>--recipient</code>)</em>.</li>
+</ol></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "toc.integrate", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

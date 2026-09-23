@@ -1,0 +1,1639 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jmunozji.github.io/SAD/Ud3%20Criptografia/Ud3_criptografia/">
+      
+      
+        <link rel="prev" href="../../Ud2%20Normativa%20y%20SGSI/Ud2_normativa_y_sgsi/">
+      
+      
+        <link rel="next" href="../P01/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>UD3. Criptografía y Mecanismos de Certificación Digital - Seguridad y alta disponibilidad</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-3NX5MD5C8H"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-3NX5MD5C8H",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-3NX5MD5C8H",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ud3-criptografia-y-mecanismos-de-certificacion-digital" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-header__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Seguridad y alta disponibilidad
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              UD3. Criptografía y Mecanismos de Certificación Digital
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-orange"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-nav__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    Seguridad y alta disponibilidad
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Introduccion/Ud1_introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1. Fundamentos de Seguridad Informática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Normativa%20y%20SGSI/Ud2_normativa_y_sgsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2. Normativa y sistemas de gestión de la seguridad de la información
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud3 Criptografia
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud3 Criptografia
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3. Criptografía y Mecanismos de Certificación Digital
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3. Criptografía y Mecanismos de Certificación Digital
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#31-introduccion-y-fundamentos-de-criptografia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1. Introducción y Fundamentos de Criptografía
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1. Introducción y Fundamentos de Criptografía">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311-por-que-cifrar-en-la-sociedad-de-la-informacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.1. ¿Por qué cifrar en la Sociedad de la Información?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312-criptografia-clasica-historia-y-clasificacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.2. Criptografía Clásica: Historia y Clasificación
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#313-criptoanalisis-de-los-cifrados-clasicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.3. Criptoanálisis de los Cifrados Clásicos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#314-el-principio-de-kerckhoffs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.4. El Principio de Kerckhoffs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#315-servicios-de-seguridad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.5. Servicios de Seguridad
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-criptografia-simetrica-clave-secreta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2. Criptografía Simétrica (Clave Secreta)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2. Criptografía Simétrica (Clave Secreta)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321-concepto-y-funcionamiento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.1. Concepto y Funcionamiento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322-clasificacion-de-algoritmos-simetricos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.2. Clasificación de Algoritmos Simétricos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#323-desventajas-y-limitaciones-de-la-criptografia-simetrica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.3. Desventajas y Limitaciones de la Criptografía Simétrica
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#324-practica-de-criptografia-simetrica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.4. Práctica de criptografía simétrica
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-criptografia-asimetrica-clave-publica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3. Criptografía Asimétrica (Clave Pública)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3. Criptografía Asimétrica (Clave Pública)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331-concepto-y-par-de-claves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.1. Concepto y Par de Claves
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332-funciones-unidireccionales-con-trampa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.2. Funciones Unidireccionales con Trampa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#333-ventajas-y-algoritmos-asimetricos-principales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.3. Ventajas y Algoritmos Asimétricos Principales
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#334-desventajas-de-la-criptografia-asimetrica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.4. Desventajas de la Criptografía Asimétrica
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#335-practica-de-criptografia-asimetrica-y-gestion-de-cables-con-gpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.5. Práctica de criptografía asimétrica y gestión de cables con GPG
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-criptografia-hibrida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4. Criptografía Híbrida
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4. Criptografía Híbrida">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#341-la-solucion-combinada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.1. La Solución Combinada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#342-mecanica-de-una-comunicacion-hibrida-paso-a-paso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.2. Mecánica de una Comunicación Híbrida Paso a Paso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35-funciones-hash-o-resumen-digital" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5. Funciones Hash o Resumen Digital
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.5. Funciones Hash o Resumen Digital">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#351-concepto-de-funcion-hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.1. Concepto de Función Hash
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#352-las-6-propiedades-criptograficas-fundamentales-pildora-upm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2. Las 6 Propiedades Criptográficas Fundamentales (Píldora UPM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#353-evolucion-de-los-algoritmos-hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.3. Evolución de los Algoritmos Hash
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#354-aplicaciones-principales-de-los-hashes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.4. Aplicaciones Principales de los Hashes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#36-firma-digital" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6. Firma Digital
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.6. Firma Digital">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#361-concepto-y-servicios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6.1. Concepto y Servicios
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#362-mecanica-de-generacion-de-la-firma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6.2. Mecánica de Generación de la Firma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#363-mecanica-de-verificacion-por-el-receptor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6.3. Mecánica de Verificación por el Receptor
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#37-certificados-digitales-y-estandar-x509" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7. Certificados Digitales y Estándar X.509
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.7. Certificados Digitales y Estándar X.509">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#371-el-problema-de-la-confianza-y-el-ataque-man-in-the-middle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7.1. El Problema de la Confianza y el Ataque Man-in-the-Middle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#372-que-es-un-certificado-digital" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7.2. ¿Qué es un Certificado Digital?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#373-el-estandar-x509-v3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7.3. El Estándar X.509 v3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#374-clasificacion-de-certificados-digitales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7.4. Clasificación de Certificados Digitales
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#38-infraestructura-de-clave-publica-pki-y-dnie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8. Infraestructura de Clave Pública (PKI) y DNIe
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.8. Infraestructura de Clave Pública (PKI) y DNIe">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#381-componentes-de-una-pki-public-key-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8.1. Componentes de una PKI (Public Key Infrastructure)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#382-establecimiento-de-una-sesion-web-segura-https-tls-handshake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8.2. Establecimiento de una Sesión Web Segura (HTTPS / TLS Handshake)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#383-estudio-de-caso-el-dni-electronico-dnie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8.3. Estudio de Caso: El DNI Electrónico (DNIe)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#39-protocolos-seguros-vulnerabilidades-y-buenas-practicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.9. Protocolos Seguros, Vulnerabilidades y Buenas Prácticas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.9. Protocolos Seguros, Vulnerabilidades y Buenas Prácticas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#391-protocolos-ssltls-y-https" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.9.1. Protocolos SSL/TLS y HTTPS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#392-vulnerabilidades-e-incidentes-historicos-en-ssltls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.9.2. Vulnerabilidades e Incidentes Históricos en SSL/TLS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#393-mecanismos-de-proteccion-avanzados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.9.3. Mecanismos de Protección Avanzados
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.1: Cifrado Simétrico con GnuPG (GPG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/Ud4_control_de_acceso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4. Control de acceso
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/Ud5_seguridad_activa_y_auditorias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD5. Seguridad activa y auditorías en redes corporativas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/Ud6_copias_de_seguridad_y_recuperacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD6. Copias de seguridad, recuperación ante desastres y análisis forense
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/Ud7_seguridad_perimetral_cortafuegos_y_dmz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD7. Seguridad perimetral: cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/Ud8_seguridad_perimetral_acceso_remoto_y_vpn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD8. Seguridad perimetral: Acceso remoto y Redes Privadas Virtuales (VPN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/Ud9_proteccion_perimetral_servidores_proxy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD9. Protección perimetral mediante Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud10%20Soluciones%20de%20Alta%20Disponibilidad/Ud10_soluciones_de_alta_disponibilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD10. Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="ud3-criptografia-y-mecanismos-de-certificacion-digital">UD3. Criptografía y Mecanismos de Certificación Digital</h1>
+<div class="admonition note">
+<p class="admonition-title">Objetivos de la Unidad (Duración: 8 Horas)</p>
+<ul>
+<li>Aplicar técnicas criptográficas en el almacenamiento y la transmisión de la información para garantizar la seguridad de los datos (CE 1.g).</li>
+<li>Proteger la privacidad, autenticidad y confidencialidad mediante el uso de certificados digitales y correo seguro (CE 2.f).</li>
+<li>Comprender y diferenciar los métodos criptográficos clásicos y modernos (simétricos, asimétricos e híbridos).</li>
+<li>Analizar las propiedades matemáticas y aplicaciones prácticas de las funciones hash (resumen digital).</li>
+<li>Dominar el mecanismo técnico de la firma digital y el funcionamiento de una Infraestructura de Clave Pública (PKI) bajo el estándar X.509.</li>
+<li>Conocer la arquitectura criptográfica del DNI electrónico (DNIe) y los protocolos seguros SSL/TLS/HTTPS.</li>
+</ul>
+</div>
+<hr>
+<h2 id="31-introduccion-y-fundamentos-de-criptografia">3.1. Introducción y Fundamentos de Criptografía</h2>
+<h3 id="311-por-que-cifrar-en-la-sociedad-de-la-informacion">3.1.1. ¿Por qué cifrar en la Sociedad de la Información?</h3>
+<p>Desde la antigüedad, la humanidad ha tenido la necesidad de proteger el intercambio de mensajes confidenciales. En la era digital actual, este requerimiento se vuelve crítico debido a la exposición masiva de los datos en canales de comunicación no seguros (redes Wi-Fi abiertas, correo electrónico, voz sobre IP, redes móviles) y el uso constante de dispositivos de almacenamiento portátiles (pendrives, discos externos, teléfonos inteligentes) propensos a pérdidas o robos.</p>
+<h3 id="312-criptografia-clasica-historia-y-clasificacion">3.1.2. Criptografía Clásica: Historia y Clasificación</h3>
+<p>El término <strong>criptografía</strong> proviene del griego <em>kryptós</em> (oculto) y <em>graphía</em> (escritura): la ciencia que estudia la transformación de un texto claro en un texto cifrado ininteligible para terceros no autorizados.</p>
+<p>Históricamente, los métodos de cifrado clásico se dividen en dos grandes familias:</p>
+<ol>
+<li>
+<p><strong>Sistemas de Transposición:</strong> Consisten en descolocar o reordenar los caracteres del mensaje sin alterar las letras originales.</p>
+<ul>
+<li><strong>La Escítala Espartana (Siglo V a.C.):</strong> Primer método criptográfico documentado. Consistía en enrollar una cinta de cuero sobre un bastón de madera con un diámetro específico. Al escribir a lo largo del bastón y desenrollar la cinta, las letras quedaban desordenadas de forma aleatoria, siendo únicamente legible al enrollarla en una vara del mismo diámetro exacto.
+<img alt="Escítala" src="../img/escitala.png">
+  Como podemos ver en la imagen, el mensaje es «es el primer método de encriptación conocido», pero en la cinta lo que se podría leer es «EMCCSEROETINLOPOPDTCROAIIDCDMEIOEEORNN»</li>
+<li>
+<p><strong>Transposición simple y múltiple:</strong> Métodos matriciales donde el texto se escribe en filas y se lee en columnas según una clave acordada.
+    Ejemplo:</p>
+<p>Mensaje: ATACAR HOY</p>
+<p>Clave: SOL</p>
+<p>Se distribuyen las 8 letras del mensaje A-T-A-C-A-R-H-O-Y horizontalmente. La última fila queda con 2 letras, así que se añade una X para cerrar el bloque:</p>
+<p><img alt="transposicion" src="../img/transposicion.png"></p>
+<p>Se leen las columnas de arriba abajo según la prioridad numérica de la clave. Primero la columna cuya letra en la clave es anterior alfabéticamente, en este caso la L. Luego la siguiente, que sería la O y finalmente la última, la S:</p>
+<ul>
+<li>
+<p>Columna 1 (letra L): A R Y X</p>
+</li>
+<li>
+<p>Columna 2 (letra O): T A O X</p>
+</li>
+<li>
+<p>Columna 3 (letra S): A C H X</p>
+</li>
+</ul>
+<p>Criptograma final: ARYX TAOX ACHX (o agrupado: ARYXTAOXACHX).</p>
+<p>En la transposición múltiple se aplica una nueva transposición al mensaje encriptado del paso anterior con una nueva clave</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Sistemas de Sustitución:</strong> Consisten en reemplazar unos caracteres o símbolos del alfabeto original por otros según una regla predefinida.</p>
+<ul>
+<li><strong>Tablero de Polibio (Siglo II a.C.):</strong> Sustitución por pares de letras o números que representan las coordenadas (fila y columna) de una matriz de 5x5 donde se ubica cada letra del alfabeto.
+<img alt="Polibio" src="../img/polibios.png"></li>
+<li>
+<p><strong>Cifrador del César (Siglo I a.C.):</strong> Sustitución monoalfabética utilizada por Julio César. Consiste en desplazar cada letra del alfabeto un número fijo <em>n</em> de posiciones hacia la derecha (en el ejemplo <strong>n=3</strong>).
+   <img alt="César" src="../img/cesar.png"></p>
+<p>Mensaje del César a Cleopatra: «sic amote ut sin ete iam viverem non posit» (de tal manera te amo que sin ti no podría vivir).</p>
+<p>Para traducir el mensaje necesitamos los dos alfabetos el claro y el cifrado, que son los dos alfabetos latinos del cifrador del César.</p>
+<p>Si nos fijamos en el alfabeto cifrado el mensaje oculto debe corresponderse con el siguiente: VMF DPRXI YX VMQ IXI MDP ZMZIUIP QRQ SRVMX</p>
+</li>
+<li>
+<p><strong>Cifrador de Alberti (Siglo XV) y Vigenère (Siglo XVI):</strong> Sustitución polialfabética. León Battista Alberti propuso alternar entre varios alfabetos, pero fue Blaise de Vigenère quien XVI desarrolle la idea de Alberti. </p>
+<p>El cifrador de Vigenère utiliza veintiséis alfabetos cifrados, obteniéndose cada uno de ellos comenzando con la siguiente letra del anterior, es decir, el primer alfabeto cifrado se corresponde con el cifrador del César con un cambio de una posición, de la misma manera para el segundo alfabeto, cifrado con el cifrador del César de dos posiciones. </p>
+<p>Para cifrar hace falta una palabra clave que se va repitiendo hasta llegar a la longitud del mensaje a cifrar. Cada letra del mensaje original nos da la columna y cada letra de la clave la fila, que nos perminten obtener la letra en el mensaje cifrado.</p>
+<p><img alt="Vigenère" src="../img/vigenere.jpeg"></p>
+</li>
+</ul>
+</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Esteganografía: El arte del ocultamiento</p>
+<p>A diferencia de la criptografía (que hace ininteligible el mensaje pero no oculta su existencia), la <strong>esteganografía</strong> busca ocultar la presencia del propio mensaje dentro de un archivo portador de apariencia inofensiva (como una imagen PNG, un archivo de audio WAV o un archivo ejecutable).</p>
+<p><em>Una herramienta clásica de línea de comandos en GNU/Linux para realizar ejercicios de esteganografía es <code>steghide</code>.</em></p>
+</div>
+<h3 id="313-criptoanalisis-de-los-cifrados-clasicos">3.1.3. Criptoanálisis de los Cifrados Clásicos</h3>
+<p>El <strong>criptoanálisis</strong> es la disciplina que estudia las técnicas para romper o descifrar códigos sin conocer la clave legítima:</p>
+<ul>
+<li>
+<p><strong>Ataques de Fuerza Bruta:</strong> Probar sistemáticamente todas las claves posibles. El cifrador del César solo posee 25 claves posibles en el alfabeto latino, por lo que es trivialmente roturable por fuerza bruta en segundos.</p>
+</li>
+<li>
+<p><strong>Análisis de Frecuencias:</strong> En los cifrados por sustitución monoalfabética, la frecuencia de aparición de cada letra se mantiene. En español, las letras 'E', 'A' y 'O' son las más comunes; al analizar las frecuencias del texto cifrado, se puede deducir la correspondencia con las letras claras.</p>
+</li>
+<li>
+<p><strong>Método Kasiski:</strong> Permite romper la criptografía polialfabética de Vigenère identificando repeticiones de patrones en el texto cifrado para deducir la longitud de la clave utilizada.</p>
+</li>
+</ul>
+<h3 id="314-el-principio-de-kerckhoffs">3.1.4. El Principio de Kerckhoffs</h3>
+<p>En el siglo XIX, Auguste Kerckhoffs estableció un axioma fundamental que rige toda la ciberseguridad moderna:</p>
+<div class="admonition quote">
+<p class="admonition-title">Principio de Kerckhoffs</p>
+<p>"La seguridad de un sistema de cifrado debe recaer exclusivamente en el secreto de la <strong>clave</strong>, y no en el secreto del <strong>algoritmo</strong>."</p>
+</div>
+<p>Es decir, aunque el algoritmo criptográfico sea de dominio público y su código sea analizado por toda la comunidad internacional (código abierto), un atacante no debe ser capaz de descifrar el mensaje si desconoce la clave secreta utilizada.</p>
+<h3 id="315-servicios-de-seguridad">3.1.5. Servicios de Seguridad</h3>
+<p>La criptografía moderna sirve para garantizar cuatro servicios fundamentales de la información:</p>
+<ul>
+<li><strong>Confidencialidad:</strong> Garantizar que los datos solo sean legibles por receptores autorizados.</li>
+<li><strong>Integridad:</strong> Garantizar que los datos no hayan sido alterados o manipulados en tránsito.</li>
+<li><strong>Autenticidad:</strong> Confirmar la identidad legítima del emisor del mensaje.</li>
+<li><strong>No Repudio:</strong> Impedir que el emisor de una comunicación o transacción pueda negar su autoría.</li>
+</ul>
+<hr>
+<h2 id="32-criptografia-simetrica-clave-secreta">3.2. Criptografía Simétrica (Clave Secreta)</h2>
+<h3 id="321-concepto-y-funcionamiento">3.2.1. Concepto y Funcionamiento</h3>
+<p>La <strong>criptografía simétrica</strong> (o de clave privada/secreta) se basa en el uso de <strong>una única clave compartida</strong> tanto para el proceso de cifrado como para el de descifrado. Tanto el emisor como el receptor deben ponerse de acuerdo de forma previa sobre qué clave utilizarán.</p>
+<p><img alt="Clave simétrica" src="../img/ClaveSimetrica.png"></p>
+<p>Un ejemplo histórico de cifrado electromecánico simétrico fue la máquina <strong>Enigma</strong> utilizada durante la Segunda Guerra Mundial, cuyo código fue roto por el equipo de matemáticos de Alan Turing en Bletchley Park.</p>
+<h3 id="322-clasificacion-de-algoritmos-simetricos">3.2.2. Clasificación de Algoritmos Simétricos</h3>
+<p>Atendiendo a la forma en que se procesan los datos en memoria, los algoritmos simétricos se clasifican en:</p>
+<ol>
+<li>
+<p><strong>Algoritmos de Bloque:</strong> Dividen la información de entrada en bloques de tamaño fijo (por ejemplo, 64 o 128 bits) y cifran cada bloque de manera independiente antes de ensamblar el resultado. * <em>Ejemplos:</em> </p>
+<ul>
+<li><strong>DES</strong> (Data Encryption Standard, 56 bits - obsoleto)</li>
+<li><strong>3DES</strong> (Triple DES - obsoleto) y </li>
+<li><strong>AES</strong> (Advanced Encryption Standard / Rijndael, con tamaños de clave de 128, 192 o 256 bits, estándar global actual).</li>
+</ul>
+</li>
+<li>
+<p><strong>Algoritmos de Flujo:</strong> Cifran la información de forma continua, bit a bit o byte a byte, conforme se van generando o transmitiendo los datos. Son ideales para transmisiones de voz o vídeo en tiempo real. <em>Ejemplos:</em></p>
+<ul>
+<li><strong>RC4</strong> (utilizado históricamente en WEP/WPA, hoy desaconsejado) y </li>
+<li><strong>ChaCha20</strong> (muy rápido en dispositivos móviles).</li>
+</ul>
+</li>
+</ol>
+<h3 id="323-desventajas-y-limitaciones-de-la-criptografia-simetrica">3.2.3. Desventajas y Limitaciones de la Criptografía Simétrica</h3>
+<p>Aunque los algoritmos simétricos modernos como AES son extremadamente rápidos y eficientes en términos de rendimiento computacional, presentan dos inconvenientes críticos:</p>
+<ol>
+<li><strong>El Problema del Intercambio Inicial de Claves:</strong> ¿Cómo se transmite de forma segura la clave compartida por primera vez a través de una red insegura como Internet para que el receptor pueda descifrar el mensaje?</li>
+<li><strong>Escalabilidad y Gestión de Claves:</strong> El número de claves necesarias para que <em>N</em> usuarios puedan comunicarse de forma segura de manera individualizada crece de forma exponencial según la fórmula:
+   <img alt="Número de claves en criptografía simétrica" src="../img/SimetricaNumClaves.png">
+   <em>Para una red de solo 1.000 usuarios, se requeriría generar y almacenar de forma segura </em><em>499.500 claves simétricas diferentes</em><em>.</em></li>
+</ol>
+<h3 id="324-practica-de-criptografia-simetrica">3.2.4. Práctica de criptografía simétrica</h3>
+<div class="admonition info">
+<p class="admonition-title">Ahora que conoces la teoría es el momento de practicar.</p>
+<p><strong><a href="../P01/">Práctica 3.1: Cifrado Simétrico con GnuPG (GPG)</a></strong></p>
+<p><em>En esta práctica utilizarás la herramienta GNU Privacy Guard (<code>gpg</code>) desde la línea de comandos en GNU/Linux para cifrar y   descifrar archivos de texto utilizando algoritmos simétricos robustos (como AES256) mediante claves secretas compartidas.</em></p>
+</div>
+<hr>
+<h2 id="33-criptografia-asimetrica-clave-publica">3.3. Criptografía Asimétrica (Clave Pública)</h2>
+<h3 id="331-concepto-y-par-de-claves">3.3.1. Concepto y Par de Claves</h3>
+<p>A mediados de la década de 1970 (con las investigaciones de Diffie, Hellman, Rivest, Shamir y Adleman), surgió la <strong>criptografía asimétrica</strong> o de clave pública para resolver las debilidades del cifrado simétrico.</p>
+<p>En un sistema asimétrico, cada participante dispone de <strong>un par de claves matemáticamente enlazadas</strong>:</p>
+<ul>
+<li><strong>Clave Pública (.pub):</strong> Es de libre acceso y se distribuye abiertamente a cualquier usuario o servidor con el que queramos comunicarnos.</li>
+<li><strong>Clave Privada (.priv):</strong> Es secreta y debe ser custodiada bajo el control exclusivo de su propietario. Nunca debe transmitirse ni revelarse a nadie.</li>
+</ul>
+<p><img alt="Criptografía asimétrica" src="../img/ClaveAsimetrica.png"></p>
+<h3 id="332-funciones-unidireccionales-con-trampa">3.3.2. Funciones Unidireccionales con Trampa</h3>
+<p>Las claves se generan simultáneamente utilizando propiedades matemáticas de <strong>funciones de un solo sentido con trampa</strong> (<em>trapdoor one-way functions</em>): es computacionalmente fácil calcular la clave pública a partir de los datos iniciales, pero resulta <strong>computacionalmente imposible</strong> calcular la clave privada a partir de la clave pública conocida.</p>
+<p>Por "computacionalmente imposible" se entiende que, con la potencia de cálculo actual, un ataque de fuerza bruta tardaría décadas o siglos en despejar la clave.</p>
+<h3 id="333-ventajas-y-algoritmos-asimetricos-principales">3.3.3. Ventajas y Algoritmos Asimétricos Principales</h3>
+<ul>
+<li>
+<p><strong>Ventajas Principales:</strong></p>
+<ol>
+<li><em>Resuelve el intercambio de claves:</em> Ya no es necesario enviar secretos por canales inseguros; basta con publicar la clave pública.</li>
+<li><em>Alta Escalabilidad:</em> Para <em>N</em> usuarios, solo se requieren <em>N</em> pares de claves (<em>2N</em> claves en total en todo el sistema).</li>
+</ol>
+<p><img alt="Número de claves en criptografía asimétrica" src="../img/AsimetricaNumClaves.png"></p>
+</li>
+<li>
+<p><strong>Algoritmos Asimétricos Destacados:</strong></p>
+<ul>
+<li><strong>RSA:</strong> Basado en la dificultad matemática de factorizar el producto de dos números primos muy grandes. Es el estándar más extendido.</li>
+<li><strong>ElGamal:</strong> Basado en la complejidad del problema del logaritmo discreto.</li>
+<li><strong>ECC (Criptografía de Curva Elíptica):</strong> Ofrece el mismo nivel de seguridad que RSA utilizando claves significativamente más cortas, reduciendo la carga de procesamiento y consumo de batería en dispositivos IoT y móviles.</li>
+</ul>
+</li>
+</ul>
+<h3 id="334-desventajas-de-la-criptografia-asimetrica">3.3.4. Desventajas de la Criptografía Asimétrica</h3>
+<p>Las principales desventajas de la criptografía asimétrica son:</p>
+<ul>
+<li><strong>Lentitud Computacional:</strong> Los algoritmos de clave pública son entre 100 y 1.000 veces más lentos que los simétricos debido a la complejidad de las operaciones matemáticas con números gigantescos.</li>
+<li><strong>Mayor Tamaño de Datos:</strong> El texto cifrado resulta sensiblemente mayor que el texto original en claro.</li>
+</ul>
+<h3 id="335-practica-de-criptografia-asimetrica-y-gestion-de-cables-con-gpg">3.3.5. Práctica de criptografía asimétrica y gestión de cables con GPG</h3>
+<div class="admonition info">
+<p class="admonition-title">Ahora que conoces la teoría es el momento de practicar.</p>
+<p><strong><a href="../P02/">Práctica 3.2: Criptografía Asimétrica y Gestión de Claves con GPG</a></strong></p>
+<p><em>En esta práctica generarás tu propio par de claves asimétricas (K_pub y K_priv) utilizando GnuPG, importarás la clave pública de otras personas y cifrarás un documento para garantizar que solo el receptor legítimo pueda descifrarlo con su clave privada.</em></p>
+</div>
+<hr>
+<h2 id="34-criptografia-hibrida">3.4. Criptografía Híbrida</h2>
+<h3 id="341-la-solucion-combinada">3.4.1. La Solución Combinada</h3>
+<p>Dado que el cifrado simétrico es muy rápido pero inseguro al compartir claves, y el asimétrico es muy seguro pero excesivamente lento, la criptografía moderna utiliza en la práctica un enfoque combinado denominado <strong>Criptografía Híbrida</strong>.</p>
+<p>La criptografía híbrida utiliza la <strong>criptografía asimétrica</strong> únicamente para intercambiar de forma segura una clave aleatoria temporal, y la <strong>criptografía simétrica</strong> para cifrar el volumen real del documento o la sesión de red.</p>
+<h3 id="342-mecanica-de-una-comunicacion-hibrida-paso-a-paso">3.4.2. Mecánica de una Comunicación Híbrida Paso a Paso</h3>
+<p>Imaginemos que el Emisor quiere enviar un archivo voluminoso al Receptor:</p>
+<ol>
+<li><strong>Generación de Clave de Sesión:</strong> El Emisor genera automáticamente una clave simétrica aleatoria eímera (llamada <strong>clave de sesión</strong>, ej. AES-256).</li>
+<li><strong>Cifrado del Mensaje (Simétrico):</strong> El Emisor cifra el archivo de datos utilizando la clave de sesión simétrica (operación muy rápida).</li>
+<li><strong>Cifrado de la Clave de Sesión (Asimétrico):</strong> El Emisor obtiene la clave pública del Receptor (<span class="arithmatex">\(K_{pub\_Receptor}\)</span>) y cifra con ella únicamente la pequeña clave de sesión.</li>
+<li><strong>Envío Conjunto:</strong> El Emisor transmite al Receptor el archivo cifrado simétricamente junto con la clave de sesión cifrada asimétricamente.</li>
+<li><strong>Descifrado por el Receptor:</strong> El Receptor utiliza su clave privada (<span class="arithmatex">\(K_{priv\_Receptor}\)</span>) para descifrar la clave de sesión y, con esta última, descifra instantáneamente el archivo completo.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>                                    +-----------------------+
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                                    | Clave de Sesión (AES) |
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                                    +-----------------------+
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>                                        /                           (Cifra datos voluminosos)  /                 \ (Cifra solo la clave)
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                                      v                   v
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>+------------------+         +---------------+   +-----------------------+
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>|  Archivo Datos   |  -----&gt; | Archivo Cifr. |   | Clave Sesión Cifrada  |
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>+------------------+         +---------------+   | (con K_pub_Receptor)  |
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>                                                 +-----------------------+
+</code></pre></div>
+<p>Este sistema es la base del funcionamiento de protocolos seguros como <strong>PGP/GPG, SSH y HTTPS/TLS</strong>.</p>
+<hr>
+<h2 id="35-funciones-hash-o-resumen-digital">3.5. Funciones Hash o Resumen Digital</h2>
+<h3 id="351-concepto-de-funcion-hash">3.5.1. Concepto de Función Hash</h3>
+<p>Una <strong>función hash</strong> (o función de resumen) es un algoritmo matemático que transforma cualquier conjunto de datos de entrada (desde una sola palabra hasta una imagen ISO de varios Gigabytes) en una cadena alfanumérica de <strong>longitud fija</strong> que actúa a modo de <em>huella digital</em> única del contenido.</p>
+<p>A diferencia de los cifrados simétricos y asimétricos, las funciones hash <strong>no utilizan claves</strong> y son <strong>procesos estrictamente irreversibles</strong> (unidireccionales).</p>
+<h3 id="352-las-6-propiedades-criptograficas-fundamentales-pildora-upm">3.5.2. Las 6 Propiedades Criptográficas Fundamentales (Píldora UPM)</h3>
+<p>Para que un algoritmo hash sea considerado criptográficamente seguro, debe cumplir obligatoriamente seis propiedades:</p>
+<ol>
+<li><strong>Unidireccionalidad:</strong> Dado un resumen <span class="arithmatex">\(h(M)\)</span>, debe ser computacionalmente imposible calcular o recuperar el mensaje original <span class="arithmatex">\(M\)</span>.</li>
+<li><strong>Compresión:</strong> Independientemente del tamaño de la entrada, la salida siempre tendrá exactamente el mismo número de bits (por ejemplo, SHA-256 siempre entrega 256 bits).</li>
+<li><strong>Facilidad y Rapidez de Cálculo:</strong> El cálculo de <span class="arithmatex">\(h(M)\)</span> a partir de <span class="arithmatex">\(M\)</span> debe ser ágil en tiempo de ejecución.</li>
+<li><strong>Difusión de Bits o Efecto Avalancha:</strong> Si se modifica tan solo un bit o carácter del mensaje original <span class="arithmatex">\(M\)</span>, el nuevo hash resultante cambiará aproximadamente en el 50% de sus bits de forma impredecible.</li>
+<li><strong>Resistencia Débil a Colisiones:</strong> Conocido un mensaje <span class="arithmatex">\(M\)</span>, es computacionalmente imposible encontrar otro mensaje distinto <span class="arithmatex">\(M'\)</span> tal que <span class="arithmatex">\(h(M) = h(M')\)</span>.</li>
+<li><strong>Resistencia Fuerte a Colisiones:</strong> Es computacionalmente imposible encontrar un par aleatorio de mensajes distintos <span class="arithmatex">\((M, M')\)</span> que produzcan el mismo resumen <span class="arithmatex">\(h(M) = h(M')\)</span> (evitando ataques basados en la <em>Paradoja del Cumpleaños</em>).</li>
+</ol>
+<h3 id="353-evolucion-de-los-algoritmos-hash">3.5.3. Evolución de los Algoritmos Hash</h3>
+<ul>
+<li><strong>MD5 (128 bits) y SHA-1 (160 bits):</strong> <strong>Obsoletos</strong>. Se han demostrado colisiones prácticas en laboratorio, por lo que están desaconsejados para su uso en ciberseguridad.</li>
+<li><strong>SHA-2 (SHA-256, SHA-512):</strong> Estándar actual ampliamente utilizado en firmas digitales, certificados y cadenas de bloques (<em>blockchain</em>).</li>
+<li><strong>SHA-3:</strong> Última familia estandarizada por el NIST con una estructura matemática completamente renovada (algoritmo Keccak).</li>
+</ul>
+<h3 id="354-aplicaciones-principales-de-los-hashes">3.5.4. Aplicaciones Principales de los Hashes</h3>
+<ul>
+<li><strong>Verificación de Integridad:</strong> Permite comprobar si una ISO descargada de Internet se ha transmitido sin corrupciones o si un archivo en disco ha sido modificado por malware.</li>
+<li><strong>Almacenamiento Seguro de Contraseñas:</strong> Las contraseñas de usuarios en sistemas operativos (como <code>/etc/shadow</code> en Linux) nunca se guardan en texto claro. Se almacena el hash de la clave combinado con una cadena aleatoria (<em>salting</em>) utilizando funciones deliberadamente lentas (como <strong>PBKDF2, bcrypt o Argon2</strong>) para dificultar ataques por diccionario o fuerza bruta.</li>
+<li><strong>Optimización de la Firma Digital:</strong> Permite firmar digitalmente documentos de cientos de Megabytes aplicando la cifra asimétrica únicamente sobre los pocos bits del resumen hash.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Práctica</p>
+<div class="admonition info">
+<p class="admonition-title">Ahora que conoces la teoría es el momento de hacer las prácticas...</p>
+<p><strong>Práctica Moodle: Funciones hash o resumen con QuickHash</strong></p>
+<p><em>En esta práctica utilizarás la herramienta gráfica multiplataforma QuickHash GUI para calcular resúmenes SHA-256 y MD5 de archivos, verificar la integridad de descargas y comprobar de forma visual el efecto avalancha al modificar un solo carácter de un documento de texto.</em></p>
+</div>
+</div>
+<hr>
+<h2 id="36-firma-digital">3.6. Firma Digital</h2>
+<h3 id="361-concepto-y-servicios">3.6.1. Concepto y Servicios</h3>
+<p>La <strong>firma digital</strong> es un mecanismo criptográfico que equivale a la firma manuscrita tradicional en el ámbito electrónico. Su objetivo <strong>no es proporcionar confidencialidad</strong> (no oculta el documento), sino garantizar de forma simultánea tres servicios:
+* <strong>Autenticidad:</strong> Prueba de forma inequívoca la identidad del emisor.
+* <strong>Integridad:</strong> Confirma que el documento no ha sufrido ninguna modificación desde que fue firmado.
+* <strong>No Repudio en Origen:</strong> El emisor no puede negar haber firmado el documento.</p>
+<h3 id="362-mecanica-de-generacion-de-la-firma">3.6.2. Mecánica de Generación de la Firma</h3>
+<p>Para firmar un documento digital, el emisor realiza el siguiente procedimiento:</p>
+<ol>
+<li>Aplica una función hash (ej. SHA-256) sobre el documento original para obtener su resumen <span class="arithmatex">\(h_1\)</span>.</li>
+<li>Cifra el resumen <span class="arithmatex">\(h_1\)</span> utilizando su propia <strong>clave privada</strong> (<span class="arithmatex">\(K_{priv\_Emisor}\)</span>). Este resumen cifrado constituye la <strong>firma digital</strong>.</li>
+<li>Se envía el documento original en claro junto con la firma digital adjunta.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>[ Documento ] ---&gt; [ Hash ] ---&gt; [ Cifrado con K_priv_Emisor ] ---&gt; [ Firma Digital ]
+</code></pre></div>
+<h3 id="363-mecanica-de-verificacion-por-el-receptor">3.6.3. Mecánica de Verificación por el Receptor</h3>
+<p>Cuando el receptor recibe el documento y la firma, realiza el siguiente proceso informático:</p>
+<ol>
+<li>Descifra la firma digital utilizando la <strong>clave pública del emisor</strong> (<span class="arithmatex">\(K_{pub\_Emisor}\)</span>), obteniendo el resumen hash original <span class="arithmatex">\(h_1\)</span>.</li>
+<li>Calcula de nuevo el resumen hash sobre el documento recibido utilizando la misma función hash, obteniendo <span class="arithmatex">\(h_2\)</span>.</li>
+<li><strong>Comparación:</strong></li>
+<li>Si <span class="arithmatex">\(h_1 == h_2\)</span>: La firma es <strong>VÁLIDA</strong> (el emisor posee la clave privada y el documento está intacto).</li>
+<li>Si <span class="arithmatex">\(h_1 
+eq h_2\)</span>: La firma es <strong>NULA</strong> (el documento fue modificado o la clave no corresponde al emisor).</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>[ Documento Recibido ] -----------------------&gt; [ Calculo Hash ] -------------&gt; h2
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>                                                                                 |
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>[ Firma Recibida ] ---&gt; [ Descifro con K_pub_Emisor ] ---&gt; [ Hash Extraído ] -&gt; h1
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>                                                                                 |
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>                                                       (Compara h1 == h2) &lt;-----+
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Práctica</p>
+<div class="admonition info">
+<p class="admonition-title">Ahora que conoces la teoría es el momento de hacer las prácticas...</p>
+<p><strong>Práctica Moodle: Firma digital</strong></p>
+<p><em>En esta práctica utilizarás GnuPG / Kleopatra (o Gpg4win) para firmar digitalmente documentos de texto, verificar la autenticidad e integridad de ficheros firmados recibidos (como la verificación de la clave e identidad de Ramón Onrubia) e identificar los mensajes que hayan sido manipulados.</em></p>
+</div>
+</div>
+<hr>
+<h2 id="37-certificados-digitales-y-estandar-x509">3.7. Certificados Digitales y Estándar X.509</h2>
+<h3 id="371-el-problema-de-la-confianza-y-el-ataque-man-in-the-middle">3.7.1. El Problema de la Confianza y el Ataque Man-in-the-Middle</h3>
+<p>La criptografía asimétrica y la firma digital funcionan si estamos 100% seguros de que la clave pública que utilizamos pertenece realmente a quien dice ser. Si un atacante suplanta la identidad de un servidor web bancario y nos entrega su propia clave pública, podrá interceptar y descifrar nuestras comunicaciones (ataque <em>Man-in-the-Middle</em> / MITM).</p>
+<p>Para resolver el problema de la asignación de identidades entran en juego los <strong>Certificados Digitales</strong>.</p>
+<h3 id="372-que-es-un-certificado-digital">3.7.2. ¿Qué es un Certificado Digital?</h3>
+<p>Un <strong>certificado digital</strong> es un documento electrónico emitido por un tercero de confianza (denominado <strong>Autoridad de Certificación - CA</strong>) que vincula de forma pública e inalterable la identidad de una persona, empresa o servidor web con su clave pública correspondiente.</p>
+<p>Básicamente, un certificado digital contiene la clave pública del usuario <strong>firmada digitalmente por la clave privada de la Autoridad de Certificación</strong>.</p>
+<h3 id="373-el-estandar-x509-v3">3.7.3. El Estándar X.509 v3</h3>
+<p>El formato estándar más extendido a nivel mundial para la estructuración de certificados digitales es el <strong>UIT-T X.509 v3</strong>. Los campos fundamentales que almacena son:</p>
+<ul>
+<li><strong>Número de Versión:</strong> Versión del estándar (X.509 v3).</li>
+<li><strong>Número de Serie:</strong> Identificador único asignado por la CA emisora.</li>
+<li><strong>Algoritmo de Firma:</strong> Algoritmo utilizado por la CA para firmar el certificado (ej. <code>sha256WithRSAEncryption</code>).</li>
+<li><strong>Emisor (Issuer):</strong> Identificación de la Autoridad de Certificación que emite el certificado (ej. FNMT, ACCV, DigiCert).</li>
+<li><strong>Período de Validez:</strong> Fechas de inicio (<em>Not Before</em>) y caducidad (<em>Not After</em>).</li>
+<li><strong>Sujeto (Subject):</strong> Identificación del titular (persona, NIF, o dominio web como <code>www.mimodelo.es</code>).</li>
+<li><strong>Información de Clave Pública del Sujeto:</strong> Algoritmo y valor de la clave pública del titular.</li>
+<li><strong>Firma Digital de la CA:</strong> Firma generada por la CA con su clave privada sobre todos los campos anteriores.</li>
+</ul>
+<p><img alt="Estructura de un certificado digital X.509" src="img/incluirfoto"></p>
+<h3 id="374-clasificacion-de-certificados-digitales">3.7.4. Clasificación de Certificados Digitales</h3>
+<ul>
+<li><strong>Por su Uso u Objetivo:</strong></li>
+<li><em>Certificados Personales / de Ciudadano:</em> Para identificación y firma de trámites administrativos (ej. FNMT).</li>
+<li><em>Certificados de Servidor (SSL/TLS):</em> Para cifrar el tráfico web HTTPS de sitios e-commerce o portales.</li>
+<li><em>Certificados de Código / Software:</em> Para firmar ejecutables y garantizar que no contienen malware.</li>
+<li><strong>Por el Nivel de Verificación de la CA:</strong></li>
+<li><em>Clase 1:</em> Verificación mínima (solo se comprueba la dirección de e-mail).</li>
+<li><em>Clase 2:</em> Verificación intermedia para personas físicas y servidores web.</li>
+<li><em>Clase 3:</em> Alta verificación presencial de la identidad y de la existencia jurídica de la organización.</li>
+<li><strong>Por el Soporte Físico:</strong> Ficheros de software en disco (<code>.p12</code>, <code>.pfx</code>, <code>.crt</code>), tarjetas criptográficas inteligentes (<em>smartcards</em>) o tokens USB criptográficos.</li>
+</ul>
+<hr>
+<h2 id="38-infraestructura-de-clave-publica-pki-y-dnie">3.8. Infraestructura de Clave Pública (PKI) y DNIe</h2>
+<h3 id="381-componentes-de-una-pki-public-key-infrastructure">3.8.1. Componentes de una PKI (<em>Public Key Infrastructure</em>)</h3>
+<p>Una <strong>PKI</strong> es el conjunto coordinado de hardware, software, políticas, personal y procedimientos legales necesarios para crear, gestionar, distribuir, evaluar, almacenar y revocar certificados digitales.</p>
+<p>Los interlocutores y roles clave de una PKI son:</p>
+<ol>
+<li><strong>Autoridad de Certificación (CA / AC):</strong> Entidad de máxima confianza responsable de emitir, firmar y revocar los certificados digitales.</li>
+<li><strong>Autoridad de Registro (RA / AR):</strong> Encargada de verificar presencial o telemáticamente la identidad real de los solicitantes antes de autorizar a la CA la emisión del certificado.</li>
+<li><strong>Autoridad de Validación (VA / AV):</strong> Suministra información en tiempo real sobre la validez actual de un certificado a través de consultas <strong>OCSP</strong> (<em>Online Certificate Status Protocol</em>) o mediante la publicación de listas de revocación (<strong>CRL</strong> - <em>Certificate Revocation Lists</em>).</li>
+<li><strong>Repositorios:</strong> Directorios públicos donde se almacenan los certificados emitidos y las listas CRL.</li>
+</ol>
+<h3 id="382-establecimiento-de-una-sesion-web-segura-https-tls-handshake">3.8.2. Establecimiento de una Sesión Web Segura (HTTPS / TLS Handshake)</h3>
+<p>Cuando un navegador cliente conecta con un servidor web seguro, el protocolo PKI actúa según la siguiente secuencia:</p>
+<ol>
+<li>El servidor envía su certificado X.509 (que contiene su clave pública <span class="arithmatex">\(K_{pub\_Servidor}\)</span>) al navegador cliente.</li>
+<li>El navegador comprueba la <strong>cadena de confianza</strong>: verifica que el certificado esté dentro de su período de validez, que no figure en las listas de revocación y que la firma de la CA emisora sea válida utilizando la clave pública de la CA que el navegador tiene preinstalada en su almacén de certificados raíz.</li>
+<li>Una vez validado el certificado, se acuerda de forma híbrida la clave de sesión simétrica para cifrar todo el tráfico HTTPS.</li>
+</ol>
+<h3 id="383-estudio-de-caso-el-dni-electronico-dnie">3.8.3. Estudio de Caso: El DNI Electrónico (DNIe)</h3>
+<p>El <strong>DNIe</strong> español es un ejemplo cotidiano de implementación de una PKI sobre una tarjeta inteligente (<em>smartcard</em>):</p>
+<ul>
+<li>Contiene un chip criptográfico que almacena la filiación del ciudadano, datos biométricos (huella dactilar) y dos certificados digitales X.509 independientes:</li>
+<li><strong>Certificado de Autenticación:</strong> Para identificarse de forma segura en sistemas telemáticos.</li>
+<li><strong>Certificado de Firma:</strong> Para firmar documentos con plena validez jurídica equivalente a la firma manuscrita.</li>
+<li><strong>Separación de Claves por Seguridad:</strong> Se utilizan claves diferentes para autenticar y para firmar. De esta forma, si la clave de autenticación se expone por un uso continuado en la red, la clave de firma legal no se ve comprometida.</li>
+<li>En el esquema PKI estatal, las comisarías de la Policía Nacional actúan simultáneamente como <strong>Autoridad de Registro (RA)</strong> (verifican la identidad física y la huella del ciudadano) y como <strong>Autoridad de Certificación (CA)</strong> (emiten y graban los certificados en el chip).</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Práctica</p>
+<div class="admonition info">
+<p class="admonition-title">Ahora que conoces la teoría es el momento de hacer las prácticas...</p>
+<p><strong>Práctica Moodle: Práctica PKI - Gestión de claves con easyrsa</strong></p>
+<p><em>En esta práctica desplegarás tu propia Infraestructura de Clave Pública (PKI) en consola Linux utilizando Easy-RSA. Asumirás el rol de CA raíz para emitir, firmar, gestionar y revocar certificados digitales X.509 para clientes y servidores de red.</em></p>
+</div>
+</div>
+<hr>
+<h2 id="39-protocolos-seguros-vulnerabilidades-y-buenas-practicas">3.9. Protocolos Seguros, Vulnerabilidades y Buenas Prácticas</h2>
+<h3 id="391-protocolos-ssltls-y-https">3.9.1. Protocolos SSL/TLS y HTTPS</h3>
+<p>Los protocolos <strong>SSL</strong> (<em>Secure Sockets Layer</em>) y su evolución <strong>TLS</strong> (<em>Transport Layer Security</em>) actúan como una capa intermedia de seguridad entre los protocolos de aplicación (como HTTP, FTP o SMTP) y la capa de transporte TCP, proporcionando un canal cifrado perimetral.</p>
+<h3 id="392-vulnerabilidades-e-incidentes-historicos-en-ssltls">3.9.2. Vulnerabilidades e Incidentes Históricos en SSL/TLS</h3>
+<p>A lo largo de la historia, diversos fallos en la implementación de software o la emisión inadecuada de certificados han puesto en riesgo la seguridad web:</p>
+<ul>
+<li><strong>Heartbleed (2014):</strong> Vulnerabilidad crítica en la librería OpenSSL que permitía a un atacante leer la memoria física del servidor web, exponiendo claves privadas y cookies de sesión.</li>
+<li><strong>Poodle (2014):</strong> Ataque que forzaba la degradación (<em>downgrade</em>) de la conexión segura a protocolos obsoletos como SSL 3.0 para explotar sus debilidades en el cifrado de bloques.</li>
+<li><strong>Emisión de Certificados Fraudulentos:</strong> Casos históricos de CAs comprometidas (como el caso de <em>DigiNotar</em> en 2011) donde atacantes lograron emitir certificados falsos válidos para dominios como <code>google.com</code> para realizar ataques Man-in-the-Middle masivos.</li>
+</ul>
+<h3 id="393-mecanismos-de-proteccion-avanzados">3.9.3. Mecanismos de Protección Avanzados</h3>
+<ul>
+<li><strong>Certificate Pinning:</strong> Técnica que consiste en asociar un dominio web exclusivamente a un certificado o clave pública concreta en el navegador, rechazando conexiones incluso si provienen de una CA válida pero no autorizada previamente.</li>
+<li><strong>Certificate Transparency (CT):</strong> Framework público donde todas las CAs están obligadas a registrar públicamente cada certificado X.509 emitido en libros de registro (<em>CT logs</em>). Los navegadores modernos exigen el sello <strong>SCT</strong> (<em>Signed Certificate Timestamp</em>) para aceptar la conexión HTTPS, detectando en tiempo real certificados emitidos de forma anómala.m</li>
+</ul></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "toc.integrate", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
