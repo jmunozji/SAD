@@ -68,8 +68,3 @@ extra:
   analytics: 
       provider: google 
       property: G-3NX5MD5C8H
-
-nav:
-  - ... | Ud1 Introduccion/*.md
-  - ... | Ud2 Normativa y SGSI/*.md
-  - ... | Ud3 Criptografia/*.md

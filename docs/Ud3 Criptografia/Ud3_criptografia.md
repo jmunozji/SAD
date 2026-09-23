@@ -106,35 +106,38 @@ La criptografía moderna sirve para garantizar cuatro servicios fundamentales de
 ### 3.2.1. Concepto y Funcionamiento
 La **criptografía simétrica** (o de clave privada/secreta) se basa en el uso de **una única clave compartida** tanto para el proceso de cifrado como para el de descifrado. Tanto el emisor como el receptor deben ponerse de acuerdo de forma previa sobre qué clave utilizarán.
 
-```
-[ Texto Claro ] ---> [ Cifrado con Clave K ] ---> [ Texto Cifrado ]
-                                                        |
-[ Texto Claro ] <--- [ Descifrado con Clave K ] <-------+
-```
+![Clave simétrica](img/ClaveSimetrica.png)
 
 Un ejemplo histórico de cifrado electromecánico simétrico fue la máquina **Enigma** utilizada durante la Segunda Guerra Mundial, cuyo código fue roto por el equipo de matemáticos de Alan Turing en Bletchley Park.
 
 ### 3.2.2. Clasificación de Algoritmos Simétricos
 Atendiendo a la forma en que se procesan los datos en memoria, los algoritmos simétricos se clasifican en:
 
-1. **Algoritmos de Bloque:** Dividen la información de entrada en bloques de tamaño fijo (por ejemplo, 64 o 128 bits) y cifran cada bloque de manera independiente antes de ensamblar el resultado.
-   * *Ejemplos:* **DES** (Data Encryption Standard, 56 bits - obsoleto), **3DES** (Triple DES - obsoleto) y **AES** (Advanced Encryption Standard / Rijndael, con tamaños de clave de 128, 192 o 256 bits, estándar global actual).
-2. **Algoritmos de Flujo:** Cifran la información de forma continua, bit a bit o byte a byte, conforme se van generando o transmitiendo los datos. Son ideales para transmisiones de voz o vídeo en tiempo real.
-   * *Ejemplos:* **RC4** (utilizado históricamente en WEP/WPA, hoy desaconsejado) y **ChaCha20** (muy rápido en dispositivos móviles).
+1. **Algoritmos de Bloque:** Dividen la información de entrada en bloques de tamaño fijo (por ejemplo, 64 o 128 bits) y cifran cada bloque de manera independiente antes de ensamblar el resultado. * *Ejemplos:* 
+  
+      * **DES** (Data Encryption Standard, 56 bits - obsoleto)
+      * **3DES** (Triple DES - obsoleto) y 
+      * **AES** (Advanced Encryption Standard / Rijndael, con tamaños de clave de 128, 192 o 256 bits, estándar global actual).
+
+2. **Algoritmos de Flujo:** Cifran la información de forma continua, bit a bit o byte a byte, conforme se van generando o transmitiendo los datos. Son ideales para transmisiones de voz o vídeo en tiempo real. *Ejemplos:*
+   
+      * **RC4** (utilizado históricamente en WEP/WPA, hoy desaconsejado) y 
+      * **ChaCha20** (muy rápido en dispositivos móviles).
 
 ### 3.2.3. Desventajas y Limitaciones de la Criptografía Simétrica
 Aunque los algoritmos simétricos modernos como AES son extremadamente rápidos y eficientes en términos de rendimiento computacional, presentan dos inconvenientes críticos:
 
 1. **El Problema del Intercambio Inicial de Claves:** ¿Cómo se transmite de forma segura la clave compartida por primera vez a través de una red insegura como Internet para que el receptor pueda descifrar el mensaje?
-2. **Escalabilidad y Gestión de Claves:** El número de claves necesarias para que $N$ usuarios puedan comunicarse de forma segura de manera individualizada crece de forma exponencial según la fórmula:
-   $$	ext{Número de claves} = rac{N \cdot (N - 1)}{2}$$
+2. **Escalabilidad y Gestión de Claves:** El número de claves necesarias para que *N* usuarios puedan comunicarse de forma segura de manera individualizada crece de forma exponencial según la fórmula:
+   ![Número de claves en criptografía simétrica](img/SimetricaNumClaves.png)
    *Para una red de solo 1.000 usuarios, se requeriría generar y almacenar de forma segura **499.500 claves simétricas diferentes**.*
 
-!!! note "Práctica"
-    !!! info "Ahora que conoces la teoría es el momento de hacer las prácticas..."
-        **Práctica Moodle: Cifrado simétrico con `gpg`**
-        
-        *En esta práctica utilizarás la herramienta GNU Privacy Guard (`gpg`) desde la línea de comandos en GNU/Linux para cifrar y descifrar archivos de texto utilizando algoritmos simétricos robustos (como AES256) mediante claves secretas compartidas.*
+### 3.2.4. Práctica de criptografía simétrica
+
+!!! info "Ahora que conoces la teoría es el momento de practicar."
+    **[Práctica 3.1: Cifrado Simétrico con GnuPG (GPG)](P01.md)**
+    
+       *En esta práctica utilizarás la herramienta GNU Privacy Guard (`gpg`) desde la línea de comandos en GNU/Linux para cifrar y   descifrar archivos de texto utilizando algoritmos simétricos robustos (como AES256) mediante claves secretas compartidas.*
 
 ---
 
@@ -144,14 +147,12 @@ Aunque los algoritmos simétricos modernos como AES son extremadamente rápidos 
 A mediados de la década de 1970 (con las investigaciones de Diffie, Hellman, Rivest, Shamir y Adleman), surgió la **criptografía asimétrica** o de clave pública para resolver las debilidades del cifrado simétrico.
 
 En un sistema asimétrico, cada participante dispone de **un par de claves matemáticamente enlazadas**:
-* **Clave Pública ($K_{pub}$):** Es de libre acceso y se distribuye abiertamente a cualquier usuario o servidor con el que queramos comunicarnos.
-* **Clave Privada ($K_{priv}$):** Es secreta y debe ser custodiada bajo el control exclusivo de su propietario. Nunca debe transmitirse ni revelarse a nadie.
 
-```
-[ Texto Claro ] ---> [ Cifrado con K_pub_Receptor ] ---> [ Texto Cifrado ]
-                                                               |
-[ Texto Claro ] <--- [ Descifrado con K_priv_Receptor ] <------+
-```
+* **Clave Pública (.pub):** Es de libre acceso y se distribuye abiertamente a cualquier usuario o servidor con el que queramos comunicarnos.
+* **Clave Privada (.priv):** Es secreta y debe ser custodiada bajo el control exclusivo de su propietario. Nunca debe transmitirse ni revelarse a nadie.
+
+![Criptografía asimétrica](img/ClaveAsimetrica.png)
+
 
 ### 3.3.2. Funciones Unidireccionales con Trampa
 Las claves se generan simultáneamente utilizando propiedades matemáticas de **funciones de un solo sentido con trampa** (*trapdoor one-way functions*): es computacionalmente fácil calcular la clave pública a partir de los datos iniciales, pero resulta **computacionalmente imposible** calcular la clave privada a partir de la clave pública conocida.
@@ -159,23 +160,33 @@ Las claves se generan simultáneamente utilizando propiedades matemáticas de **
 Por "computacionalmente imposible" se entiende que, con la potencia de cálculo actual, un ataque de fuerza bruta tardaría décadas o siglos en despejar la clave.
 
 ### 3.3.3. Ventajas y Algoritmos Asimétricos Principales
+
 * **Ventajas Principales:**
-  1. *Resuelve el intercambio de claves:* Ya no es necesario enviar secretos por canales inseguros; basta con publicar la clave pública.
-  2. *Alta Escalabilidad:* Para $N$ usuarios, solo se requieren $N$ pares de claves ($2N$ claves en total en todo el sistema).
+    1. *Resuelve el intercambio de claves:* Ya no es necesario enviar secretos por canales inseguros; basta con publicar la clave pública.
+    2. *Alta Escalabilidad:* Para *N* usuarios, solo se requieren *N* pares de claves (*2N* claves en total en todo el sistema).
+
+    ![Número de claves en criptografía asimétrica](img/AsimetricaNumClaves.png)
+
 * **Algoritmos Asimétricos Destacados:**
-  * **RSA:** Basado en la dificultad matemática de factorizar el producto de dos números primos muy grandes. Es el estándar más extendido.
-  * **ElGamal:** Basado en la complejidad del problema del logaritmo discreto.
-  * **ECC (Criptografía de Curva Elíptica):** Ofrece el mismo nivel de seguridad que RSA utilizando claves significativamente más cortas, reduciendo la carga de procesamiento y consumo de batería en dispositivos IoT y móviles.
+    * **RSA:** Basado en la dificultad matemática de factorizar el producto de dos números primos muy grandes. Es el estándar más extendido.
+    * **ElGamal:** Basado en la complejidad del problema del logaritmo discreto.
+    * **ECC (Criptografía de Curva Elíptica):** Ofrece el mismo nivel de seguridad que RSA utilizando claves significativamente más cortas, reduciendo la carga de procesamiento y consumo de batería en dispositivos IoT y móviles.
 
 ### 3.3.4. Desventajas de la Criptografía Asimétrica
+
+Las principales desventajas de la criptografía asimétrica son:
+
 * **Lentitud Computacional:** Los algoritmos de clave pública son entre 100 y 1.000 veces más lentos que los simétricos debido a la complejidad de las operaciones matemáticas con números gigantescos.
 * **Mayor Tamaño de Datos:** El texto cifrado resulta sensiblemente mayor que el texto original en claro.
 
-!!! note "Práctica"
-    !!! info "Ahora que conoces la teoría es el momento de hacer las prácticas..."
-        **Práctica Moodle: Cifrado asimétrico**
-        
-        *En esta práctica generarás tu propio par de claves asimétricas ($K_{pub}$ y $K_{priv}$) utilizando GnuPG / Kleopatra, importarás la clave pública de tus compañeros de aula y cifrarás un documento para garantizar que solo el receptor legítimo pueda descifrarlo con su clave privada.*
+### 3.3.5. Práctica de criptografía asimétrica y gestión de cables con GPG
+
+
+!!! info "Ahora que conoces la teoría es el momento de practicar."
+    **[Práctica 3.2: Criptografía Asimétrica y Gestión de Claves con GPG](P02.md)**
+    
+       *En esta práctica generarás tu propio par de claves asimétricas (K_pub y K_priv) utilizando GnuPG, importarás la clave pública de otras personas y cifrarás un documento para garantizar que solo el receptor legítimo pueda descifrarlo con su clave privada.*
+
 
 ---
 
