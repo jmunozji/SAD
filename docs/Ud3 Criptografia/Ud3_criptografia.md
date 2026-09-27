@@ -200,29 +200,24 @@ La criptografía híbrida utiliza la **criptografía asimétrica** únicamente p
 ### 3.4.2. Mecánica de una Comunicación Híbrida Paso a Paso
 Imaginemos que el Emisor quiere enviar un archivo voluminoso al Receptor:
 
-1. **Generación de Clave de Sesión:** El Emisor genera automáticamente una clave simétrica aleatoria eímera (llamada **clave de sesión**, ej. AES-256).
+1. **Generación de Clave de Sesión:** El Emisor genera automáticamente una clave simétrica aleatoria efímera (llamada **clave de sesión**, ej. AES-256).
 2. **Cifrado del Mensaje (Simétrico):** El Emisor cifra el archivo de datos utilizando la clave de sesión simétrica (operación muy rápida).
-3. **Cifrado de la Clave de Sesión (Asimétrico):** El Emisor obtiene la clave pública del Receptor ($K_{pub\_Receptor}$) y cifra con ella únicamente la pequeña clave de sesión.
+3. **Cifrado de la Clave de Sesión (Asimétrico):** El Emisor obtiene la clave pública del Receptor (K_pub_Receptor) y cifra con ella únicamente la pequeña clave de sesión.
 4. **Envío Conjunto:** El Emisor transmite al Receptor el archivo cifrado simétricamente junto con la clave de sesión cifrada asimétricamente.
-5. **Descifrado por el Receptor:** El Receptor utiliza su clave privada ($K_{priv\_Receptor}$) para descifrar la clave de sesión y, con esta última, descifra instantáneamente el archivo completo.
+5. **Descifrado por el Receptor:** El Receptor utiliza su clave privada (K_priv_Receptor) para descifrar la clave de sesión y, con esta última, descifra instantáneamente el archivo completo.
 
-```
-                                    +-----------------------+
-                                    | Clave de Sesión (AES) |
-                                    +-----------------------+
-                                        /                           (Cifra datos voluminosos)  /                 \ (Cifra solo la clave)
-                                      v                   v
-+------------------+         +---------------+   +-----------------------+
-|  Archivo Datos   |  -----> | Archivo Cifr. |   | Clave Sesión Cifrada  |
-+------------------+         +---------------+   | (con K_pub_Receptor)  |
-                                                 +-----------------------+
-```
+![Criptografía híbrida](img/CriptografiaHibrida.png)
+
 
 Este sistema es la base del funcionamiento de protocolos seguros como **PGP/GPG, SSH y HTTPS/TLS**.
 
 ---
 
 ## 3.5. Funciones Hash o Resumen Digital
+
+Empecemos viendo este video introductorio a las funciones hash:
+
+![type:video](https://www.youtube.com/embed/FRBIc0udwv0)
 
 ### 3.5.1. Concepto de Función Hash
 Una **función hash** (o función de resumen) es un algoritmo matemático que transforma cualquier conjunto de datos de entrada (desde una sola palabra hasta una imagen ISO de varios Gigabytes) en una cadena alfanumérica de **longitud fija** que actúa a modo de *huella digital* única del contenido.
@@ -232,12 +227,12 @@ A diferencia de los cifrados simétricos y asimétricos, las funciones hash **no
 ### 3.5.2. Las 6 Propiedades Criptográficas Fundamentales (Píldora UPM)
 Para que un algoritmo hash sea considerado criptográficamente seguro, debe cumplir obligatoriamente seis propiedades:
 
-1. **Unidireccionalidad:** Dado un resumen $h(M)$, debe ser computacionalmente imposible calcular o recuperar el mensaje original $M$.
+1. **Unidireccionalidad:** Dado un resumen h(M), debe ser computacionalmente imposible calcular o recuperar el mensaje original M.
 2. **Compresión:** Independientemente del tamaño de la entrada, la salida siempre tendrá exactamente el mismo número de bits (por ejemplo, SHA-256 siempre entrega 256 bits).
-3. **Facilidad y Rapidez de Cálculo:** El cálculo de $h(M)$ a partir de $M$ debe ser ágil en tiempo de ejecución.
-4. **Difusión de Bits o Efecto Avalancha:** Si se modifica tan solo un bit o carácter del mensaje original $M$, el nuevo hash resultante cambiará aproximadamente en el 50% de sus bits de forma impredecible.
-5. **Resistencia Débil a Colisiones:** Conocido un mensaje $M$, es computacionalmente imposible encontrar otro mensaje distinto $M'$ tal que $h(M) = h(M')$.
-6. **Resistencia Fuerte a Colisiones:** Es computacionalmente imposible encontrar un par aleatorio de mensajes distintos $(M, M')$ que produzcan el mismo resumen $h(M) = h(M')$ (evitando ataques basados en la *Paradoja del Cumpleaños*).
+3. **Facilidad y Rapidez de Cálculo:** El cálculo de h(M) a partir de M$debe ser ágil en tiempo de ejecución.
+4. **Difusión de Bits o Efecto Avalancha:** Si se modifica tan solo un bit o carácter del mensaje original M, el nuevo hash resultante cambiará aproximadamente en el 50% de sus bits de forma impredecible.
+5. **Resistencia Débil a Colisiones:** Conocido un mensaje M, es computacionalmente imposible encontrar otro mensaje distinto M' tal que h(M) = h(M').
+6. **Resistencia Fuerte a Colisiones:** Es computacionalmente imposible encontrar un par aleatorio de mensajes distintos (M, M') que produzcan el mismo resumen h(M) = h(M') (evitando ataques basados en la *Paradoja del Cumpleaños*).
 
 ### 3.5.3. Evolución de los Algoritmos Hash
 * **MD5 (128 bits) y SHA-1 (160 bits):** **Obsoletos**. Se han demostrado colisiones prácticas en laboratorio, por lo que están desaconsejados para su uso en ciberseguridad.
@@ -247,7 +242,9 @@ Para que un algoritmo hash sea considerado criptográficamente seguro, debe cump
 ### 3.5.4. Aplicaciones Principales de los Hashes
 * **Verificación de Integridad:** Permite comprobar si una ISO descargada de Internet se ha transmitido sin corrupciones o si un archivo en disco ha sido modificado por malware.
 * **Almacenamiento Seguro de Contraseñas:** Las contraseñas de usuarios en sistemas operativos (como `/etc/shadow` en Linux) nunca se guardan en texto claro. Se almacena el hash de la clave combinado con una cadena aleatoria (*salting*) utilizando funciones deliberadamente lentas (como **PBKDF2, bcrypt o Argon2**) para dificultar ataques por diccionario o fuerza bruta.
-* **Optimización de la Firma Digital:** Permite firmar digitalmente documentos de cientos de Megabytes aplicando la cifra asimétrica únicamente sobre los pocos bits del resumen hash.
+* **Optimización de la Firma Digital:** Permite firmar digitalmente documentos de cientos de Megabytes aplicando la cifra asimétrica únicamente sobre los pocos bits del resumen hash. (Esto lo veremos en el próximo apartado.)
+
+REVISAR ESTA PARTE:
 
 !!! note "Práctica"
     !!! info "Ahora que conoces la teoría es el momento de hacer las prácticas..."
@@ -261,6 +258,7 @@ Para que un algoritmo hash sea considerado criptográficamente seguro, debe cump
 
 ### 3.6.1. Concepto y Servicios
 La **firma digital** es un mecanismo criptográfico que equivale a la firma manuscrita tradicional en el ámbito electrónico. Su objetivo **no es proporcionar confidencialidad** (no oculta el documento), sino garantizar de forma simultánea tres servicios:
+
 * **Autenticidad:** Prueba de forma inequívoca la identidad del emisor.
 * **Integridad:** Confirma que el documento no ha sufrido ninguna modificación desde que fue firmado.
 * **No Repudio en Origen:** El emisor no puede negar haber firmado el documento.
@@ -268,31 +266,29 @@ La **firma digital** es un mecanismo criptográfico que equivale a la firma manu
 ### 3.6.2. Mecánica de Generación de la Firma
 Para firmar un documento digital, el emisor realiza el siguiente procedimiento:
 
-1. Aplica una función hash (ej. SHA-256) sobre el documento original para obtener su resumen $h_1$.
-2. Cifra el resumen $h_1$ utilizando su propia **clave privada** ($K_{priv\_Emisor}$). Este resumen cifrado constituye la **firma digital**.
+1. Aplica una función hash (ej. SHA-256) sobre el documento original para obtener su resumen h_1.
+2. Cifra el resumen h_1 utilizando su propia **clave privada** (K_priv_Emisor). Este resumen cifrado constituye la **firma digital**.
 3. Se envía el documento original en claro junto con la firma digital adjunta.
 
-```
-[ Documento ] ---> [ Hash ] ---> [ Cifrado con K_priv_Emisor ] ---> [ Firma Digital ]
-```
+![Firma digital](img/FirmaDigital.png)
+
+!!! tip Uso de la clave privada en la firma digital
+    Fíjate que hasta ahora sólo habíamos usado la clave privada para descifrar mensajes encriptados mediante la clave pública del receptor.
+
+    En la firma digital es el propio usuario el que utiliza su clave privada para firmar el mensaje y será el receptor el que usará la clave pública del firmante para comprobar la firma realizada.
 
 ### 3.6.3. Mecánica de Verificación por el Receptor
 Cuando el receptor recibe el documento y la firma, realiza el siguiente proceso informático:
 
-1. Descifra la firma digital utilizando la **clave pública del emisor** ($K_{pub\_Emisor}$), obteniendo el resumen hash original $h_1$.
-2. Calcula de nuevo el resumen hash sobre el documento recibido utilizando la misma función hash, obteniendo $h_2$.
+1. Descifra la firma digital utilizando la **clave pública del emisor** (K_pub_Emisor), obteniendo el resumen hash original h_1.
+2. Calcula de nuevo el resumen hash sobre el documento recibido utilizando la misma función hash, obteniendo h_2.
 3. **Comparación:**
-   * Si $h_1 == h_2$: La firma es **VÁLIDA** (el emisor posee la clave privada y el documento está intacto).
-   * Si $h_1 
-eq h_2$: La firma es **NULA** (el documento fue modificado o la clave no corresponde al emisor).
+    * Si h_1 = h_2: La firma es **VÁLIDA** (el emisor posee la clave privada y el documento está intacto).
+    * Si h_1 distito h_2: La firma es **NULA** (el documento fue modificado o la clave no corresponde al emisor).
 
-```
-[ Documento Recibido ] -----------------------> [ Calculo Hash ] -------------> h2
-                                                                                 |
-[ Firma Recibida ] ---> [ Descifro con K_pub_Emisor ] ---> [ Hash Extraído ] -> h1
-                                                                                 |
-                                                       (Compara h1 == h2) <-----+
-```
+La siguiente imagen muestra el proceso completo de firma y verificación.
+
+![Firma digital completa](img/FirmaDigital2.png)
 
 !!! note "Práctica"
     !!! info "Ahora que conoces la teoría es el momento de hacer las prácticas..."
@@ -307,7 +303,7 @@ eq h_2$: La firma es **NULA** (el documento fue modificado o la clave no corresp
 ### 3.7.1. El Problema de la Confianza y el Ataque Man-in-the-Middle
 La criptografía asimétrica y la firma digital funcionan si estamos 100% seguros de que la clave pública que utilizamos pertenece realmente a quien dice ser. Si un atacante suplanta la identidad de un servidor web bancario y nos entrega su propia clave pública, podrá interceptar y descifrar nuestras comunicaciones (ataque *Man-in-the-Middle* / MITM).
 
-Para resolver el problema de la asignación de identidades entran en juego los **Certificados Digitales**.
+Por tanto, necesitamos algún mecanismo que asegure que las claves públicas son de quien dicen ser. Para resolver el problema de la asignación de identidades entran en juego los **Certificados Digitales**.
 
 ### 3.7.2. ¿Qué es un Certificado Digital?
 Un **certificado digital** es un documento electrónico emitido por un tercero de confianza (denominado **Autoridad de Certificación - CA**) que vincula de forma pública e inalterable la identidad de una persona, empresa o servidor web con su clave pública correspondiente.
