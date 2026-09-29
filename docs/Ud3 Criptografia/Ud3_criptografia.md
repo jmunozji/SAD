@@ -291,10 +291,9 @@ La siguiente imagen muestra el proceso completo de firma y verificación.
 ![Firma digital completa](img/FirmaDigital2.png)
 
 !!! note "Práctica"
-    !!! info "Ahora que conoces la teoría es el momento de hacer las prácticas..."
-        **Práctica Moodle: Firma digital**
+    **Práctica Moodle: Firma digital**
         
-        *En esta práctica utilizarás GnuPG / Kleopatra (o Gpg4win) para firmar digitalmente documentos de texto, verificar la autenticidad e integridad de ficheros firmados recibidos (como la verificación de la clave e identidad de Ramón Onrubia) e identificar los mensajes que hayan sido manipulados.*
+    *Ahora puedes hacer la práctica "[Firma digital](P03.md)*
 
 ---
 
@@ -323,6 +322,16 @@ Una arquitectura PKI completa está compuesta por los siguientes roles y compone
 6. **Terceros de Confianza / Partes Utilizadoras (*Relying Parties*):** Usuarios, aplicaciones o navegadores web que confían en la CA para verificar firmas digitales o establecer conexiones cifradas con los titulares.
 
 ![Estructura y componentes de una Infraestructura de Clave Pública PKI](img/pki.png)
+
+!!! example "Ejemplo Real de PKI: Solicitud del Certificado de Ciudadano ante la FNMT"
+    Para comprender el funcionamiento coordinado de los componentes de una PKI, analicemos el proceso que sigue un ciudadano para obtener su certificado digital de Persona Física emitido por la **Fábrica Nacional de Moneda y Timbre (FNMT)**:
+
+    1. **Titular / Suscriptor (*Subject*):** El ciudadano (ej. Juan Pérez) que desea realizar trámites telemáticos de forma segura. Desde su navegador web genera una petición de certificado (**CSR**), lo que crea localmente su par de claves (clave privada K_priv y clave pública K_pub).
+    2. **Autoridad de Registro (AR / RA):** Las **Oficinas de Acreditación** (Agencia Tributaria - AEAT, Tesorería de la Seguridad Social, Ayuntamientos o Correos). El ciudadano acude presencialmente con su DNI/NIE para que un funcionario compruebe fehacientemente que la persona física coincide con los datos del formulario de solicitud.
+    3. **Autoridad de Certificación (AC / CA):** La **FNMT-RCM**. Tras recibir la confirmación telemática del funcionario de la AR, la FNMT genera el certificado X.509 de Juan Pérez, incluyendo su clave pública K_pub, y lo **firma digitalmente con la clave privada de la CA**. El ciudadano descarga entonces su certificado firmado desde la web.
+    4. **Terceros de Confianza / Partes Utilizadoras (*Relying Parties*):** Las **Sedes Electrónicas** de las Administraciones Públicas (DGT, Agencia Tributaria, Carpeta Ciudadana, Seguridad Social) o entidades bancarias. Cuando Juan accede a la sede electrónica de la DGT para consultar sus puntos de carnet, presenta su certificado. La DGT valida la firma de la FNMT utilizando la clave pública de la FNMT preinstalada en su almacén de confianza.
+    5. **Autoridad de Validación (AV / VA) y Repositorios:** Durante el acceso de Juan a la DGT, la sede electrónica consulta en tiempo real al **servidor OCSP** de la FNMT (o descarga la **lista CRL** del repositorio web de la FNMT) para comprobar que el certificado de Juan no ha sido revocado (por ejemplo, por pérdida del equipo o caducidad).
+
 
 ### 3.7.3. Funciones y Ejemplo de Autoridades de Certificación (CA)
 La Autoridad de Certificación realiza las siguientes tareas fundamentales dentro del sistema:
