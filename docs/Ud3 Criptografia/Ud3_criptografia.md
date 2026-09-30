@@ -244,13 +244,10 @@ Para que un algoritmo hash sea considerado criptográficamente seguro, debe cump
 * **Almacenamiento Seguro de Contraseñas:** Las contraseñas de usuarios en sistemas operativos (como `/etc/shadow` en Linux) nunca se guardan en texto claro. Se almacena el hash de la clave combinado con una cadena aleatoria (*salting*) utilizando funciones deliberadamente lentas (como **PBKDF2, bcrypt o Argon2**) para dificultar ataques por diccionario o fuerza bruta.
 * **Optimización de la Firma Digital:** Permite firmar digitalmente documentos de cientos de Megabytes aplicando la cifra asimétrica únicamente sobre los pocos bits del resumen hash. (Esto lo veremos en el próximo apartado.)
 
-REVISAR ESTA PARTE:
-
 !!! note "Práctica"
-    !!! info "Ahora que conoces la teoría es el momento de hacer las prácticas..."
-        **Práctica Moodle: Funciones hash o resumen con QuickHash**
+    **Práctica Moodle: Funciones hash**
         
-        *En esta práctica utilizarás la herramienta gráfica multiplataforma QuickHash GUI para calcular resúmenes SHA-256 y MD5 de archivos, verificar la integridad de descargas y comprobar de forma visual el efecto avalancha al modificar un solo carácter de un documento de texto.*
+    *Ahora puedes hacer la práctica "[Funciones Hash](P03.md)"
 
 ---
 
@@ -293,7 +290,7 @@ La siguiente imagen muestra el proceso completo de firma y verificación.
 !!! note "Práctica"
     **Práctica Moodle: Firma digital**
         
-    *Ahora puedes hacer la práctica "[Firma digital](P03.md)*
+    *Ahora puedes hacer la práctica "[Firma digital](P04.md)*
 
 ---
 
