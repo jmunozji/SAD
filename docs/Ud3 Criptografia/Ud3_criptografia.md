@@ -452,7 +452,7 @@ El **DNIe** español es una aplicación práctica e ilustrativa de una PKI nacio
 
 !!! note "Práctica"
     !!! info "Ahora que conoces la teoría es el momento de hacer las prácticas..."
-        **Práctica Moodle: Práctica PKI - Gestión de claves con easyrsa**
+        **[Práctica 3.5: PKI - Gestión de Claves con Easy-RSA en Servidores Separados](P05.md)**
         
         *En esta práctica desplegarás tu propia Infraestructura de Clave Pública (PKI) en consola Linux utilizando Easy-RSA. Asumirás el rol de CA raíz para emitir, firmar, gestionar y revocar certificados digitales X.509 para clientes y servidores de red.*
 ---
