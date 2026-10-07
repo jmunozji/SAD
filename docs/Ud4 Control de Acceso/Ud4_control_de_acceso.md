@@ -208,5 +208,96 @@ Para cerrar esta brecha, GRUB2 permite definir usuarios y cifrar contraseñas me
 * Se exige usuario y contraseña si alguien intenta **editar las opciones de arranque (tecla `e`)** o acceder a la línea de comandos de GRUB2 (tecla `c`).
 * Se puede restringir el inicio de entradas específicas del menú (como el *Recovery Mode* o el arranque de kernels alternativos).
 
-!!! Info
-       En la próxima práctica aprenderemos a proteger el GRUB mediante contraseña.
+!!! info "Práctica de Laboratorio"
+    **[Práctica 4.1: Protección del Gestor de Arranque GRUB2 con Contraseña](P01.md)**
+    
+    *En esta práctica comprobarás la vulnerabilidad de escalada a root mediante la inyección del parámetro `init=/bin/bash` en GRUB2 y aprenderás a fortificar el gestor de arranque mediante contraseñas cifradas con PBKDF2.*
+
+---
+
+## 3. Control de Acceso al Sistema de Ficheros: Listas de Control de Acceso (ACLs)
+
+### 3.1. Limitaciones del Modelo Tradicional UNIX (UGO)
+
+En los sistemas operativos GNU/Linux y tipo UNIX, el mecanismo nativo de control de acceso al sistema de archivos se basa en el **modelo discrecional clásico (UGO - *User, Group, Others*)**.
+
+Cada inodo (archivo o directorio) dispone únicamente de tres conjuntos de permisos de lectura, escritura y ejecución (`rwx`):
+* **Propietario (`u` - *User / Owner*):** El usuario dueño del recurso.
+* **Grupo principal (`g` - *Group*):** Un único grupo asignado al recurso.
+* **Otros (`o` - *Others*):** El resto de usuarios del sistema.
+
+#### La Rigidez en Entornos Colaborativos
+Este esquema resulta rígido e insuficiente en organizaciones reales:
+* **Solo admite un único grupo propietario:** Si un directorio departamental pertenece a *Ventas*, no es posible conceder acceso de solo lectura a *Auditores* sin abrir el acceso a toda la organización mediante la categoría *Otros (`o`)*.
+* **Vulnera el Principio de Mínimo Privilegio:** Obliga a otorgar permisos excesivos o a crear una proliferación inmanejable de grupos secundarios en el sistema.
+
+Para solventar esta limitación surgieron las **Listas de Control de Acceso (ACLs - *Access Control Lists*)**.
+
+---
+
+### 3.2. Concepto de ACLs POSIX (Access Control Lists)
+
+Las **ACLs POSIX** (definidas en el estándar POSIX 1003.1e / 1003.2c) extienden el sistema de permisos tradicional asociando a cada archivo o directorio una lista detallada de **Entradas de Control de Acceso (ACE - *Access Control Entries*)**.
+
+Están soportadas de forma nativa por los sistemas de archivos habituales de Linux (`ext4`, `XFS`, `Btrfs`) y aportan:
+1. **Usuarios nombrados:** Posibilidad de conceder permisos específicos a usuarios concretos adicionales, con independencia del dueño.
+2. **Grupos nombrados:** Posibilidad de asignar permisos diferenciados a múltiples grupos de trabajo.
+3. **Mecanismo de contención (Máscara):** Un filtro global que limita los permisos máximos efectivos.
+4. **Herencia en directorios:** Reglas por defecto para que los nuevos archivos y subcarpetas adquieran automáticamente la política del departamento.
+
+!!! info "El indicador visual del signo más (`+`) en `ls -l`"
+    Cuando un archivo o directorio dispone de una ACL extendida, el comando `ls -l` añade automáticamente un **signo más (`+`)** al final de la cadena de 10 caracteres de permisos (por ejemplo, `drwxr-xr-x+`). Esto alerta al administrador de que existen reglas adicionales que deben consultarse con herramientas específicas.
+
+---
+
+### 3.3. Mecanismos Fundamentales: La Máscara y la Herencia
+
+Para comprender el funcionamiento de las ACLs, destacan dos conceptos esenciales:
+
+#### 1. La Máscara de Permisos Efectivos (`mask`)
+La **máscara (*mask*)** define el **techo máximo de permisos permitidos** que pueden ejercer los usuarios nombrados, el grupo propietario y los grupos nombrados.
+* Actúa como un filtro lógico **AND**: aunque una regla conceda permisos de lectura y escritura (`rw-`), si la máscara está fijada en solo lectura (`r--`), el **permiso efectivo** del usuario será únicamente lectura (`r--`).
+* **Excepción:** La máscara nunca limita los permisos del usuario propietario (`user::`) ni de la categoría otros (`other::`).
+
+$$\text{Permiso Efectivo} = \text{Permiso Asignado en la ACL} \ \mathbf{AND} \ \text{Máscara (mask)}$$
+
+#### 2. Permisos por Defecto (*Default ACLs*) y Herencia
+En UNIX clásico, los archivos nuevos heredan la máscara `umask` del proceso creador, lo que suele impedir que compañeros de un mismo departamento puedan colaborar en carpetas compartidas.
+* Las **ACLs por defecto** solo se pueden aplicar a **directorios**.
+* No otorgan acceso sobre la carpeta en sí, sino que actúan como una **plantilla de herencia obligatoria**: cualquier archivo o subdirectorio creado dentro adoptará automáticamente esos permisos, asegurando la continuidad de la directiva de seguridad.
+
+---
+
+### 3.4. Algoritmo de Evaluación de Permisos en el Kernel
+
+Cuando un proceso intenta leer, escribir o ejecutar un archivo protegido por ACLs, el kernel de Linux evalúa los permisos de forma estrictamente secuencial y **se detiene en la primera coincidencia**:
+
+```text
+       [ Proceso solicita acceso a un archivo ]
+                          │
+                          ▼
+        ¿Es el Usuario Propietario (owner)? ───── SÍ ───> Aplica permisos de 'user::' y TERMINA.
+                          │ NO
+                          ▼
+       ¿Hay regla para este Usuario específico? ── SÍ ───> Aplica regla AND 'mask' y TERMINA.
+                          │ NO
+                          ▼
+      ¿Pertenece al Grupo principal o nombrados? ─ SÍ ───> Une los permisos de sus grupos (OR),
+                          │ NO                             aplica la 'mask' (AND) y TERMINA.
+                          ▼
+            Aplica permisos de 'other::' y TERMINA.
+```
+
+!!! note "Prioridad de Reglas"
+    Una regla específica de usuario tiene prioridad sobre las pertenencias a grupos: si un usuario tiene denegado el acceso individualmente, no podrá acceder aunque pertenezca a un grupo con permisos totales.
+
+---
+
+### 3.5. Práctica de Laboratorio
+
+El manejo práctico de las utilidades de consola (`getfacl` y `setfacl`), el diseño de matrices de permisos departamentales y la clonación de directivas se ejercita en la práctica del bloque:
+
+!!! note "Práctica de Laboratorio"
+    **[Práctica 4.2: Listas de Control de Acceso (ACLs POSIX) en GNU/Linux](P02.md)**
+    
+    *En esta práctica crearás una estructura departamental con usuarios y grupos corporativos, aplicarás permisos granulares cruzados con `setfacl`, verificarás el comportamiento de la máscara de permisos y configurarás herencia por defecto en directorios compartidos.*
