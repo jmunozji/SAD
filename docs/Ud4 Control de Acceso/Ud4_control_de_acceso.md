@@ -222,12 +222,15 @@ Para cerrar esta brecha, GRUB2 permite definir usuarios y cifrar contraseñas me
 En los sistemas operativos GNU/Linux y tipo UNIX, el mecanismo nativo de control de acceso al sistema de archivos se basa en el **modelo discrecional clásico (UGO - *User, Group, Others*)**.
 
 Cada inodo (archivo o directorio) dispone únicamente de tres conjuntos de permisos de lectura, escritura y ejecución (`rwx`):
+
 * **Propietario (`u` - *User / Owner*):** El usuario dueño del recurso.
 * **Grupo principal (`g` - *Group*):** Un único grupo asignado al recurso.
 * **Otros (`o` - *Others*):** El resto de usuarios del sistema.
 
 #### La Rigidez en Entornos Colaborativos
+
 Este esquema resulta rígido e insuficiente en organizaciones reales:
+
 * **Solo admite un único grupo propietario:** Si un directorio departamental pertenece a *Ventas*, no es posible conceder acceso de solo lectura a *Auditores* sin abrir el acceso a toda la organización mediante la categoría *Otros (`o`)*.
 * **Vulnera el Principio de Mínimo Privilegio:** Obliga a otorgar permisos excesivos o a crear una proliferación inmanejable de grupos secundarios en el sistema.
 
@@ -240,6 +243,7 @@ Para solventar esta limitación surgieron las **Listas de Control de Acceso (ACL
 Las **ACLs POSIX** (definidas en el estándar POSIX 1003.1e / 1003.2c) extienden el sistema de permisos tradicional asociando a cada archivo o directorio una lista detallada de **Entradas de Control de Acceso (ACE - *Access Control Entries*)**.
 
 Están soportadas de forma nativa por los sistemas de archivos habituales de Linux (`ext4`, `XFS`, `Btrfs`) y aportan:
+
 1. **Usuarios nombrados:** Posibilidad de conceder permisos específicos a usuarios concretos adicionales, con independencia del dueño.
 2. **Grupos nombrados:** Posibilidad de asignar permisos diferenciados a múltiples grupos de trabajo.
 3. **Mecanismo de contención (Máscara):** Un filtro global que limita los permisos máximos efectivos.
@@ -255,14 +259,18 @@ Están soportadas de forma nativa por los sistemas de archivos habituales de Lin
 Para comprender el funcionamiento de las ACLs, destacan dos conceptos esenciales:
 
 #### 1. La Máscara de Permisos Efectivos (`mask`)
-La **máscara (*mask*)** define el **techo máximo de permisos permitidos** que pueden ejercer los usuarios nombrados, el grupo propietario y los grupos nombrados.
+
+La **máscara (*mask*)** define el **techo máximo de permisos permitidos** que pueden ejercer los usuarios nombrados, el grupo propietario y los grupos nombrados:
+
 * Actúa como un filtro lógico **AND**: aunque una regla conceda permisos de lectura y escritura (`rw-`), si la máscara está fijada en solo lectura (`r--`), el **permiso efectivo** del usuario será únicamente lectura (`r--`).
 * **Excepción:** La máscara nunca limita los permisos del usuario propietario (`user::`) ni de la categoría otros (`other::`).
 
-$$\text{Permiso Efectivo} = \text{Permiso Asignado en la ACL} \ \mathbf{AND} \ \text{Máscara (mask)}$$
+> **Cálculo del Permiso Efectivo:** `Permiso Asignado en la ACL` **AND** `Máscara (mask)`
 
 #### 2. Permisos por Defecto (*Default ACLs*) y Herencia
-En UNIX clásico, los archivos nuevos heredan la máscara `umask` del proceso creador, lo que suele impedir que compañeros de un mismo departamento puedan colaborar en carpetas compartidas.
+
+En UNIX clásico, los archivos nuevos heredan la máscara `umask` del proceso creador, lo que suele impedir que compañeros de un mismo departamento puedan colaborar en carpetas compartidas:
+
 * Las **ACLs por defecto** solo se pueden aplicar a **directorios**.
 * No otorgan acceso sobre la carpeta en sí, sino que actúan como una **plantilla de herencia obligatoria**: cualquier archivo o subdirectorio creado dentro adoptará automáticamente esos permisos, asegurando la continuidad de la directiva de seguridad.
 
@@ -301,3 +309,137 @@ El manejo práctico de las utilidades de consola (`getfacl` y `setfacl`), el dis
     **[Práctica 4.2: Listas de Control de Acceso (ACLs POSIX) en GNU/Linux](P02.md)**
     
     *En esta práctica crearás una estructura departamental con usuarios y grupos corporativos, aplicarás permisos granulares cruzados con `setfacl`, verificarás el comportamiento de la máscara de permisos y configurarás herencia por defecto en directorios compartidos.*
+
+---
+
+## 4. Robustecimiento Lógico de Accesos y Autenticación
+
+El control de acceso no se limita al almacenamiento físico ni al sistema de ficheros; la autenticación de usuarios y la gestión de accesos remotos constituyen la superficie de ataque más expuesta de cualquier infraestructura corporativa.
+
+---
+
+### 4.1. Ciclo de Vida y Políticas de Envejecimiento de Contraseñas
+
+En los sistemas GNU/Linux, las credenciales de usuario se gestionan mediante una arquitectura desacoplada entre dos ficheros fundamentales:
+
+* **`/etc/passwd`:** Contiene información general de las cuentas (identificador UID, GID del grupo principal, directorio personal y shell por defecto). Al ser legible por todos los usuarios del sistema (`-rw-r--r--`), **no contiene las contraseñas**.
+* **`/etc/shadow`:** Almacenable de forma exclusiva por `root` (`-rw-r-----`), guarda los resúmenes hash criptográficos salteados de las contraseñas junto a los parámetros del **ciclo de vida y envejecimiento (*password aging*)**.
+
+![Fortaleza y complejidad de contraseñas](img/password_strength.png)
+
+#### Parámetros del Ciclo de Vida en `/etc/shadow`
+
+Cada registro de `/etc/shadow` estructura la caducidad temporal a través de nueve campos separados por dos puntos (`:`):
+
+```text
+usuario:$6$sal...$hash:19723:1:90:7:14:19800:
+   │          │          │   │  │  │  │   │
+   │          │          │   │  │  │  │   └── Fecha absoluta de expiración de cuenta (días desde epoch)
+   │          │          │   │  │  │  └────── Días de inactividad permitidos tras expirar antes de deshabilitar
+   │          │          │   │  │  └───────── Días de aviso previo al usuario antes de caducar
+   │          │          │   │  └──────────── Días máximos de validez de la contraseña
+   │          │          │   └─────────────── Días mínimos que deben transcurrir antes de poder cambiarla de nuevo
+   │          │          └─────────────────── Fecha del último cambio de clave (días desde 01/01/1970)
+   │          └────────────────────────────── Algoritmo ($6$ = SHA-512) + Salt aleatorio + Hash
+   └───────────────────────────────────────── Nombre de usuario
+```
+
+* **Días mínimos:** Impiden que un usuario cambie la clave varias veces seguidas en el mismo día para volver a su contraseña antigua favorita.
+* **Días máximos y aviso:** Fuerza la rotación periódica de credenciales avisando al usuario con antelación durante el login.
+* **Herramienta de gestión:** El comando administrativo **`chage`** (*change age*) permite auditar y modificar estos valores de forma centralizada sin editar manualmente `/etc/shadow`.
+
+---
+
+### 4.2. Arquitectura de Módulos de Autenticación Conectables (PAM)
+
+Históricamente, cada servicio de red (`sshd`, `login`, `su`, `ftp`) implementaba su propia lógica para validar usuarios contra `/etc/passwd`. Para evitar duplicidades y permitir la integración de nuevos métodos (LDAP, Kerberos, biometría, 2FA) sin recompilar las aplicaciones, UNIX y Linux adoptaron **PAM (*Pluggable Authentication Modules*)**.
+
+![Arquitectura del subsistema PAM](img/pam_architecture.svg)
+
+#### 1. Tipos de Módulos de Gestión (Las 4 Caras de PAM)
+
+Cada servicio o aplicación invoca directivas agrupadas en cuatro áreas de control dentro de sus ficheros de configuración en `/etc/pam.d/`:
+
+1. **`auth` (Autenticación):** Valida la identidad del usuario (mediante contraseña, token TOTP, huella o clave de seguridad FIDO2).
+2. **`account` (Gestión de Cuentas):** Comprueba si la cuenta está autorizada a acceder en este momento (verifica que no esté bloqueada, caducada o fuera de su horario laboral permitido).
+3. **`password` (Gestión de Contraseñas):** Regula el proceso de cambio o actualización de credenciales.
+4. **`session` (Gestión de Sesión):** Ejecuta tareas previas y posteriores al inicio de sesión (montaje del directorio `/home`, establecimiento de límites de recursos `limits.conf`, registro en logs de auditoría).
+
+#### 2. Banderas de Control (*Control Flags*) en la Evaluación de la Pila
+
+Cuando un usuario intenta acceder, PAM evalúa secuencialmente los módulos en cascada aplicando las directivas de control:
+
+* **`required`:** La comprobación debe tener éxito obligatorio. Si falla, el intento será denegado, pero PAM **continúa ejecutando los siguientes módulos de la pila** para que un atacante no pueda deducir qué verificación falló en concreto.
+* **`requisite`:** De obligado cumplimiento. A diferencia de `required`, si este módulo falla, **aborta la ejecución de inmediato**, rechazando la autenticación sin evaluar más reglas.
+* **`sufficient`:** Si este módulo tiene éxito (y ninguno previo de tipo `required` había fallado), **concede el acceso inmediatamente** y finaliza con éxito. Si falla, su error se ignora y la pila continúa.
+* **`optional`:** El módulo se ejecuta a título informativo; su resultado solo se toma en cuenta si ningún otro módulo decide el resultado final.
+
+#### 3. Fortificación mediante Módulos Específicos
+
+* **Control de Complejidad (`pam_pwquality`):** Analiza en tiempo real las contraseñas nuevas, obligando a respetar longitudes mínimas, mezclas de mayúsculas, minúsculas, dígitos y caracteres especiales, e impidiendo el uso de contraseñas de diccionario o datos del usuario.
+* **Defensa ante Ataques de Fuerza Bruta (`pam_faillock`):** Registra los intentos de acceso erróneos y bloquea automáticamente la cuenta durante un periodo configurable tras superar un número umbral de fallos continuados.
+
+---
+
+### 4.3. Fortificación del Acceso Remoto Seguro (SSH)
+
+El protocolo **SSH (*Secure Shell*)** es el canal estándar para la administración remota de servidores. Al estar expuesto a redes públicas o a la red corporativa, el uso de contraseñas convencionales resulta vulnerable frente a ataques de fuerza bruta automatizados (*bots*, *scanners*).
+
+![Flujo de autenticación SSH por pares de claves criptográficas](img/ssh_auth_flow.svg)
+
+#### La Autenticación Criptográfica Asimétrica (SSH Keys)
+
+La mejor práctica de seguridad consiste en sustituir o complementar las contraseñas mediante **criptografía asimétrica**:
+
+1. **Par de claves en el cliente:** El usuario genera en su estación un par de claves (`ssh-keygen`, empleando algoritmos modernos y resistentes como `Ed25519` o `RSA-4096`).
+2. **Clave privada (`id_ed25519`):** Permanece almacenada en la máquina del cliente, protegida por los permisos del sistema de archivos (`chmod 600`) y cifrada mediante una frase de paso (*passphrase*). **Nunca viaja por la red ni se copia en ningún servidor.**
+3. **Clave pública (`id_ed25519.pub`):** Se transfiere y registra en el servidor de destino dentro del archivo de claves autorizadas del usuario (`~/.ssh/authorized_keys`).
+4. **Desafío criptográfico (*Challenge-Response*):** Durante el inicio de sesión, el servidor emite un reto aleatorio que el cliente firma con su clave privada. El servidor comprueba matemáticamente la firma utilizando la clave pública registrada. Si coincide, autoriza la conexión **sin que ninguna clave o contraseña secreta haya transitado por la red**.
+
+#### Directivas de Fortificación del Servidor (`/etc/ssh/sshd_config`)
+
+Para mitigar riesgos habituales en el servidor, el fichero de configuración de OpenSSH (`sshd_config`) debe incluir las siguientes restricciones:
+
+* **`PermitRootLogin no`:** Impide iniciar sesión remota directamente como superusuario `root`. Obliga a conectarse con una cuenta nominal auditada y elevar privilegios puntualmente mediante `sudo`.
+* **`PasswordAuthentication no`:** Deshabilita de forma estricta el inicio de sesión mediante contraseña tradicional, obligando a emplear claves criptográficas autorizadas.
+* **`PubkeyAuthentication yes`:** Habilita el mecanismo de validación por clave pública.
+* **`MaxAuthTries 3`:** Restringe los reintentos permitidos por conexión para mitigar sondeos de fuerza bruta.
+* **`Port <puerto_no_estandar>` (Opcional):** Cambiar el puerto por defecto (TCP 22) reduce drásticamente el ruido de los escaneos automatizados en Internet (defensa en profundidad / oscuridad complementaria).
+
+---
+
+## 5. Monitorización de Accesos y Respuesta Reactiva con Fail2ban
+
+### 5.1. Registro y Auditoría de Intentos de Acceso en GNU/Linux
+
+Toda arquitectura de seguridad se vuelve ineficaz si carece de monitorización (fase de *Anotación y Auditoría* del modelo IAAA). Los intentos de intrusión, tanto exitosos como frustrados, quedan reflejados en los registros del sistema operativo:
+
+* **`/var/log/auth.log` (Debian/Ubuntu) o `/var/log/secure` (RHEL/CentOS):** Almacenan todos los eventos de autenticación generados por PAM, `sshd`, `sudo` y las consolas de login.
+* **`journalctl -u ssh.service`:** Permite consultar de forma estructurada los eventos del demonio SSH gestionados por `systemd-journald`.
+
+En un servidor conectado a una red corporativa o a Internet, es habitual que se produzcan cientos de intentos continuados de fuerza bruta con usuarios inexistentes o contraseñas aleatorias. La supervisión manual de estos registros resulta inabordable para un administrador; se hace imprescindible disponer de herramientas de **defensa reactiva automatizada**.
+
+---
+
+### 5.2. Concepto de Defensa Activa contra Fuerza Bruta: Fail2ban
+
+**Fail2ban** es una solución de defensa activa basada en host (*HIPS - Host-based Intrusion Prevention System*) que automatiza la respuesta ante intentos de intrusión repetidos.
+
+![Arquitectura conceptual de defensa activa con Fail2ban](img/fail2ban_architecture.svg)
+
+Su funcionamiento conceptual se fundamenta en un ciclo continuo de tres etapas:
+
+1. **Monitorización de registros:** Inspecciona en tiempo real los ficheros de log en busca de patrones de acceso fallido reiterado.
+2. **Detección de umbrales:** Si una misma dirección IP supera un número prefijado de intentos fallidos en una ventana de tiempo determinada, se clasifica como comportamiento hostil.
+3. **Respuesta reactiva en el cortafuegos:** Actúa de forma proactiva inyectando una regla temporal en el cortafuegos del kernel (`iptables` o `nftables`) para bloquear el tráfico procedente de dicha dirección IP, liberando de carga al servidor.
+
+---
+
+### 5.3. Práctica de Laboratorio
+
+El despliegue de la herramienta, la personalización de las políticas de bloqueo, la protección de direcciones IP de confianza y la comprobación del filtrado ante ataques de fuerza bruta se desarrollan en la práctica del bloque:
+
+!!! info "Práctica de Laboratorio"
+    **[Práctica 4.3: Monitorización de Accesos y Defensa Activa con Fail2ban en SSH](P03.md)**
+    
+    *En esta práctica instalarás y configurarás Fail2ban en un servidor Linux, definirás políticas de bloqueo temporal, protegerás la IP de administración con listas blancas y simularás un ataque de fuerza bruta SSH verificando el corte de conexión y las reglas dinámicas generadas en `iptables`.*
