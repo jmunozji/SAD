@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450" width="100%" height="100%" style="font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <filter id="shadow-f2b" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="grad-red" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#b91c1c"/>
+    </linearGradient>
+    <linearGradient id="grad-f2b" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+    <linearGradient id="grad-fw" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <marker id="arrow-f2b" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <rect width="850" height="450" fill="#f8fafc" rx="12" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- Title -->
+  <text x="425" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#0f172a">Arquitectura de Defensa Activa con Fail2ban (IPS Host-Based)</text>
+  <text x="425" y="54" text-anchor="middle" font-size="12" fill="#64748b">Mitigación reactiva y automática de ataques de fuerza bruta mediante inspección de logs</text>
+
+  <!-- Atacante -->
+  <g transform="translate(30, 90)">
+    <rect width="180" height="150" rx="8" fill="#ffffff" stroke="#fca5a5" stroke-width="1.5" filter="url(#shadow-f2b)"/>
+    <rect width="180" height="34" rx="8" fill="url(#grad-red)"/>
+    <text x="90" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Atacante (Fuerza Bruta)</text>
+
+    <text x="90" y="60" text-anchor="middle" font-size="11" font-weight="600" fill="#991b1b">IP: 192.168.1.150</text>
+    <text x="90" y="80" text-anchor="middle" font-size="10" fill="#475569">Múltiples intentos SSH:</text>
+    <text x="90" y="98" text-anchor="middle" font-size="9" fill="#dc2626">user: root / admin / test</text>
+    <text x="90" y="114" text-anchor="middle" font-size="9" fill="#dc2626">Pass errónea > maxretry (5)</text>
+    <text x="90" y="132" text-anchor="middle" font-size="9" fill="#64748b">en ventana findtime (5m)</text>
+  </g>
+
+  <!-- Flecha ataque hacia SSH Service -->
+  <line x1="210" y1="165" x2="265" y2="165" stroke="#ef4444" stroke-width="2.5" marker-end="url(#arrow-red)"/>
+  <text x="238" y="155" text-anchor="middle" font-size="9" font-weight="700" fill="#ef4444">Intentos</text>
+
+  <!-- Servicio SSH y Log -->
+  <g transform="translate(270, 90)">
+    <!-- Servicio SSH -->
+    <rect width="170" height="150" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow-f2b)"/>
+    <rect width="170" height="34" rx="8" fill="#334155"/>
+    <text x="85" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Servicio SSH (sshd)</text>
+
+    <text x="85" y="60" text-anchor="middle" font-size="10" fill="#334155">Puerto 22 TCP</text>
+    <text x="85" y="76" text-anchor="middle" font-size="9" fill="#64748b">Fallo de autenticación</text>
+
+    <rect x="15" y="90" width="140" height="46" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="85" y="107" text-anchor="middle" font-size="10" font-weight="700" fill="#0f172a">/var/log/auth.log</text>
+    <text x="85" y="122" text-anchor="middle" font-size="8.5" fill="#475569">"Failed password for..."</text>
+  </g>
+
+  <!-- Flecha log hacia Fail2ban Daemon -->
+  <line x1="355" y1="240" x2="355" y2="280" stroke="#64748b" stroke-width="2"/>
+  <line x1="355" y1="280" x2="475" y2="280" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow-f2b)"/>
+  <text x="415" y="272" text-anchor="middle" font-size="9" font-weight="600" fill="#475569">Lee registros</text>
+
+  <!-- Motor Fail2ban -->
+  <g transform="translate(480, 90)">
+    <rect width="340" height="235" rx="8" fill="#ffffff" stroke="#0284c7" stroke-width="1.5" filter="url(#shadow-f2b)"/>
+    <rect width="340" height="34" rx="8" fill="url(#grad-f2b)"/>
+    <text x="170" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Motor Fail2ban (Daemon: fail2ban-server)</text>
+
+    <!-- 1. Filter -->
+    <rect x="15" y="48" width="145" height="70" rx="6" fill="#f0f9ff" stroke="#bae6fd"/>
+    <text x="87" y="68" text-anchor="middle" font-size="11" font-weight="700" fill="#0369a1">Filtro (Regex)</text>
+    <text x="87" y="85" text-anchor="middle" font-size="9" fill="#0284c7">/etc/fail2ban/filter.d/</text>
+    <text x="87" y="101" text-anchor="middle" font-size="8.5" fill="#475569">sshd.conf: extrae &lt;HOST&gt;</text>
+
+    <!-- 2. Jail -->
+    <rect x="180" y="48" width="145" height="70" rx="6" fill="#f0f9ff" stroke="#bae6fd"/>
+    <text x="252" y="68" text-anchor="middle" font-size="11" font-weight="700" fill="#0369a1">Jail [sshd]</text>
+    <text x="252" y="85" text-anchor="middle" font-size="9" fill="#0284c7">/etc/fail2ban/jail.local</text>
+    <text x="252" y="101" text-anchor="middle" font-size="8.5" fill="#475569">maxretry=5, bantime=600</text>
+
+    <!-- 3. Parámetros Clave -->
+    <rect x="15" y="130" width="310" height="85" rx="6" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="25" y="148" font-size="10" font-weight="700" fill="#0f172a">Reglas de Decisión:</text>
+    <text x="25" y="166" font-size="9.5" fill="#334155">• <tspan font-weight="600">ignoreip = 192.168.1.50</tspan>: Lista blanca del admin (inmune).</text>
+    <text x="25" y="183" font-size="9.5" fill="#334155">• Si intentos >= <tspan font-weight="600">maxretry</tspan> en <tspan font-weight="600">findtime</tspan> ➔ Dispara Acción.</text>
+    <text x="25" y="200" font-size="9.5" fill="#334155">• Temporizador de expiración: elimina baneo tras <tspan font-weight="600">bantime (10m)</tspan>.</text>
+  </g>
+
+  <!-- Flecha de acción hacia Cortafuegos -->
+  <line x1="650" y1="325" x2="650" y2="355" stroke="#059669" stroke-width="2.5" marker-end="url(#arrow-f2b)"/>
+  <text x="650" y="345" text-anchor="start" font-size="9" font-weight="700" fill="#047857" dx="6">Acción (iptables/nftables)</text>
+
+  <!-- Cortafuegos Netfilter / iptables -->
+  <g transform="translate(180, 360)">
+    <rect width="640" height="70" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="1.5" filter="url(#shadow-f2b)"/>
+    <rect width="640" height="24" rx="8" fill="url(#grad-fw)"/>
+    <text x="320" y="17" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Cortafuegos del Kernel (Netfilter / iptables cadena: f2b-sshd)</text>
+
+    <text x="30" y="44" font-size="10" font-family="monospace" font-weight="600" fill="#b91c1c">REJECT / DROP  tcp  --  192.168.1.150  anywhere  tcp dpt:ssh</text>
+    <text x="30" y="58" font-size="9" fill="#047857">✔ Todo el tráfico posterior desde la IP atacante es descartado de inmediato a nivel de kernel.</text>
+  </g>
+
+  <!-- Flecha de bloqueo hacia atacante -->
+  <line x1="180" y1="395" x2="120" y2="395" stroke="#ef4444" stroke-width="2.5"/>
+  <line x1="120" y1="395" x2="120" y2="245" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="4" marker-end="url(#arrow-red)"/>
+  <rect x="65" y="300" width="110" height="24" rx="4" fill="#fee2e2" stroke="#fca5a5"/>
+  <text x="120" y="316" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b">BLOQUEO TOTAL</text>
+</svg>

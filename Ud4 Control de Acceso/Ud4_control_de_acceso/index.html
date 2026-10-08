@@ -1,0 +1,2029 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jmunozji.github.io/SAD/Ud4%20Control%20de%20Acceso/Ud4_control_de_acceso/">
+      
+      
+        <link rel="prev" href="../../Ud3%20Criptografia/P05/">
+      
+      
+        <link rel="next" href="../P01/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>UD4. Control de accesos - Seguridad y alta disponibilidad</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-3NX5MD5C8H"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-3NX5MD5C8H",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-3NX5MD5C8H",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ud4-control-de-accesos" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-header__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Seguridad y alta disponibilidad
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              UD4. Control de accesos
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-orange"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-nav__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    Seguridad y alta disponibilidad
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Introduccion/Ud1_introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1. Fundamentos de Seguridad Informática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Normativa%20y%20SGSI/Ud2_normativa_y_sgsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2. Normativa y sistemas de gestión de la seguridad de la información
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud3 Criptografia
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud3 Criptografia
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/Ud3_criptografia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3. Criptografía y Mecanismos de Certificación Digital
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.1: Cifrado Simétrico con GnuPG (GPG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.2: Criptografía Asimétrica y Gestión de Claves con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.3: Funciones Hash y Verificación de Integridad de Datos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.4: Firma Digital y Verificación de la Integridad con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.5: PKI - Gestión de Claves con Easy-RSA en Servidores Separados
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud4 Control de Acceso
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud4 Control de Acceso
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4. Control de accesos
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4. Control de accesos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-politicas-y-modelos-de-control-de-acceso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Políticas y Modelos de Control de Acceso
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Políticas y Modelos de Control de Acceso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-concepto-y-retos-actuales-del-control-de-acceso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1. Concepto y Retos Actuales del Control de Acceso
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-el-modelo-iaaa-identificacion-autenticacion-autorizacion-y-anotacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2. El Modelo IAAA (Identificación, Autenticación, Autorización y Anotación)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-tendencias-y-tecnologias-modernas-de-autenticacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3. Tendencias y Tecnologías Modernas de Autenticación
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3. Tendencias y Tecnologías Modernas de Autenticación">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-autenticacion-multi-factor-mfa-2fa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A) Autenticación Multi-Factor (MFA / 2FA)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-ciberllaves-y-passkeys-estandares-fido2-webauthn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B) Ciberllaves y Passkeys (Estándares FIDO2 / WebAuthn)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-single-sign-on-sso-y-autenticacion-federada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C) Single Sign-On (SSO) y Autenticación Federada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-gestores-de-contrasenas-corporativos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D) Gestores de Contraseñas Corporativos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-ciclo-de-vida-de-las-credenciales-y-politicas-de-seguridad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4. Ciclo de Vida de las Credenciales y Políticas de Seguridad
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4. Ciclo de Vida de las Credenciales y Políticas de Seguridad">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principios-organizativos-fundamentales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principios Organizativos Fundamentales
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#directrices-para-la-gestion-de-contrasenas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directrices para la Gestión de Contraseñas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-modelos-teoricos-de-control-de-acceso-autorizacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5. Modelos Teóricos de Control de Acceso (Autorización)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.5. Modelos Teóricos de Control de Acceso (Autorización)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-dac-discretionary-access-control-control-de-acceso-discrecional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. DAC (Discretionary Access Control – Control de Acceso Discrecional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-mac-mandatory-access-control-control-de-acceso-mandatorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. MAC (Mandatory Access Control – Control de Acceso Mandatorio)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-rbac-role-based-access-control-control-de-acceso-basado-en-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. RBAC (Role-Based Access Control – Control de Acceso Basado en Roles)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-abac-attribute-based-access-control-control-de-acceso-basado-en-atributos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. ABAC (Attribute-Based Access Control – Control de Acceso Basado en Atributos)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cuadro-resumen-comparativo-de-los-modelos-de-control-de-acceso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cuadro Resumen Comparativo de los Modelos de Control de Acceso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-proteccion-fisica-y-seguridad-en-el-arranque" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Protección Física y Seguridad en el Arranque
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Protección Física y Seguridad en el Arranque">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-seguridad-a-nivel-de-firmware-bios-y-uefi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1. Seguridad a Nivel de Firmware: BIOS y UEFI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1. Seguridad a Nivel de Firmware: BIOS y UEFI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objetivos-principales-de-seguridad-en-el-firmware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivos Principales de Seguridad en el Firmware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mecanismos-de-proteccion-en-biosuefi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mecanismos de Protección en BIOS/UEFI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#el-limite-de-la-seguridad-en-bios-y-la-necesidad-de-la-seguridad-fisica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        El Límite de la Seguridad en BIOS y la Necesidad de la Seguridad Física
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-uefi-y-secure-boot-arranque-seguro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2. UEFI y Secure Boot (Arranque Seguro)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2. UEFI y Secure Boot (Arranque Seguro)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#funcionamiento-de-secure-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Funcionamiento de Secure Boot
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-la-brecha-de-seguridad-en-el-cargador-de-arranque-grub2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3. La Brecha de Seguridad en el Cargador de Arranque: GRUB2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3. La Brecha de Seguridad en el Cargador de Arranque: GRUB2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anatomia-del-ataque-por-edicion-de-grub2-bypass-de-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anatomía del Ataque por Edición de GRUB2 (Bypass de Root)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-solucion-proteccion-de-grub2-mediante-contrasena" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La Solución: Protección de GRUB2 mediante Contraseña
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-control-de-acceso-al-sistema-de-ficheros-listas-de-control-de-acceso-acls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Control de Acceso al Sistema de Ficheros: Listas de Control de Acceso (ACLs)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Control de Acceso al Sistema de Ficheros: Listas de Control de Acceso (ACLs)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-limitaciones-del-modelo-tradicional-unix-ugo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1. Limitaciones del Modelo Tradicional UNIX (UGO)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1. Limitaciones del Modelo Tradicional UNIX (UGO)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-rigidez-en-entornos-colaborativos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La Rigidez en Entornos Colaborativos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-concepto-de-acls-posix-access-control-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2. Concepto de ACLs POSIX (Access Control Lists)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-mecanismos-fundamentales-la-mascara-y-la-herencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3. Mecanismos Fundamentales: La Máscara y la Herencia
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3. Mecanismos Fundamentales: La Máscara y la Herencia">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-la-mascara-de-permisos-efectivos-mask" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. La Máscara de Permisos Efectivos (mask)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-permisos-por-defecto-default-acls-y-herencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Permisos por Defecto (Default ACLs) y Herencia
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-algoritmo-de-evaluacion-de-permisos-en-el-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4. Algoritmo de Evaluación de Permisos en el Kernel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-practica-de-laboratorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5. Práctica de Laboratorio
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-robustecimiento-logico-de-accesos-y-autenticacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Robustecimiento Lógico de Accesos y Autenticación
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Robustecimiento Lógico de Accesos y Autenticación">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-ciclo-de-vida-y-politicas-de-envejecimiento-de-contrasenas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1. Ciclo de Vida y Políticas de Envejecimiento de Contraseñas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.1. Ciclo de Vida y Políticas de Envejecimiento de Contraseñas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parametros-del-ciclo-de-vida-en-etcshadow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parámetros del Ciclo de Vida en /etc/shadow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-arquitectura-de-modulos-de-autenticacion-conectables-pam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2. Arquitectura de Módulos de Autenticación Conectables (PAM)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2. Arquitectura de Módulos de Autenticación Conectables (PAM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tipos-de-modulos-de-gestion-las-4-caras-de-pam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Tipos de Módulos de Gestión (Las 4 Caras de PAM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-banderas-de-control-control-flags-en-la-evaluacion-de-la-pila" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Banderas de Control (Control Flags) en la Evaluación de la Pila
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-fortificacion-mediante-modulos-especificos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Fortificación mediante Módulos Específicos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-fortificacion-del-acceso-remoto-seguro-ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3. Fortificación del Acceso Remoto Seguro (SSH)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3. Fortificación del Acceso Remoto Seguro (SSH)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-autenticacion-criptografica-asimetrica-ssh-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La Autenticación Criptográfica Asimétrica (SSH Keys)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#directivas-de-fortificacion-del-servidor-etcsshsshd_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directivas de Fortificación del Servidor (/etc/ssh/sshd_config)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-monitorizacion-de-accesos-y-respuesta-reactiva-con-fail2ban" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Monitorización de Accesos y Respuesta Reactiva con Fail2ban
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Monitorización de Accesos y Respuesta Reactiva con Fail2ban">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-registro-y-auditoria-de-intentos-de-acceso-en-gnulinux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1. Registro y Auditoría de Intentos de Acceso en GNU/Linux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-concepto-de-defensa-activa-contra-fuerza-bruta-fail2ban" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2. Concepto de Defensa Activa contra Fuerza Bruta: Fail2ban
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-practica-de-laboratorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3. Práctica de Laboratorio
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.1: Protección del Gestor de Arranque GRUB2 con Contraseña
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.2: Listas de Control de Acceso (ACLs POSIX) en GNU/Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.3: Monitorización de Accesos y Defensa Activa con Fail2ban en SSH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/Ud5_seguridad_activa_y_auditorias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD5. Seguridad activa y auditorías en redes corporativas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/Ud6_copias_de_seguridad_y_recuperacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD6. Copias de seguridad, recuperación ante desastres y análisis forense
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/Ud7_seguridad_perimetral_cortafuegos_y_dmz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD7. Seguridad perimetral: cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/Ud8_seguridad_perimetral_acceso_remoto_y_vpn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD8. Seguridad perimetral: Acceso remoto y Redes Privadas Virtuales (VPN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/Ud9_proteccion_perimetral_servidores_proxy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD9. Protección perimetral mediante Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud10%20Soluciones%20de%20Alta%20Disponibilidad/Ud10_soluciones_de_alta_disponibilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD10. Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="ud4-control-de-accesos">UD4. Control de accesos</h1>
+<h2 id="1-politicas-y-modelos-de-control-de-acceso">1. Políticas y Modelos de Control de Acceso</h2>
+<p>El control de acceso constituye la primera línea de defensa en cualquier arquitectura de seguridad informática. En el marco de la administración de sistemas en red y según las directrices del Instituto Nacional de Ciberseguridad (INCIBE), regular quién ingresa a los entornos digitales, a qué recursos específicos se le permite llegar y qué operaciones puede ejecutar es la garantía fundamental para preservar la confidencialidad, la integridad y la trazabilidad de la información corporativa.</p>
+<hr>
+<h3 id="11-concepto-y-retos-actuales-del-control-de-acceso">1.1. Concepto y Retos Actuales del Control de Acceso</h3>
+<p>Se define el <strong>control de acceso</strong> como el conjunto de mecanismos <strong>técnicos, administrativos y físicos</strong> diseñados para permitir, restringir, monitorizar y proteger el acceso a los servicios, equipos, redes e información de una organización.</p>
+<p>En los entornos operativos contemporáneos, la frontera perimetral tradicional ha desaparecido. La implantación de soluciones de control de acceso enfrenta retos complejos debido a la convergencia de varios factores tecnológicos:</p>
+<ul>
+<li><strong>Extensión del Teletrabajo y Accesos Remotos:</strong> Los usuarios se conectan a los servidores internos a través de redes públicas no confiables desde ubicaciones geográficas diversas.</li>
+<li><strong>Proliferación de Dispositivos Móviles y Políticas BYOD (<em>Bring Your Own Device</em>):</strong> El personal utiliza smartphones, tabletas y portátiles personales para consultar aplicaciones y datos corporativos, introduciendo vectores de riesgo no gestionados por el equipo de IT.</li>
+<li><strong>Uso Intensivo de Servicios en la Nube y Redes Inalámbricas:</strong> La migración a entornos IaaS, PaaS y SaaS desplaza el almacenamiento fuera del centro de datos local, haciendo imperativo gestionar identidades de forma distribuida.</li>
+</ul>
+<hr>
+<h3 id="12-el-modelo-iaaa-identificacion-autenticacion-autorizacion-y-anotacion">1.2. El Modelo IAAA (Identificación, Autenticación, Autorización y Anotación)</h3>
+<p>Toda arquitectura rigurosa de control de acceso se fundamenta en un flujo secuencial de cuatro fases conocido como el <strong>Modelo IAAA</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>  [ Identificación ]    ──&gt;  [ Autenticación ]     ──&gt;  [ Autorización ]  ──&gt;  [ Anotación / Auditoría ]
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>   "¿Quién dices ser?"     "Demuestra quién eres"   "¿A qué tienes acceso?"    "Registro de lo que haces"
+</code></pre></div>
+<ol>
+<li><strong>Identificación (I):</strong> Proceso mediante el cual una entidad (usuario, proceso o dispositivo) declara su identidad ante el sistema. Ejemplos habituales son el nombre de usuario (<em>username</em>), el NIF, el código de empleado o la dirección de correo electrónico corporativo.</li>
+<li><strong>Autenticación (A):</strong> Verificación técnica de que la entidad es legítima y corresponde realmente a la identidad declarada. Se apoya en la validación de factores pertenecientes a tres categorías clásicas:</li>
+<li><em>Algo que sabes:</em> Elementos memorísticos como contraseñas, PINs, códigos de acceso o respuestas a preguntas secretas.</li>
+<li><em>Algo que tienes:</em> Objetos físicos o lógicos en posesión del usuario, como tarjetas inteligentes (DNIe), tokens criptográficos hardware, tarjetas de coordenadas o aplicaciones generadoras de códigos temporales (OTP).</li>
+<li><em>Algo que eres:</em> Rasgos biológicos e inalterables, como la huella dactilar, el patrón de iris, el reconocimiento facial o el análisis de la voz.</li>
+<li><strong>Autorización (A):</strong> Fase en la que el sistema consulta sus directrices de seguridad para conceder o denegar privilegios específicos (lectura, escritura, ejecución, administración) sobre los recursos solicitados.</li>
+<li><strong>Anotación y Auditoría (<em>Accounting / Auditing</em>) (A):</strong> Registro sistemático en ficheros de eventos (<em>logs</em>) de las acciones realizadas durante la sesión. Permite verificar el cumplimiento de las políticas, detectar anomalías en tiempo real y realizar análisis forenses tras un incidente de ciberseguridad.</li>
+</ol>
+<hr>
+<h3 id="13-tendencias-y-tecnologias-modernas-de-autenticacion">1.3. Tendencias y Tecnologías Modernas de Autenticación</h3>
+<p>Debido a que el uso de una única contraseña estática resulta vulnerable frente a ataques de fuerza bruta, <em>phishing</em> o filtraciones masivas, las recomendaciones actuales de INCIBE priorizan la adopción de mecanismos avanzados de autenticación.</p>
+<h4 id="a-autenticacion-multi-factor-mfa-2fa">A) Autenticación Multi-Factor (MFA / 2FA)</h4>
+<p>La autenticación de doble o múltiple factor exige verificar <strong>al menos dos factores de categorías distintas</strong> antes de conceder acceso al sistema. Su objetivo es garantizar que, si un ciberdelincuente compromete una contraseña, no pueda ingresar sin el segundo factor físico o biométrico.</p>
+<blockquote>
+<p><strong>Ejemplo de aplicación:</strong> Al conectar a la VPN corporativa desde casa, un administrador introduce su contraseña personal (factor de conocimiento) e inmediatamente recibe una notificación <em>push</em> en su dispositivo móvil registrado (factor de posesión) requiriendo la confirmación mediante lectura de huella dactilar (factor biométrico).</p>
+</blockquote>
+<h4 id="b-ciberllaves-y-passkeys-estandares-fido2-webauthn">B) Ciberllaves y Passkeys (Estándares FIDO2 / WebAuthn)</h4>
+<p>Mecanismos de autenticación sin contraseña (<em>passwordless</em>) basados en criptografía asimétrica de clave pública. La clave privada permanece almacenada en el chip de seguridad del dispositivo del usuario (módulo TPM, teléfono móvil o token USB), mientras que el servidor guarda únicamente la clave pública.</p>
+<blockquote>
+<p><strong>Ejemplo de aplicación:</strong> Un técnico de sistemas inserta una llave física de seguridad USB (como una <em>YubiKey</em>) en el ordenador de trabajo. Al tocar el sensor de la llave, el dispositivo firma un desafío matemático enviado por el servidor, autenticando al usuario de forma instantánea sin necesidad de teclear ningún carácter.</p>
+</blockquote>
+<h4 id="c-single-sign-on-sso-y-autenticacion-federada">C) Single Sign-On (SSO) y Autenticación Federada</h4>
+<p>Sistemas que permiten a un usuario autenticarse una sola vez ante un Proveedor de Identidad (<em>Identity Provider</em> - IdP) centralizado para obtener acceso automático a múltiples aplicaciones y servicios vinculados, evitando la dispersión de credenciales.</p>
+<blockquote>
+<p><strong>Ejemplo de aplicación:</strong> Un usuario inicia sesión por la mañana en el portal corporativo. Al abrir la plataforma Moodle, el servidor de correo electrónico o la herramienta de almacenamiento en la nube, los protocolos de federación (SAML 2.0 u OpenID Connect) validan el token de sesión emitido por el servidor de identidad sin volver a solicitar usuario y contraseña.</p>
+</blockquote>
+<h4 id="d-gestores-de-contrasenas-corporativos">D) Gestores de Contraseñas Corporativos</h4>
+<p>Repositorios virtuales cifrados que generan, almacenan y autocompletan claves complejas e independientes para cada servicio. Eliminan la necesidad de memorizar múltiples contraseñas o de anotarlas en medios inseguros.</p>
+<blockquote>
+<p><strong>Ejemplo de aplicación:</strong> El departamento de IT despliega un gestor de credenciales corporativo (como <em>Bitwarden</em> o <em>KeePassXC</em>). Cada empleado memoriza exclusivamente una <strong>frase de paso maestra</strong> (<em>master passphrase</em>) protegida por MFA; el gestor se encarga de rellenar de forma transparente contraseñas aleatorias de 20 caracteres para los diferentes servicios web.</p>
+</blockquote>
+<hr>
+<h3 id="14-ciclo-de-vida-de-las-credenciales-y-politicas-de-seguridad">1.4. Ciclo de Vida de las Credenciales y Políticas de Seguridad</h3>
+<p>La gestión de accesos exige un marco normativo interno que defina cómo se generan, distribuyen, mantienen y revocan las credenciales de usuario.</p>
+<h4 id="principios-organizativos-fundamentales">Principios Organizativos Fundamentales</h4>
+<ul>
+<li><strong>Mínimo Privilegio (<em>Least Privilege</em> / <em>Need-to-Know</em>):</strong> Todo usuario o proceso debe disponer únicamente de los permisos estrictamente necesarios para desempeñar su función laboral durante el tiempo indispensable.</li>
+<li><strong>Segregación de Funciones (<em>Separation of Duties</em>):</strong> División de procesos críticos entre distintos responsables para impedir que una sola persona ejecute acciones de alto impacto sin supervisión.</li>
+<li><strong>Denegación por Defecto (<em>Default Deny</em>):</strong> Toda petición de acceso que no esté explícitamente autorizada en la directiva debe ser rechazada.</li>
+</ul>
+<h4 id="directrices-para-la-gestion-de-contrasenas">Directrices para la Gestión de Contraseñas</h4>
+<ul>
+<li><strong>Sustitución de claves por defecto:</strong> Modificación obligatoria de las contraseñas de fábrica en servidores, aplicaciones y equipamiento de red (<em>routers</em>, <em>switches</em>, puntos de acceso) antes de su puesta en producción.</li>
+<li><strong>Requisitos de fortaleza:</strong> Establecimiento de una longitud mínima recomendada de <strong>12 a 14 caracteres</strong>, combinando letras mayúsculas, minúsculas, números y símbolos especiales, evitando términos de diccionario o datos personales.</li>
+<li><strong>Almacenamiento seguro en servidores:</strong> Las contraseñas nunca deben guardarse en texto claro; deben protegerse mediante funciones hash criptográficas robustas acompañadas de un valor aleatorio único (<em>salt</em>).</li>
+<li><strong>Gestión de bajas y cambios de puesto:</strong> Desactivación y revocación inmediata de cuentas, certificados y credenciales en el momento en que un empleado finaliza su vinculación laboral o cambia de departamento.</li>
+</ul>
+<hr>
+<h3 id="15-modelos-teoricos-de-control-de-acceso-autorizacion">1.5. Modelos Teóricos de Control de Acceso (Autorización)</h3>
+<p>A la hora de implementar la fase de autorización, existen cuatro modelos teóricos fundamentales que determinan la forma en que se estructuran y conceden los permisos.</p>
+<h4 id="1-dac-discretionary-access-control-control-de-acceso-discrecional">1. DAC (<em>Discretionary Access Control</em> – Control de Acceso Discrecional)</h4>
+<p>En el modelo DAC, el <strong>propietario</strong> (<em>owner</em>) o creador de un recurso posee plena facultad para decidir qué otros usuarios pueden acceder a él y qué permisos específicos se les otorgan.</p>
+<ul>
+<li><strong>Mecánica:</strong> El sistema mantiene una lista de control de acceso en cada objeto. El creador administra los permisos de forma descentralizada.</li>
+<li><strong>Ejemplo práctico:</strong> El esquema tradicional de permisos en Linux (<code>rwx</code> gestionado mediante el comando <code>chmod</code>), las carpetas compartidas en Windows o los enlaces de documentos en Google Drive.</li>
+<li><strong>Valoración:</strong> Destaca por su flexibilidad y facilidad de uso, pero presenta el riesgo de falta de control centralizado si un usuario otorga permisos excesivos de forma descuidada.</li>
+</ul>
+<h4 id="2-mac-mandatory-access-control-control-de-acceso-mandatorio">2. MAC (<em>Mandatory Access Control</em> – Control de Acceso Mandatorio)</h4>
+<p>En el modelo MAC, las decisiones de acceso las impone <strong>el sistema operativo de forma centralizada</strong> en función de políticas de seguridad estrictas. Ni siquiera el propietario de un archivo puede modificar los permisos de su propio recurso.</p>
+<ul>
+<li><strong>Mecánica:</strong> Asigna etiquetas de clasificación a los recursos (<em>Público, Confidencial, Secreto</em>) y etiquetas de acreditación a los usuarios o procesos.</li>
+<li><strong>Ejemplo práctico:</strong> Los sistemas de protección de kernel en Linux como <strong>SELinux</strong> o <strong>AppArmor</strong> (que restringen las acciones de un servicio como Apache aunque sea vulnerado), los entornos con requerimientos militares y los mecanismos de aislamiento (<em>sandboxing</em>) en Android e iOS.</li>
+<li><strong>Valoración:</strong> Proporciona la máxima contención frente a malware y elevación de privilegios, a costa de una elevada complejidad de configuración.</li>
+</ul>
+<h4 id="3-rbac-role-based-access-control-control-de-acceso-basado-en-roles">3. RBAC (<em>Role-Based Access Control</em> – Control de Acceso Basado en Roles)</h4>
+<p>En el modelo RBAC, los permisos se asocian a <strong>Roles o Funciones Laborales</strong> dentro de la organización, y los usuarios adquieren las autorizaciones al ser adscritos a uno o varios roles.</p>
+<ul>
+<li><strong>Mecánica:</strong> Abstrae la gestión individual. Cuando un empleado cambia de puesto, basta con retirarle el rol anterior y asignarle el nuevo, sin necesidad de redefinir permisos en cientos de archivos.</li>
+<li><strong>Ejemplo práctico:</strong> Los grupos de seguridad en Directorios Activos (Active Directory / LDAP), las matrices de permisos en sistemas ERP o la asignación de roles en plataformas educativas como Moodle (<em>Profesor</em>, <em>Estudiante</em>, <em>Administrador</em>).</li>
+<li><strong>Valoración:</strong> Simplifica radicalmente la administración en empresas medianas y grandes, facilitando el cumplimiento del principio de mínimo privilegio.</li>
+</ul>
+<h4 id="4-abac-attribute-based-access-control-control-de-acceso-basado-en-atributos">4. ABAC (<em>Attribute-Based Access Control</em> – Control de Acceso Basado en Atributos)</h4>
+<p>Considerado la evolución dinámica de RBAC, el modelo ABAC evalúa en tiempo real <strong>múltiples atributos</strong> del sujeto, del recurso, de la acción y del entorno para autorizar cada petición.</p>
+<ul>
+<li><strong>Mecánica:</strong> Aplica reglas condicionales del tipo <em>"Permitir si [Atributos del Usuario] + [Atributos del Recurso] + [Atributos del Entorno] cumplen la condición"</em>.</li>
+<li><strong>Ejemplo práctico:</strong> Las directivas de Acceso Condicional en la nube (Microsoft Entra ID / AWS IAM) que evalúan la IP de origen, la hora, el país y el estado de seguridad del equipo antes de permitir la conexión, formando la base de la arquitectura <strong><em>Zero Trust</em></strong> (<em>"Nunca confíes, verifica siempre"</em>).</li>
+<li><strong>Valoración:</strong> Ofrece un control granular e inteligente adaptado al teletrabajo y entornos <em>cloud</em>, aunque requiere motores de evaluación de políticas avanzados.</li>
+</ul>
+<hr>
+<h4 id="cuadro-resumen-comparativo-de-los-modelos-de-control-de-acceso">Cuadro Resumen Comparativo de los Modelos de Control de Acceso</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Modelo</th>
+<th style="text-align: left;">Criterio Principal de Decisión</th>
+<th style="text-align: left;">Responsable del Control</th>
+<th style="text-align: left;">Ámbito / Caso de Uso Típico</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>DAC</strong></td>
+<td style="text-align: left;">Identidad del usuario y permisos asignados por el dueño.</td>
+<td style="text-align: left;">El Propietario del archivo/recurso.</td>
+<td style="text-align: left;">Sistemas de ficheros locales (<code>chmod</code> en Linux / NTFS).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>MAC</strong></td>
+<td style="text-align: left;">Etiquetas de seguridad del sujeto y clasificación del objeto.</td>
+<td style="text-align: left;">El Sistema Operativo (Centralized).</td>
+<td style="text-align: left;">Módulos de seguridad SELinux, AppArmor, entorno militar.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>RBAC</strong></td>
+<td style="text-align: left;">Rol o función laboral desempeñada en la organización.</td>
+<td style="text-align: left;">El Administrador del Sistema / IT.</td>
+<td style="text-align: left;">Directorio Activo (LDAP), Moodle, sistemas ERP.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ABAC</strong></td>
+<td style="text-align: left;">Atributos dinámicos (Sujeto + Objeto + Hora + Ubicación/IP).</td>
+<td style="text-align: left;">Motor de Políticas en tiempo real.</td>
+<td style="text-align: left;">Entornos Cloud (Azure/AWS), arquitectura <em>Zero Trust</em>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-proteccion-fisica-y-seguridad-en-el-arranque">2. Protección Física y Seguridad en el Arranque</h2>
+<h3 id="21-seguridad-a-nivel-de-firmware-bios-y-uefi">2.1. Seguridad a Nivel de Firmware: BIOS y UEFI</h3>
+<p>La <strong>BIOS</strong> (<em>Basic Input Output System</em>) y su evolución <strong>UEFI</strong> (<em>Unified Extensible Firmware Interface</em>) constituyen el software básico grabado en la memoria no volátil (ROM/NVRAM) de la placa base. Su función principal es chequear el hardware (proceso POST) e iniciar la secuencia de arranque.</p>
+<p>Toda política de seguridad informática debe considerar el firmware de arranque como la primera línea de contención frente a intrusiones físicas o manipulación de dispositivos.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a> [ Encendido ] ──&gt; [ Firmware: BIOS/UEFI ] ──&gt; [ Cargador: GRUB2 ] ──&gt; [ Kernel / Sistema Operativo ]
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>                         │                            │
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>                   Contraseñas y                Protección por
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>                    Secure Boot                 Contraseña GRUB
+</code></pre></div>
+<h4 id="objetivos-principales-de-seguridad-en-el-firmware">Objetivos Principales de Seguridad en el Firmware</h4>
+<ol>
+<li><strong>Proteger el arranque del sistema:</strong> Impedir que personas no autorizadas enciendan o inicien el equipo desde medios externos no permitidos.</li>
+<li><strong>Proteger la configuración del firmware:</strong> Evitar que se modifiquen los parámetros de seguridad establecidos por el administrador.</li>
+</ol>
+<h4 id="mecanismos-de-proteccion-en-biosuefi">Mecanismos de Protección en BIOS/UEFI</h4>
+<ul>
+<li><strong>Activación y Desactivación de Dispositivos y Puertos:</strong> Permite habilitar o deshabilitar desde la propia placa base el uso de componentes físicos específicos para prevenir la fuga de información o la introducción de malware (desactivación de puertos SATA/NVMe secundarios, bloqueo de puertos USB e interfaces de red Ethernet/Wi-Fi).</li>
+<li><strong>Definición de la Secuencia de Arranque (<em>Boot Order</em>):</strong> Establece qué dispositivos buscará el sistema para cargar el sistema operativo y en qué orden estricto. La buena práctica dicta configurar el <strong>disco duro interno principal como primera (y única) opción de arranque</strong>, deshabilitando el arranque automático desde dispositivos USB, lectoras o red (PXE).</li>
+<li><strong>Establecimiento de Contraseñas:</strong><ul>
+<li><em>Contraseña de Supervisor / Administrador:</em> Protege el acceso al menú de configuración (<em>Setup</em>), evitando que un usuario modifique el orden de arranque o reactive puertos deshabilitados.</li>
+<li><em>Contraseña de Usuario / Arranque (</em>Boot Password<em>):</em> Exige introducir una clave nada más encender el equipo, deteniendo el proceso de carga antes de que se inicie cualquier sistema operativo.</li>
+</ul>
+</li>
+</ul>
+<h4 id="el-limite-de-la-seguridad-en-bios-y-la-necesidad-de-la-seguridad-fisica">El Límite de la Seguridad en BIOS y la Necesidad de la Seguridad Física</h4>
+<p>Existen procedimientos físicos documentados por los fabricantes para recuperar o resetear las contraseñas del firmware en caso de olvido (como el reseteo por jumper <em>CLR_CMOS</em> o la retirada de la pila botón CR2032). Dado que un atacante con acceso físico al interior de la caja podría utilizar estos mismos métodos para anular la contraseña, la seguridad lógica del firmware <strong>debe respaldarse siempre con medidas de seguridad física</strong>:</p>
+<ul>
+<li>Ubicación de servidores en armarios rack o salas de máquinas con acceso restringido.</li>
+<li>Uso de chasis informáticos con <strong>cerradura de llave</strong> o sensores de apertura de caja (<em>Chassis Intrusion</em>).</li>
+<li>Candados de seguridad tipo Kensington en puestos de trabajo de acceso público.</li>
+</ul>
+<hr>
+<h3 id="22-uefi-y-secure-boot-arranque-seguro">2.2. UEFI y Secure Boot (<em>Arranque Seguro</em>)</h3>
+<p>En los equipos modernos, la interfaz <strong>UEFI</strong> sustituye a la BIOS tradicional aportando mejoras como el soporte de discos de gran capacidad (tabla de particiones GPT), interfaz gráfica y módulos de red nativos. Una de las características de seguridad más relevantes de UEFI es <strong>Secure Boot</strong> (<em>Arranque Seguro</em>).</p>
+<h4 id="funcionamiento-de-secure-boot">Funcionamiento de Secure Boot</h4>
+<ul>
+<li><strong>Verificación de Firmas Digitales:</strong> Al encender el equipo, UEFI comprueba la firma criptográfica del cargador de arranque (<em>bootloader</em>, como <code>bootloader.efi</code> o GRUB2) y de los controladores antes de ejecutarlos.</li>
+<li><strong>Base de Datos de Claves de Confianza:</strong> El firmware mantiene una lista interna de claves públicas autorizadas (emitidas por fabricantes o distribuidores de sistemas operativos como Microsoft, Canonical/Ubuntu, Red Hat).</li>
+<li><strong>Objetivo de Protección:</strong> Bloquear la ejecución de software no firmado, impidiendo ataques mediante <strong>Rootkits</strong> o <strong>Bootkits</strong> (malware diseñado para cargarse en memoria antes de que arranque el propio sistema operativo y el antivirus).</li>
+</ul>
+<hr>
+<h3 id="23-la-brecha-de-seguridad-en-el-cargador-de-arranque-grub2">2.3. La Brecha de Seguridad en el Cargador de Arranque: GRUB2</h3>
+<p>Una vez que la BIOS/UEFI valida el hardware, pasa el control al cargador de arranque. En entornos Linux, el estándar es <strong>GRUB2</strong> (<em>Grand Unified Bootloader</em>).</p>
+<p>Si la BIOS/UEFI está protegida pero el menú de GRUB2 se deja abierto sin contraseña, el sistema presenta una <strong>vulnerabilidad crítica de acceso local</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a> Menú de GRUB2 ──&gt; Edición interactiva [Tecla 'e'] ──&gt; Añadir 'init=/bin/bash' ──&gt; Consola ROOT sin Contraseña
+</code></pre></div>
+<h4 id="anatomia-del-ataque-por-edicion-de-grub2-bypass-de-root">Anatomía del Ataque por Edición de GRUB2 (Bypass de Root)</h4>
+<ol>
+<li>Un usuario con acceso al teclado enciende el equipo y, en el menú visual de GRUB2, pulsa la tecla <strong><code>e</code></strong> para editar los parámetros de arranque en tiempo real.</li>
+<li>Localiza la línea del kernel que empieza por <code>linux /boot/vmlinuz...</code> y añade al final la instrucción:
+   <code>init=/bin/bash</code></li>
+<li>Pulsa <code>Ctrl + X</code> o <code>F10</code> para arrancar.</li>
+<li><strong>Resultado:</strong> El kernel omite el proceso de inicialización habitual (<code>systemd</code>) y entrega directamente al usuario una consola de comandos <code>bash</code> con <strong>privilegios de superusuario (<code>root</code>)</strong>, sin solicitar ninguna contraseña. Desde ahí, el atacante puede cambiar la contraseña de root (<code>passwd root</code>), montar el disco en lectura/escritura y acceder a todos los archivos del sistema.</li>
+</ol>
+<h4 id="la-solucion-proteccion-de-grub2-mediante-contrasena">La Solución: Protección de GRUB2 mediante Contraseña</h4>
+<p>Para cerrar esta brecha, GRUB2 permite definir usuarios y cifrar contraseñas mediante algoritmos hash (como PBKDF2). De este modo:</p>
+<ul>
+<li>Se exige usuario y contraseña si alguien intenta <strong>editar las opciones de arranque (tecla <code>e</code>)</strong> o acceder a la línea de comandos de GRUB2 (tecla <code>c</code>).</li>
+<li>Se puede restringir el inicio de entradas específicas del menú (como el <em>Recovery Mode</em> o el arranque de kernels alternativos).</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Práctica de Laboratorio</p>
+<p><strong><a href="../P01/">Práctica 4.1: Protección del Gestor de Arranque GRUB2 con Contraseña</a></strong></p>
+<p><em>En esta práctica comprobarás la vulnerabilidad de escalada a root mediante la inyección del parámetro <code>init=/bin/bash</code> en GRUB2 y aprenderás a fortificar el gestor de arranque mediante contraseñas cifradas con PBKDF2.</em></p>
+</div>
+<hr>
+<h2 id="3-control-de-acceso-al-sistema-de-ficheros-listas-de-control-de-acceso-acls">3. Control de Acceso al Sistema de Ficheros: Listas de Control de Acceso (ACLs)</h2>
+<h3 id="31-limitaciones-del-modelo-tradicional-unix-ugo">3.1. Limitaciones del Modelo Tradicional UNIX (UGO)</h3>
+<p>En los sistemas operativos GNU/Linux y tipo UNIX, el mecanismo nativo de control de acceso al sistema de archivos se basa en el <strong>modelo discrecional clásico (UGO - <em>User, Group, Others</em>)</strong>.</p>
+<p>Cada inodo (archivo o directorio) dispone únicamente de tres conjuntos de permisos de lectura, escritura y ejecución (<code>rwx</code>):</p>
+<ul>
+<li><strong>Propietario (<code>u</code> - <em>User / Owner</em>):</strong> El usuario dueño del recurso.</li>
+<li><strong>Grupo principal (<code>g</code> - <em>Group</em>):</strong> Un único grupo asignado al recurso.</li>
+<li><strong>Otros (<code>o</code> - <em>Others</em>):</strong> El resto de usuarios del sistema.</li>
+</ul>
+<h4 id="la-rigidez-en-entornos-colaborativos">La Rigidez en Entornos Colaborativos</h4>
+<p>Este esquema resulta rígido e insuficiente en organizaciones reales:</p>
+<ul>
+<li><strong>Solo admite un único grupo propietario:</strong> Si un directorio departamental pertenece a <em>Ventas</em>, no es posible conceder acceso de solo lectura a <em>Auditores</em> sin abrir el acceso a toda la organización mediante la categoría <em>Otros (<code>o</code>)</em>.</li>
+<li><strong>Vulnera el Principio de Mínimo Privilegio:</strong> Obliga a otorgar permisos excesivos o a crear una proliferación inmanejable de grupos secundarios en el sistema.</li>
+</ul>
+<p>Para solventar esta limitación surgieron las <strong>Listas de Control de Acceso (ACLs - <em>Access Control Lists</em>)</strong>.</p>
+<hr>
+<h3 id="32-concepto-de-acls-posix-access-control-lists">3.2. Concepto de ACLs POSIX (Access Control Lists)</h3>
+<p>Las <strong>ACLs POSIX</strong> (definidas en el estándar POSIX 1003.1e / 1003.2c) extienden el sistema de permisos tradicional asociando a cada archivo o directorio una lista detallada de <strong>Entradas de Control de Acceso (ACE - <em>Access Control Entries</em>)</strong>.</p>
+<p>Están soportadas de forma nativa por los sistemas de archivos habituales de Linux (<code>ext4</code>, <code>XFS</code>, <code>Btrfs</code>) y aportan:</p>
+<ol>
+<li><strong>Usuarios nombrados:</strong> Posibilidad de conceder permisos específicos a usuarios concretos adicionales, con independencia del dueño.</li>
+<li><strong>Grupos nombrados:</strong> Posibilidad de asignar permisos diferenciados a múltiples grupos de trabajo.</li>
+<li><strong>Mecanismo de contención (Máscara):</strong> Un filtro global que limita los permisos máximos efectivos.</li>
+<li><strong>Herencia en directorios:</strong> Reglas por defecto para que los nuevos archivos y subcarpetas adquieran automáticamente la política del departamento.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">El indicador visual del signo más (<code>+</code>) en <code>ls -l</code></p>
+<p>Cuando un archivo o directorio dispone de una ACL extendida, el comando <code>ls -l</code> añade automáticamente un <strong>signo más (<code>+</code>)</strong> al final de la cadena de 10 caracteres de permisos (por ejemplo, <code>drwxr-xr-x+</code>). Esto alerta al administrador de que existen reglas adicionales que deben consultarse con herramientas específicas.</p>
+</div>
+<hr>
+<h3 id="33-mecanismos-fundamentales-la-mascara-y-la-herencia">3.3. Mecanismos Fundamentales: La Máscara y la Herencia</h3>
+<p>Para comprender el funcionamiento de las ACLs, destacan dos conceptos esenciales:</p>
+<h4 id="1-la-mascara-de-permisos-efectivos-mask">1. La Máscara de Permisos Efectivos (<code>mask</code>)</h4>
+<p>La <strong>máscara (<em>mask</em>)</strong> define el <strong>techo máximo de permisos permitidos</strong> que pueden ejercer los usuarios nombrados, el grupo propietario y los grupos nombrados:</p>
+<ul>
+<li>Actúa como un filtro lógico <strong>AND</strong>: aunque una regla conceda permisos de lectura y escritura (<code>rw-</code>), si la máscara está fijada en solo lectura (<code>r--</code>), el <strong>permiso efectivo</strong> del usuario será únicamente lectura (<code>r--</code>).</li>
+<li><strong>Excepción:</strong> La máscara nunca limita los permisos del usuario propietario (<code>user::</code>) ni de la categoría otros (<code>other::</code>).</li>
+</ul>
+<blockquote>
+<p><strong>Cálculo del Permiso Efectivo:</strong> <code>Permiso Asignado en la ACL</code> <strong>AND</strong> <code>Máscara (mask)</code></p>
+</blockquote>
+<h4 id="2-permisos-por-defecto-default-acls-y-herencia">2. Permisos por Defecto (<em>Default ACLs</em>) y Herencia</h4>
+<p>En UNIX clásico, los archivos nuevos heredan la máscara <code>umask</code> del proceso creador, lo que suele impedir que compañeros de un mismo departamento puedan colaborar en carpetas compartidas:</p>
+<ul>
+<li>Las <strong>ACLs por defecto</strong> solo se pueden aplicar a <strong>directorios</strong>.</li>
+<li>No otorgan acceso sobre la carpeta en sí, sino que actúan como una <strong>plantilla de herencia obligatoria</strong>: cualquier archivo o subdirectorio creado dentro adoptará automáticamente esos permisos, asegurando la continuidad de la directiva de seguridad.</li>
+</ul>
+<hr>
+<h3 id="34-algoritmo-de-evaluacion-de-permisos-en-el-kernel">3.4. Algoritmo de Evaluación de Permisos en el Kernel</h3>
+<p>Cuando un proceso intenta leer, escribir o ejecutar un archivo protegido por ACLs, el kernel de Linux evalúa los permisos de forma estrictamente secuencial y <strong>se detiene en la primera coincidencia</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>       [ Proceso solicita acceso a un archivo ]
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>                          │
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>                          ▼
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>        ¿Es el Usuario Propietario (owner)? ───── SÍ ───&gt; Aplica permisos de 'user::' y TERMINA.
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>                          │ NO
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>                          ▼
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>       ¿Hay regla para este Usuario específico? ── SÍ ───&gt; Aplica regla AND 'mask' y TERMINA.
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>                          │ NO
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>                          ▼
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>      ¿Pertenece al Grupo principal o nombrados? ─ SÍ ───&gt; Une los permisos de sus grupos (OR),
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>                          │ NO                             aplica la 'mask' (AND) y TERMINA.
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>                          ▼
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>            Aplica permisos de 'other::' y TERMINA.
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Prioridad de Reglas</p>
+<p>Una regla específica de usuario tiene prioridad sobre las pertenencias a grupos: si un usuario tiene denegado el acceso individualmente, no podrá acceder aunque pertenezca a un grupo con permisos totales.</p>
+</div>
+<hr>
+<h3 id="35-practica-de-laboratorio">3.5. Práctica de Laboratorio</h3>
+<p>El manejo práctico de las utilidades de consola (<code>getfacl</code> y <code>setfacl</code>), el diseño de matrices de permisos departamentales y la clonación de directivas se ejercita en la práctica del bloque:</p>
+<div class="admonition note">
+<p class="admonition-title">Práctica de Laboratorio</p>
+<p><strong><a href="../P02/">Práctica 4.2: Listas de Control de Acceso (ACLs POSIX) en GNU/Linux</a></strong></p>
+<p><em>En esta práctica crearás una estructura departamental con usuarios y grupos corporativos, aplicarás permisos granulares cruzados con <code>setfacl</code>, verificarás el comportamiento de la máscara de permisos y configurarás herencia por defecto en directorios compartidos.</em></p>
+</div>
+<hr>
+<h2 id="4-robustecimiento-logico-de-accesos-y-autenticacion">4. Robustecimiento Lógico de Accesos y Autenticación</h2>
+<p>El control de acceso no se limita al almacenamiento físico ni al sistema de ficheros; la autenticación de usuarios y la gestión de accesos remotos constituyen la superficie de ataque más expuesta de cualquier infraestructura corporativa.</p>
+<hr>
+<h3 id="41-ciclo-de-vida-y-politicas-de-envejecimiento-de-contrasenas">4.1. Ciclo de Vida y Políticas de Envejecimiento de Contraseñas</h3>
+<p>En los sistemas GNU/Linux, las credenciales de usuario se gestionan mediante una arquitectura desacoplada entre dos ficheros fundamentales:</p>
+<ul>
+<li><strong><code>/etc/passwd</code>:</strong> Contiene información general de las cuentas (identificador UID, GID del grupo principal, directorio personal y shell por defecto). Al ser legible por todos los usuarios del sistema (<code>-rw-r--r--</code>), <strong>no contiene las contraseñas</strong>.</li>
+<li><strong><code>/etc/shadow</code>:</strong> Almacenable de forma exclusiva por <code>root</code> (<code>-rw-r-----</code>), guarda los resúmenes hash criptográficos salteados de las contraseñas junto a los parámetros del <strong>ciclo de vida y envejecimiento (<em>password aging</em>)</strong>.</li>
+</ul>
+<p><img alt="Fortaleza y complejidad de contraseñas" src="../img/password_strength.png"></p>
+<h4 id="parametros-del-ciclo-de-vida-en-etcshadow">Parámetros del Ciclo de Vida en <code>/etc/shadow</code></h4>
+<p>Cada registro de <code>/etc/shadow</code> estructura la caducidad temporal a través de nueve campos separados por dos puntos (<code>:</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>usuario:$6$sal...$hash:19723:1:90:7:14:19800:
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>   │          │          │   │  │  │  │   │
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>   │          │          │   │  │  │  │   └── Fecha absoluta de expiración de cuenta (días desde epoch)
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>   │          │          │   │  │  │  └────── Días de inactividad permitidos tras expirar antes de deshabilitar
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>   │          │          │   │  │  └───────── Días de aviso previo al usuario antes de caducar
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>   │          │          │   │  └──────────── Días máximos de validez de la contraseña
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>   │          │          │   └─────────────── Días mínimos que deben transcurrir antes de poder cambiarla de nuevo
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>   │          │          └─────────────────── Fecha del último cambio de clave (días desde 01/01/1970)
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>   │          └────────────────────────────── Algoritmo ($6$ = SHA-512) + Salt aleatorio + Hash
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>   └───────────────────────────────────────── Nombre de usuario
+</code></pre></div>
+<ul>
+<li><strong>Días mínimos:</strong> Impiden que un usuario cambie la clave varias veces seguidas en el mismo día para volver a su contraseña antigua favorita.</li>
+<li><strong>Días máximos y aviso:</strong> Fuerza la rotación periódica de credenciales avisando al usuario con antelación durante el login.</li>
+<li><strong>Herramienta de gestión:</strong> El comando administrativo <strong><code>chage</code></strong> (<em>change age</em>) permite auditar y modificar estos valores de forma centralizada sin editar manualmente <code>/etc/shadow</code>.</li>
+</ul>
+<hr>
+<h3 id="42-arquitectura-de-modulos-de-autenticacion-conectables-pam">4.2. Arquitectura de Módulos de Autenticación Conectables (PAM)</h3>
+<p>Históricamente, cada servicio de red (<code>sshd</code>, <code>login</code>, <code>su</code>, <code>ftp</code>) implementaba su propia lógica para validar usuarios contra <code>/etc/passwd</code>. Para evitar duplicidades y permitir la integración de nuevos métodos (LDAP, Kerberos, biometría, 2FA) sin recompilar las aplicaciones, UNIX y Linux adoptaron <strong>PAM (<em>Pluggable Authentication Modules</em>)</strong>.</p>
+<p><img alt="Arquitectura del subsistema PAM" src="../img/pam_architecture.svg"></p>
+<h4 id="1-tipos-de-modulos-de-gestion-las-4-caras-de-pam">1. Tipos de Módulos de Gestión (Las 4 Caras de PAM)</h4>
+<p>Cada servicio o aplicación invoca directivas agrupadas en cuatro áreas de control dentro de sus ficheros de configuración en <code>/etc/pam.d/</code>:</p>
+<ol>
+<li><strong><code>auth</code> (Autenticación):</strong> Valida la identidad del usuario (mediante contraseña, token TOTP, huella o clave de seguridad FIDO2).</li>
+<li><strong><code>account</code> (Gestión de Cuentas):</strong> Comprueba si la cuenta está autorizada a acceder en este momento (verifica que no esté bloqueada, caducada o fuera de su horario laboral permitido).</li>
+<li><strong><code>password</code> (Gestión de Contraseñas):</strong> Regula el proceso de cambio o actualización de credenciales.</li>
+<li><strong><code>session</code> (Gestión de Sesión):</strong> Ejecuta tareas previas y posteriores al inicio de sesión (montaje del directorio <code>/home</code>, establecimiento de límites de recursos <code>limits.conf</code>, registro en logs de auditoría).</li>
+</ol>
+<h4 id="2-banderas-de-control-control-flags-en-la-evaluacion-de-la-pila">2. Banderas de Control (<em>Control Flags</em>) en la Evaluación de la Pila</h4>
+<p>Cuando un usuario intenta acceder, PAM evalúa secuencialmente los módulos en cascada aplicando las directivas de control:</p>
+<ul>
+<li><strong><code>required</code>:</strong> La comprobación debe tener éxito obligatorio. Si falla, el intento será denegado, pero PAM <strong>continúa ejecutando los siguientes módulos de la pila</strong> para que un atacante no pueda deducir qué verificación falló en concreto.</li>
+<li><strong><code>requisite</code>:</strong> De obligado cumplimiento. A diferencia de <code>required</code>, si este módulo falla, <strong>aborta la ejecución de inmediato</strong>, rechazando la autenticación sin evaluar más reglas.</li>
+<li><strong><code>sufficient</code>:</strong> Si este módulo tiene éxito (y ninguno previo de tipo <code>required</code> había fallado), <strong>concede el acceso inmediatamente</strong> y finaliza con éxito. Si falla, su error se ignora y la pila continúa.</li>
+<li><strong><code>optional</code>:</strong> El módulo se ejecuta a título informativo; su resultado solo se toma en cuenta si ningún otro módulo decide el resultado final.</li>
+</ul>
+<h4 id="3-fortificacion-mediante-modulos-especificos">3. Fortificación mediante Módulos Específicos</h4>
+<ul>
+<li><strong>Control de Complejidad (<code>pam_pwquality</code>):</strong> Analiza en tiempo real las contraseñas nuevas, obligando a respetar longitudes mínimas, mezclas de mayúsculas, minúsculas, dígitos y caracteres especiales, e impidiendo el uso de contraseñas de diccionario o datos del usuario.</li>
+<li><strong>Defensa ante Ataques de Fuerza Bruta (<code>pam_faillock</code>):</strong> Registra los intentos de acceso erróneos y bloquea automáticamente la cuenta durante un periodo configurable tras superar un número umbral de fallos continuados.</li>
+</ul>
+<hr>
+<h3 id="43-fortificacion-del-acceso-remoto-seguro-ssh">4.3. Fortificación del Acceso Remoto Seguro (SSH)</h3>
+<p>El protocolo <strong>SSH (<em>Secure Shell</em>)</strong> es el canal estándar para la administración remota de servidores. Al estar expuesto a redes públicas o a la red corporativa, el uso de contraseñas convencionales resulta vulnerable frente a ataques de fuerza bruta automatizados (<em>bots</em>, <em>scanners</em>).</p>
+<p><img alt="Flujo de autenticación SSH por pares de claves criptográficas" src="../img/ssh_auth_flow.svg"></p>
+<h4 id="la-autenticacion-criptografica-asimetrica-ssh-keys">La Autenticación Criptográfica Asimétrica (SSH Keys)</h4>
+<p>La mejor práctica de seguridad consiste en sustituir o complementar las contraseñas mediante <strong>criptografía asimétrica</strong>:</p>
+<ol>
+<li><strong>Par de claves en el cliente:</strong> El usuario genera en su estación un par de claves (<code>ssh-keygen</code>, empleando algoritmos modernos y resistentes como <code>Ed25519</code> o <code>RSA-4096</code>).</li>
+<li><strong>Clave privada (<code>id_ed25519</code>):</strong> Permanece almacenada en la máquina del cliente, protegida por los permisos del sistema de archivos (<code>chmod 600</code>) y cifrada mediante una frase de paso (<em>passphrase</em>). <strong>Nunca viaja por la red ni se copia en ningún servidor.</strong></li>
+<li><strong>Clave pública (<code>id_ed25519.pub</code>):</strong> Se transfiere y registra en el servidor de destino dentro del archivo de claves autorizadas del usuario (<code>~/.ssh/authorized_keys</code>).</li>
+<li><strong>Desafío criptográfico (<em>Challenge-Response</em>):</strong> Durante el inicio de sesión, el servidor emite un reto aleatorio que el cliente firma con su clave privada. El servidor comprueba matemáticamente la firma utilizando la clave pública registrada. Si coincide, autoriza la conexión <strong>sin que ninguna clave o contraseña secreta haya transitado por la red</strong>.</li>
+</ol>
+<h4 id="directivas-de-fortificacion-del-servidor-etcsshsshd_config">Directivas de Fortificación del Servidor (<code>/etc/ssh/sshd_config</code>)</h4>
+<p>Para mitigar riesgos habituales en el servidor, el fichero de configuración de OpenSSH (<code>sshd_config</code>) debe incluir las siguientes restricciones:</p>
+<ul>
+<li><strong><code>PermitRootLogin no</code>:</strong> Impide iniciar sesión remota directamente como superusuario <code>root</code>. Obliga a conectarse con una cuenta nominal auditada y elevar privilegios puntualmente mediante <code>sudo</code>.</li>
+<li><strong><code>PasswordAuthentication no</code>:</strong> Deshabilita de forma estricta el inicio de sesión mediante contraseña tradicional, obligando a emplear claves criptográficas autorizadas.</li>
+<li><strong><code>PubkeyAuthentication yes</code>:</strong> Habilita el mecanismo de validación por clave pública.</li>
+<li><strong><code>MaxAuthTries 3</code>:</strong> Restringe los reintentos permitidos por conexión para mitigar sondeos de fuerza bruta.</li>
+<li><strong><code>Port &lt;puerto_no_estandar&gt;</code> (Opcional):</strong> Cambiar el puerto por defecto (TCP 22) reduce drásticamente el ruido de los escaneos automatizados en Internet (defensa en profundidad / oscuridad complementaria).</li>
+</ul>
+<hr>
+<h2 id="5-monitorizacion-de-accesos-y-respuesta-reactiva-con-fail2ban">5. Monitorización de Accesos y Respuesta Reactiva con Fail2ban</h2>
+<h3 id="51-registro-y-auditoria-de-intentos-de-acceso-en-gnulinux">5.1. Registro y Auditoría de Intentos de Acceso en GNU/Linux</h3>
+<p>Toda arquitectura de seguridad se vuelve ineficaz si carece de monitorización (fase de <em>Anotación y Auditoría</em> del modelo IAAA). Los intentos de intrusión, tanto exitosos como frustrados, quedan reflejados en los registros del sistema operativo:</p>
+<ul>
+<li><strong><code>/var/log/auth.log</code> (Debian/Ubuntu) o <code>/var/log/secure</code> (RHEL/CentOS):</strong> Almacenan todos los eventos de autenticación generados por PAM, <code>sshd</code>, <code>sudo</code> y las consolas de login.</li>
+<li><strong><code>journalctl -u ssh.service</code>:</strong> Permite consultar de forma estructurada los eventos del demonio SSH gestionados por <code>systemd-journald</code>.</li>
+</ul>
+<p>En un servidor conectado a una red corporativa o a Internet, es habitual que se produzcan cientos de intentos continuados de fuerza bruta con usuarios inexistentes o contraseñas aleatorias. La supervisión manual de estos registros resulta inabordable para un administrador; se hace imprescindible disponer de herramientas de <strong>defensa reactiva automatizada</strong>.</p>
+<hr>
+<h3 id="52-concepto-de-defensa-activa-contra-fuerza-bruta-fail2ban">5.2. Concepto de Defensa Activa contra Fuerza Bruta: Fail2ban</h3>
+<p><strong>Fail2ban</strong> es una solución de defensa activa basada en host (<em>HIPS - Host-based Intrusion Prevention System</em>) que automatiza la respuesta ante intentos de intrusión repetidos.</p>
+<p><img alt="Arquitectura conceptual de defensa activa con Fail2ban" src="../img/fail2ban_architecture.svg"></p>
+<p>Su funcionamiento conceptual se fundamenta en un ciclo continuo de tres etapas:</p>
+<ol>
+<li><strong>Monitorización de registros:</strong> Inspecciona en tiempo real los ficheros de log en busca de patrones de acceso fallido reiterado.</li>
+<li><strong>Detección de umbrales:</strong> Si una misma dirección IP supera un número prefijado de intentos fallidos en una ventana de tiempo determinada, se clasifica como comportamiento hostil.</li>
+<li><strong>Respuesta reactiva en el cortafuegos:</strong> Actúa de forma proactiva inyectando una regla temporal en el cortafuegos del kernel (<code>iptables</code> o <code>nftables</code>) para bloquear el tráfico procedente de dicha dirección IP, liberando de carga al servidor.</li>
+</ol>
+<hr>
+<h3 id="53-practica-de-laboratorio">5.3. Práctica de Laboratorio</h3>
+<p>El despliegue de la herramienta, la personalización de las políticas de bloqueo, la protección de direcciones IP de confianza y la comprobación del filtrado ante ataques de fuerza bruta se desarrollan en la práctica del bloque:</p>
+<div class="admonition info">
+<p class="admonition-title">Práctica de Laboratorio</p>
+<p><strong><a href="../P03/">Práctica 4.3: Monitorización de Accesos y Defensa Activa con Fail2ban en SSH</a></strong></p>
+<p><em>En esta práctica instalarás y configurarás Fail2ban en un servidor Linux, definirás políticas de bloqueo temporal, protegerás la IP de administración con listas blancas y simularás un ataque de fuerza bruta SSH verificando el corte de conexión y las reglas dinámicas generadas en <code>iptables</code>.</em></p>
+</div></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "toc.integrate", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
