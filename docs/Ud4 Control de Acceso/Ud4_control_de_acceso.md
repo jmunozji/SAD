@@ -354,30 +354,19 @@ usuario:$6$sal...$hash:19723:1:90:7:14:19800:
 
 Históricamente, cada servicio de red (`sshd`, `login`, `su`, `ftp`) implementaba su propia lógica para validar usuarios contra `/etc/passwd`. Para evitar duplicidades y permitir la integración de nuevos métodos (LDAP, Kerberos, biometría, 2FA) sin recompilar las aplicaciones, UNIX y Linux adoptaron **PAM (*Pluggable Authentication Modules*)**.
 
-![Arquitectura del subsistema PAM](img/pam_architecture.svg)
+PAM (Pluggable Authentication Modules) establece una interfaz entre los programas de usuario y distintos métodos de autenticación. De esta forma, el método de autenticación se hace transparente para los programas.
 
-#### 1. Tipos de Módulos de Gestión (Las 4 Caras de PAM)
+PAM surgió en Sun Microsystems, aunque, en este caso, como una propuesta a la Open Software Foundation. Fue Red Hat quien lo desarrolló como una herramienta de Software libre y lo incorporó por primera vez a la versión 3.0.4 de su sistema operativo en 1996.
 
-Cada servicio o aplicación invoca directivas agrupadas en cuatro áreas de control dentro de sus ficheros de configuración en `/etc/pam.d/`:
+La idea se basa en la creación de módulos de autenticación reemplazables, de forma que sea transparente para el sistema el uso de distintos métodos de autenticación. Esto hace que, sin realizar modificaciones en el sistema, podamos utilizar métodos que vayan desde el uso típico de un nombre de usuario y una contraseña, hasta dispositivos que faciliten la identificación biométrica de los usuarios (lectores de huellas, de voz, de imagen, etc.). Incluso incorpora opciones para aceptar contraseñas de un solo uso, restringir el acceso a determinados horarios o establecer políticas de autenticación específicas para cada usuario o grupos de usuarios.
 
-1. **`auth` (Autenticación):** Valida la identidad del usuario (mediante contraseña, token TOTP, huella o clave de seguridad FIDO2).
-2. **`account` (Gestión de Cuentas):** Comprueba si la cuenta está autorizada a acceder en este momento (verifica que no esté bloqueada, caducada o fuera de su horario laboral permitido).
-3. **`password` (Gestión de Contraseñas):** Regula el proceso de cambio o actualización de credenciales.
-4. **`session` (Gestión de Sesión):** Ejecuta tareas previas y posteriores al inicio de sesión (montaje del directorio `/home`, establecimiento de límites de recursos `limits.conf`, registro en logs de auditoría).
+Básicamente, PAM complementa en algunos aspectos el funcionamiento de NSS ya que mientras éste se centra en la búsqueda y mapeo de los usuarios, PAM controla la autenticación, el inicio de sesión y su configuración.
 
-#### 2. Banderas de Control (*Control Flags*) en la Evaluación de la Pila
+En la actualidad, PAM es el método que utilizan la mayoría de las aplicaciones y herramientas de Linux que necesitan relacionarse, de algún modo, con la autenticación de los usuarios.
 
-Cuando un usuario intenta acceder, PAM evalúa secuencialmente los módulos en cascada aplicando las directivas de control:
+![pam](img/pam.png)
 
-* **`required`:** La comprobación debe tener éxito obligatorio. Si falla, el intento será denegado, pero PAM **continúa ejecutando los siguientes módulos de la pila** para que un atacante no pueda deducir qué verificación falló en concreto.
-* **`requisite`:** De obligado cumplimiento. A diferencia de `required`, si este módulo falla, **aborta la ejecución de inmediato**, rechazando la autenticación sin evaluar más reglas.
-* **`sufficient`:** Si este módulo tiene éxito (y ninguno previo de tipo `required` había fallado), **concede el acceso inmediatamente** y finaliza con éxito. Si falla, su error se ignora y la pila continúa.
-* **`optional`:** El módulo se ejecuta a título informativo; su resultado solo se toma en cuenta si ningún otro módulo decide el resultado final.
-
-#### 3. Fortificación mediante Módulos Específicos
-
-* **Control de Complejidad (`pam_pwquality`):** Analiza en tiempo real las contraseñas nuevas, obligando a respetar longitudes mínimas, mezclas de mayúsculas, minúsculas, dígitos y caracteres especiales, e impidiendo el uso de contraseñas de diccionario o datos del usuario.
-* **Defensa ante Ataques de Fuerza Bruta (`pam_faillock`):** Registra los intentos de acceso erróneos y bloquea automáticamente la cuenta durante un periodo configurable tras superar un número umbral de fallos continuados.
+[Fuente](https://somebooks.es/12-3-que-es-pam/)
 
 ---
 
@@ -385,7 +374,6 @@ Cuando un usuario intenta acceder, PAM evalúa secuencialmente los módulos en c
 
 El protocolo **SSH (*Secure Shell*)** es el canal estándar para la administración remota de servidores. Al estar expuesto a redes públicas o a la red corporativa, el uso de contraseñas convencionales resulta vulnerable frente a ataques de fuerza bruta automatizados (*bots*, *scanners*).
 
-![Flujo de autenticación SSH por pares de claves criptográficas](img/ssh_auth_flow.svg)
 
 #### La Autenticación Criptográfica Asimétrica (SSH Keys)
 
@@ -398,7 +386,7 @@ La mejor práctica de seguridad consiste en sustituir o complementar las contras
 
 #### Directivas de Fortificación del Servidor (`/etc/ssh/sshd_config`)
 
-Para mitigar riesgos habituales en el servidor, el fichero de configuración de OpenSSH (`sshd_config`) debe incluir las siguientes restricciones:
+Para mitigar riesgos habituales en el servidor, el fichero de configuración de OpenSSH (`sshd_config`) puede modificarse para aumentar la seguridad:
 
 * **`PermitRootLogin no`:** Impide iniciar sesión remota directamente como superusuario `root`. Obliga a conectarse con una cuenta nominal auditada y elevar privilegios puntualmente mediante `sudo`.
 * **`PasswordAuthentication no`:** Deshabilita de forma estricta el inicio de sesión mediante contraseña tradicional, obligando a emplear claves criptográficas autorizadas.
@@ -425,7 +413,6 @@ En un servidor conectado a una red corporativa o a Internet, es habitual que se 
 
 **Fail2ban** es una solución de defensa activa basada en host (*HIPS - Host-based Intrusion Prevention System*) que automatiza la respuesta ante intentos de intrusión repetidos.
 
-![Arquitectura conceptual de defensa activa con Fail2ban](img/fail2ban_architecture.svg)
 
 Su funcionamiento conceptual se fundamenta en un ciclo continuo de tres etapas:
 
