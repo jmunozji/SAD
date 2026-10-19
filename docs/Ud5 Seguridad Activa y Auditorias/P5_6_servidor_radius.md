@@ -1,4 +1,4 @@
-# Práctica 5.5: Despliegue de un Servidor de Autenticación RADIUS con FreeRADIUS
+# Práctica 5.6: Despliegue de un Servidor de Autenticación RADIUS con FreeRADIUS
 
 !!! note "Datos de la Práctica"
     * **Módulo:** Seguridad y Alta Disponibilidad (SAD - 0378)
@@ -31,9 +31,27 @@ Para resolver esto se emplea el estándar **IEEE 802.1X** con un servidor **RADI
 ```
 
 ### Componentes de la Arquitectura:
+
 1. **Suplicante (Cliente):** El dispositivo (PC, smartphone) que solicita acceso a la red proporcionando credenciales individuales.
 2. **Autenticador (NAS - *Network Access Server*):** El switch o punto de acceso Wi-Fi. Bloquea todo el tráfico salvo las tramas de autenticación EAP hacia el servidor RADIUS.
 3. **Servidor de Autenticación (FreeRADIUS):** Valida las credenciales recibidas, consulta las políticas de acceso y responde con un mensaje `Access-Accept` o `Access-Reject`.
+
+### Posibles Escenarios de Montaje de la Práctica
+
+Para la realización del laboratorio puedes optar por uno de los dos escenarios siguientes en función del equipamiento disponible:
+
+#### Opción A: Escenario con Punto de Acceso dedicado (AP)
+En este montaje el Punto de Acceso actúa como autenticador conectado directamente a la misma red local que el servidor FreeRADIUS:
+
+![Escenario RADIUS con Punto de Acceso](img/radius_escenario_ap.svg)
+
+#### Opción B: Escenario con Router Inalámbrico
+En este montaje se emplea un router Wi-Fi doméstico o de laboratorio configurado para delegar la autenticación de su red inalámbrica en el servidor FreeRADIUS:
+
+![Escenario RADIUS con Router Inalámbrico](img/radius_escenario_1.svg)
+
+!!! tip "Emulación sin dispositivo físico"
+    Si no dispones de un punto de acceso físico en casa o en el aula, puedes realizar pruebas de configuración y explorar las opciones de seguridad WPA-Enterprise mediante el [Emulador Web de Punto de Acceso D-Link](https://anweb.dlink.ru/).
 
 ---
 
@@ -143,29 +161,38 @@ Para que el punto de acceso Wi-Fi o router pueda enviar peticiones al servidor R
 ### Tarea 6: Configuración del Punto de Acceso Inalámbrico (WPA2/WPA3 Enterprise)
 
 1. Accede a la interfaz web de administración de tu router/AP Wi-Fi.
-2. En la sección de seguridad de la red Wi-Fi, selecciona el modo de seguridad:
-   * **Seguridad:** WPA2-Enterprise / WPA3-Enterprise (802.1X).
-   * **Dirección IP del Servidor RADIUS:** La IP de tu servidor Linux FreeRADIUS (ej. `192.168.1.100`).
-   * **Puerto:** `1812` UDP.
-   * **Clave compartida (Secret):** `ClaveSecretaRADIUS2026` (debe coincidir exactamente con la configurada en `clients.conf`).
+2. En la sección de configuración de la red inalámbrica, selecciona el modo de seguridad:
+
+    * **Modo de Seguridad:** WPA2-Enterprise / WPA3-Enterprise (IEEE 802.1X).
+    * **Dirección IP del Servidor RADIUS:** La IP de tu servidor Linux FreeRADIUS (ej. `192.168.1.100`).
+    * **Puerto RADIUS:** `1812` UDP.
+    * **Clave compartida (Secret):** `ClaveSecretaRADIUS2026` (debe coincidir exactamente con la configurada en `clients.conf`).
+
+![Configuración WPA2-Enterprise en Punto de Acceso](img/radius_escenario_ap_emu.png)
 
 ---
 
 ### Tarea 7: Validación de Conexión desde el Suplicante y Auditoría de Logs
 
-1. Desde un smartphone o PC cliente, busca la red Wi-Fi emitida por el AP.
-2. Al conectar, el sistema operativo solicitará los parámetros Enterprise:
-   * **Método EAP:** PEAP (o TTLS).
-   * **Autenticación Fase 2 (Inner):** MSCHAPv2 (o GTC).
-   * **Certificado CA:** *"No validar"* (o seleccionar certificado de pruebas).
-   * **Identidad / Usuario:** `roman`
-   * **Contraseña:** `ClaveSegura2026!`
-3. Conéctate a la red y comprueba que se obtiene dirección IP.
+1. Desde un smartphone o PC cliente, busca la red Wi-Fi corporativa emitida por el AP.
+2. Al conectar, el sistema operativo solicitará los parámetros de autenticación Enterprise (EAP-PEAP):
+
+    * **Método EAP:** PEAP (o TTLS).
+    * **Autenticación de Fase 2 (Inner):** MSCHAPv2 (o GTC).
+    * **Certificado CA:** *"No validar"* (o seleccionar certificado de pruebas).
+    * **Identidad / Usuario:** `roman`
+    * **Contraseña:** `ClaveSegura2026!`
+
+| Conexión en Smartphone Android | Parámetros de Seguridad Avanzados |
+| :---: | :---: |
+| ![Configuración Wi-Fi Enterprise en móvil](img/radius_cliente_movil.png) | ![Detalles de la conexión y seguridad](img/radius_ap_config.png) |
+
+3. Conéctate a la red y comprueba que se valida la identidad y se obtiene dirección IP para navegar.
 4. En el servidor FreeRADIUS, audita el registro de accesos en tiempo real:
-   ```bash
-   sudo tail -f /var/log/freeradius/radius.log
-   ```
-5. Realiza una prueba introduciendo una contraseña incorrecta y verifica que queda registrado el intento fallido (`Auth: (FAIL) ...`).
+    ```bash
+    sudo tail -f /var/log/freeradius/radius.log
+    ```
+5. Realiza una prueba introduciendo una contraseña incorrecta y verifica que queda registrado el intento fallido (`Auth: Login incorrect...`).
 
 ---
 
@@ -188,3 +215,11 @@ Para que el punto de acceso Wi-Fi o router pueda enviar peticiones al servidor R
 2. **Función del Secret:** ¿Qué función cumple la clave secreta compartida (*secret*) configurada en `clients.conf` entre el servidor RADIUS y el Punto de Acceso AP?
 3. **Uso del modo depuración (`freeradius -X`):** Si un cliente no puede autenticarse a través del AP, ¿por qué se recomienda detener el servicio `systemctl` y ejecutar `sudo freeradius -X` para diagnosticar el problema?
 4. **Auditoría e Incidentes:** ¿Qué información valiosa queda registrada en `/var/log/freeradius/radius.log` cuando un usuario descontento intenta acceder a la red fuera de su horario laboral?
+
+---
+
+## 6. Recursos y Enlaces de Referencia
+
+* **[FreeRADIUS Documentation & WPA-HOWTO](https://wiki.freeradius.org/guide/WPA-HOWTO):** Guía técnica oficial para configuración de WPA-Enterprise y certificados TLS.
+* **[Tabla de Compatibilidad de Protocolos EAP y FreeRADIUS](http://deployingradius.com/documents/protocols/compatibility.html):** Resumen de compatibilidad entre clientes, métodos EAP (PEAP, TLS, TTLS) y almacenes de contraseñas.
+* **[Emulador Web de Punto de Acceso D-Link](https://anweb.dlink.ru/):** Entorno interactivo para simular la interfaz web de routers y puntos de acceso Wi-Fi.

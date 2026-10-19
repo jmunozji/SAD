@@ -127,13 +127,13 @@ El escaneo de puertos es la técnica que permite consultar remotamente un rango 
 
 #### Mecánica de los Tipos de Escaneo Principales:
 * **Escaneo TCP SYN (*Stealth Scan* / Medio Abierto):** El escáner envía un paquete con la bandera `SYN`. Si el puerto está abierto, el objetivo responde con `SYN/ACK`. El escáner responde de inmediato con un paquete `RST` para abortar la conexión sin completar el apretón de manos de tres vías (*3-Way Handshake*), evitando ser registrado por aplicaciones sencillas.
-* **Escaneo TCP Connect:** Completa el flujo `SYN` $\rightarrow$ `SYN/ACK` $\rightarrow$ `ACK`. Es más ruidoso pero no requiere privilegios de superusuario en la máquina atacante.
+* **Escaneo TCP Connect:** Completa el flujo `SYN` → `SYN/ACK` → `ACK`. Es más ruidoso pero no requiere privilegios de superusuario en la máquina atacante.
 * **Escaneo UDP:** Dado que UDP es un protocolo no orientado a conexión, el escáner envía datagramas vacíos. Si el puerto está cerrado, el host responde con un mensaje ICMP *Port Unreachable*. Si no hay respuesta, el puerto se clasifica como abierto/filtrado.
 * **Identificación de Versiones y Sistema Operativo (*Fingerprinting*):** Análisis de las respuestas del servicio y del comportamiento del formato de la cabecera IP/TCP (valores TTL, tamaño de ventana TCP) para deducir la versión exacta del software y el sistema operativo.
 
 !!! note "Práctica de Laboratorio"
     !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.2: Auditoría de Red e Inventariado con Nmap](P5.2.md)**
+        **[Práctica 5.2: Auditoría de Red e Inventariado con Nmap](P5_2_auditoria_nmap.md)**
         *En esta práctica realizarás el descubrimiento de equipos activos en la red local, la identificación de puertos y versiones de servicios expuestos, la detección remota de sistemas operativos y la auditoría automatizada de vulnerabilidades conocidas mediante scripts de Nmap Engine (NSE).*
 
 ---
@@ -150,7 +150,7 @@ Un **escáner de vulnerabilidades corporativo** es una solución software que au
 
 !!! note "Práctica de Laboratorio"
     !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.3: Análisis de Vulnerabilidades con OpenVAS / Nessus](P5.3.md)**
+        **[Práctica 5.3: Análisis de Vulnerabilidades con OpenVAS / Nessus](P5_3_escaner_vulnerabilidades.md)**
         *En esta práctica desplegarás un motor corporativo de evaluación de vulnerabilidades (OpenVAS / Greenbone), configurarás tareas de escaneo sobre una red simulada, analizarás la severidad de las vulnerabilidades detectadas (CVSS) y generarás informes de auditoría técnica y ejecutiva.*
 
 ---
@@ -221,7 +221,7 @@ El protocolo **ARP** (*Address Resolution Protocol*) vincula direcciones lógica
 
 !!! note "Práctica de Laboratorio"
     !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.4: Intercepción MITM y Envenenamiento ARP](P5.4.md)**
+        **[Práctica 5.4: Intercepción MITM y Envenenamiento ARP](P5_4_mitm_arp_spoofing.md)**
         *En esta práctica simularás un escenario de ataque Man-In-The-Middle mediante envenenamiento de caché ARP en una red local virtualizada, analizarás la interceptación de tráfico no cifrado en Wireshark y verificarás la efectividad de las contramedidas de red.*
 
 ---
@@ -312,7 +312,7 @@ Los motores NIDS/NIPS estándar de la industria (como **Snort** y **Suricata**) 
 
 !!! note "Práctica de Laboratorio"
     !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.5: Despliegue y Análisis de Reglas en IDS Snort/Suricata](P5.5.md)**
+        **[Práctica 5.5: Despliegue y Análisis de Reglas en IDS Snort/Suricata](P5_5_ids_snort_suricata.md)**
         *En esta práctica desplegarás un motor NIDS/NIPS en un entorno Linux, crearás reglas de inspección personalizadas para detectar escaneos de red, tráfico ICMP anómalo y peticiones HTTP sospechosas, y analizarás la generación de eventos de alerta en tiempo real.*
 
 ---
@@ -369,6 +369,8 @@ A lo largo de la historia de los estándares IEEE 802.11, los mecanismos de prot
   (Laptop / Smartphone)                            (Autenticador)                                  (Valida contra LDAP / AD)
 ```
 
+![Arquitectura IEEE 802.1X y Autenticación con Servidor RADIUS](img/radius_escenario_ap.svg)
+
 #### Componentes de la Arquitectura 802.1X:
 1. **Suplicante (*Supplicant*):** Dispositivo del usuario que solicita acceso a la red.
 2. **Autenticador (*Authenticator*):** Punto de Acceso (AP) o conmutador que bloquea el tráfico de datos hasta que el servidor valida la identidad.
@@ -376,7 +378,7 @@ A lo largo de la historia de los estándares IEEE 802.11, los mecanismos de prot
 
 !!! note "Práctica de Laboratorio"
     !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.6: Despliegue de Servidor de Autenticación RADIUS (Wi-Fi Enterprise)](P5.6.md)**
+        **[Práctica 5.6: Despliegue de Servidor de Autenticación RADIUS (Wi-Fi Enterprise)](P5_6_servidor_radius.md)**
         *En esta práctica desplegarás y configurarás un servidor de autenticación FreeRADIUS integrado con un directorio de usuarios corporativos para validar el acceso individualizado a una red Wi-Fi Enterprise mediante el protocolo IEEE 802.1X y EAP-PEAP.*
 
 ---
@@ -392,9 +394,11 @@ A lo largo de la historia de los estándares IEEE 802.11, los mecanismos de prot
 * **Punto de Acceso Falso (*Rogue AP* / *Evil Twin*):** Despliegue de un AP no autorizado configurado con el mismo SSID y parámetros que la red corporativa. Los dispositivos clientes se conectan automáticamente a él creyendo que es el AP legítimo, permitiendo al atacante capturar todo su tráfico (MITM).
 * **Portales Cautivos (*Hotspots*):** Páginas web que interceptan el tráfico en redes abiertas solicitando un registro o aceptación de términos antes de permitir la navegación. Si no están respaldados por cifrado de red (como OWE), el tráfico posterior navega en claro y es extremadamente vulnerable a manipulaciones y *DNS Spoofing*.
 
+![Arquitectura y Funcionamiento de un Portal Cautivo / HotSpot](img/mikrotik_escenario_hotspot.svg)
+
 !!! note "Práctica de Laboratorio"
     !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.7: Seguridad y Análisis de Accesos Wi-Fi Hotspot / Portal Cautivo](P5.7.md)**
+        **[Práctica 5.7: Seguridad y Análisis de Accesos Wi-Fi Hotspot / Portal Cautivo](P5_7_hotspot_mikrotik.md)**
         *En esta práctica analizarás el funcionamiento de un portal cautivo tipo Hotspot, identificarás sus vulnerabilidades lógicas de elusión y configurarás contramedidas de red para asegurar el acceso inalámbrico de invitados.*
 
 ---
@@ -461,5 +465,5 @@ Para evitar la manipulación de pruebas, las organizaciones despliegan un servid
 
 !!! note "Práctica de Laboratorio"
     !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.8: Monitorización Activa y Análisis de Logs del Sistema Operativo](P5.8.md)**
+        **[Práctica 5.8: Monitorización Activa y Análisis de Logs del Sistema Operativo](P5_8_monitorizacion_logs.md)**
         *En esta práctica aprenderás a auditar y analizar registros de eventos de seguridad en Linux y Windows, identificarás intentos de intrusión y errores de autenticación, y configurarás reglas de rotación e inspección de logs.*

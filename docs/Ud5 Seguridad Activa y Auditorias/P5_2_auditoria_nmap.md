@@ -141,14 +141,17 @@ Una de las fases más críticas de la auditoría de seguridad consiste en transf
 1. Toma una de las versiones concretas de software obtenidas en la Tarea 2 (por ejemplo, la versión del servidor web Apache o del servidor SSH).
 
 2. Accede a las bases de datos públicas de vulnerabilidades conocidas:
-   * **NIST National Vulnerability Database (NVD)**
-   * **CVE Program (Common Vulnerabilities and Exposures)**
+
+   * **[NIST National Vulnerability Database (NVD)](https://nvd.nist.gov/vuln/search)**
+   * **[CVE Program (Common Vulnerabilities and Exposures)](https://cve.mitre.org/)**
 
 3. **Búsqueda en NVD:**
+
    * Introduce en el cuadro de búsqueda el nombre del producto y la versión identificada.
    * Examina el listado de vulnerabilidades CVE asociadas.
 
 4. **Selección y Análisis de un CVE Específico:**
+
    * Elige una vulnerabilidad de la lista (identificador con formato `CVE-YYYY-NNNN`).
    * Abre los detalles del CVE e identifica los siguientes parámetros de auditoría:
      * **Identificador CVE:** Código único del fallo.
@@ -158,7 +161,10 @@ Una de las fases más críticas de la auditoría de seguridad consiste en transf
 
 5. **Captura de Pantalla N.º 2:** Toma una captura del navegador donde se muestre la ficha detallada del CVE seleccionado en la web de la NVD.
 
+   ![Ejemplo de auditoría con Nmap y correlación en base de datos CVE/NVD](img/nmap_escaneo_red.png)
+
 6. **Redacción de Conclusiones de Auditoría:**
+
    * ¿Crees que la versión de software analizada es segura para mantenerse en un entorno corporativo de producción expuesto a Internet?
    * ¿Qué medidas correctoras urgentes debe aplicar el equipo de administración de sistemas para mitigar el riesgo descubierto?
 
@@ -195,3 +201,13 @@ Utiliza la siguiente tabla como hoja de referencia rápida para seleccionar los 
 2. **Interpretación de Estados de Puerto:** Si al ejecutar Nmap sobre un servidor remoto un puerto devuelve el estado **`filtered`** (filtrado), ¿qué significa técnicamente respecto al estado del servicio y la infraestructura intermedia de red?
 3. **Diferenciación de Conceptos:** Explica la diferencia entre la detección de versiones de servicios (`-sV`) y la detección de sistema operativo (`-O`). ¿Qué información utiliza Nmap en cada caso?
 4. **Respuesta ante Incidentes de Auditoría:** Durante un escaneo de seguridad en tu empresa descubres que un servidor expuesto a Internet ejecuta un servicio web desactualizado afectado por una vulnerabilidad **CVE** con puntuación **CVSS 9.8 (Crítica)** que permite la Ejecución Remota de Código (RCE). ¿Cuáles son las tres medidas inmediatas que debe tomar el equipo de administración de sistemas?
+
+---
+
+## 6. Recursos y Enlaces de Referencia
+
+* **[StationX Nmap Cheat Sheet Oficial](https://www.stationx.net/nmap-cheat-sheet/):** Guía rápida completa con todas las banderas y combinaciones de comandos Nmap.
+* **[Nmap Tutorial: Descubriendo el terreno de juego (Parte 1)](https://hacking-etico.com/2013/02/24/nmap-tutorial-descubriendo-el-terreno-de-juego-parte-1/):** Fundamentos de sondas y descubrimiento de puertos.
+* **[Nmap Tutorial: Descubriendo el terreno de juego (Parte 2)](https://hacking-etico.com/2013/03/23/nmap-tutorial-descubriendo-el-terreno-de-juego-parte-2/):** Técnicas avanzadas de fingerprinting y evasión.
+* **[NIST National Vulnerability Database (NVD)](https://nvd.nist.gov/vuln/search):** Motor oficial de búsqueda de vulnerabilidades y puntuaciones CVSS.
+* **[MITRE CVE Program](https://cve.mitre.org/):** Diccionario estandarizado internacional de fallos de seguridad.

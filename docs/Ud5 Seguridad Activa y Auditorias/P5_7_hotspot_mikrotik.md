@@ -1,4 +1,4 @@
-# Práctica 5.6: Configuración de un Hotspot con Portal Cautivo en MikroTik RouterOS
+# Práctica 5.7: Configuración de un Hotspot con Portal Cautivo en MikroTik RouterOS
 
 !!! note "Datos de la Práctica"
     * **Módulo:** Seguridad y Alta Disponibilidad (SAD - 0378)
@@ -28,15 +28,42 @@ Un **Hotspot o Portal Cautivo** es un mecanismo de seguridad de Capa 3/7 que int
 ```
 
 ### Flujo de Funcionamiento del Hotspot:
+
 1. **Asignación IP y Bypassing DNS:** El cliente se conecta a la red de invitados y obtiene IP por DHCP. Se le permite resolver nombres DNS.
-2. **Interceptación HTTP:** Cuando el cliente abre un navegador e intenta navegar a cualquier sitio web, las reglas internas de `iptables`/`ip firewall` del router redirigen la petición al servidor web local del Hotspot.
+2. **Interceptación HTTP:** Cuando el cliente abre un navegador e intenta navegar a cualquier sitio web, las reglas internas de firewall del router redirigen la petición al servidor web local del Hotspot.
 3. **Autenticación y Apertura de Paso:** El usuario introduce sus credenciales o acepta los términos de uso. Una vez autenticado, el router añade su dirección IP y MAC a la lista de usuarios activos (`active list`) y habilita su enrutamiento hacia la interfaz WAN de Internet.
+
+!!! info "Vídeos Conceptuales de Introducción"
+    * **[¿Qué es un HotSpot y cómo funciona? (Waii Empresarial)](https://youtu.be/FApYtWA9akQ):** Introducción general al concepto y funcionamiento de los portales cautivos.
+    * **[3 Mejores Estrategias con HotSpot y Marketing en Empresas](https://youtu.be/AYPQDu602m8):** Ventajas añadidas de los sistemas HotSpot en entornos corporativos y comerciales.
 
 ---
 
 ## 3. Desarrollo Paso a Paso de la Práctica
 
-### Escenario de Red en GNS3 / Entorno Virtual
+### Escenario de Red y Topología
+
+En esta práctica configuraremos un router MikroTik para actuar como HotSpot, aislando el tráfico de los visitantes no autorizados:
+
+![Topología del Escenario HotSpot](img/mikrotik_escenario_hotspot.svg)
+
+### Montaje del Escenario en GNS3
+
+Para realizar el laboratorio en el simulador GNS3, desplegaremos la topología con los siguientes elementos:
+
+![Estructura de red en GNS3 con MikroTik CHR y Firefox](img/mikrotik_hotspot_setup.png)
+
+#### Appliances de GNS3 requeridos:
+* **[MikroTik Cloud Hosted Router (CHR)](https://www.gns3.com/marketplace/appliances/mikrotik-cloud-hosted-router):** Router virtual con RouterOS.
+* **[Firefox Guest Appliance](https://www.gns3.com/marketplace/appliances/firefox-guest):** Cliente gráfico ligero para probar la redirección del navegador web y la autenticación del portal.
+* Dispositivos auxiliares PC100 y PC101 para comprobación de conectividad ICMP.
+
+#### Vídeos Guía de Configuración:
+Para realizar la práctica se recomienda visualizar estos dos vídeos paso a paso en este orden:
+1. **[Vídeo 1: MikroTik - Acceso HTTPS](https://www.youtube.com/watch?v=2SK0OiN07Lk):** Generación de certificados y habilitación de conexión web cifrada.
+2. **[Vídeo 2: MikroTik - Instalación y configuración de un HotSpot](https://youtu.be/LRO8aKzhJS8):** Creación del servicio HotSpot, asignación de interfaces y pruebas con clientes.
+3. *(Opcional)* **[Vídeo: MikroTik - Escenario de trabajo en el laboratorio](https://youtu.be/QM8gHCq9gK0)**
+
 * **`ether1` (WAN):** Conectado a la nube NAT de Internet (obtiene IP por DHCP, ej. `192.168.122.X`).
 * **`ether2` (LAN Taller / Interna):** Red de administración (`192.168.100.0/24`).
 * **`ether3` (Red Hotspot Invitados):** Red de clientes restringidos (`192.168.101.0/24`).
@@ -138,3 +165,26 @@ Para evitar que las credenciales del portal se transmitan en texto claro sobre H
 2. **Seguridad del Portal:** Si la página de login del Hotspot funciona sobre HTTP sin cifrar, ¿a qué tipo de riesgo están expuestas las contraseñas de los usuarios en la red Wi-Fi de invitados?
 3. **Uso de Nombres DNS:** ¿Por qué se configura un nombre DNS local (ej. `hotspot.ieselcaminas.local`) en el asistente del Hotspot en lugar de usar directamente una IP numérica?
 4. **Limitación de recursos:** ¿Qué ventaja operativa aporta la directiva `rate-limit` en los perfiles de usuario de un Hotspot de empresa o de hotel?
+
+---
+
+## 6. Criterios de Entrega del Laboratorio
+
+Para la evaluación de esta práctica, deberás elaborar un documento PDF que incluya las siguientes evidencias técnicas:
+
+1. **Captura del Navegador Web del Cliente:**
+   * Ventana del navegador Firefox mostrando la página de estado del Hotspot que certifica que el cliente se encuentra autenticado, junto con los datos de tiempo de conexión y consumo.
+
+2. **Evidencias en la Consola de MikroTik RouterOS:**
+   * Captura del comando `/certificate print detail` remarcando los usos del certificado raíz generado.
+   * Captura del comando `/ip hotspot profile print` remarcando el certificado SSL/TLS asignado al perfil.
+   * Captura del comando `/ip hotspot print detail` remarcando el perfil y la interfaz asociada al servidor Hotspot.
+   * Captura del comando `/ip hotspot user print detail` remarcando un usuario que lleve tu propio nombre y apellidos validado correctamente.
+
+---
+
+## 7. Recursos y Enlaces de Referencia
+
+* **[MikroTik RouterOS Documentation: Hotspot Gateway](https://help.mikrotik.com/docs/display/ROS/Hotspot):** Manual oficial completo de administración del servicio Hotspot en RouterOS.
+* **[GNS3 Marketplace: MikroTik CHR](https://www.gns3.com/marketplace/appliances/mikrotik-cloud-hosted-router):** Ficha y plantilla de despliegue para emulación en GNS3.
+* **[GNS3 Marketplace: Firefox Guest](https://www.gns3.com/marketplace/appliances/firefox-guest):** Appliance cliente web ligero para topologías de red.
