@@ -153,37 +153,31 @@ Recuerda que en GNS3 las máquinas Debian no tienen habilitada la interfaz de re
 
 En esta tarea vas a verificar cómo se visualiza una **misma conexión de red** desde los dos extremos de la comunicación (Cliente y Servidor).
 
-1. Vas a necesitar **tres ventanas de terminal simultáneas**:
-   * **Ventana 1 (Cliente):** Consola abierta en la máquina cliente desde GNS3.
-   * **Ventana 2 (Servidor):** Consola abierta en la máquina cliente desde GNS3.
-   * **Terminal 23 (Conexión Remota SSH del Host al Client):** Inicia una sesión SSH hacia el Cliente desde esta terminal:
-     ```bash
-     ssh debian@IP_Servidor
-     ```
+1. Vas a necesitar **2 ventanas de terminal simultáneas**:
+
+    * **Ventana 1 (Cliente):** Consola abierta en la máquina cliente desde GNS3.
+    * **Ventana 2 (Servidor):** Consola abierta en la máquina cliente desde GNS3.
 
 2. **Ejecución en el CLIENTE (Ventana 1):**
-    Lanza una conexión SSH desde el Cliente al Servidor. Conéctate y deja esa ventana abierta.
+
+    Lanza una conexión SSH desde el Cliente al Servidor. Conéctate y deja esa ventana abierta. Estarás trabajando en el servidor.
 
 
 2. **Ejecución en el SERVIDOR (Ventana 2):**
-   * Dentro de la sesión SSH en el Servidor, ejecuta:
-     ```bash
-     sudo ss -tanp | grep sshd
-     ```
-   * Observa la línea obtenida. El Servidor registra la conexión entrante al puerto 22 esde un puerto efímero y alto del cliente
 
-3. **Ejecución en el Cliente (Ventana 3 - Remota):**
-   Vamos a ver la conexión desde el lado del cliente. En la ventana donde tenemos acceso al cliente:
-   * Ejecuta el comando para consultar conexiones TCP activas hacia el puerto 22 del servidor:
-     ```bash
-     sudo ss -tanp
-     ```
-   * Observa las líneas obtenida. Tu equipo cliente habrá abierto un **puerto efímero de origen** (por ejemplo: `192.168.1.50:54321` conectado a `192.168.1.100:22`).
+    Lanza una conexión SSH desde el Servidor al Cliente. Conéctate y deja esa ventana abierta. Estarás trabajando en el cliente.
+
+    * Dentro de la sesión SSH en el Cliente ejecuta el comando ss necesario para ver las conexiones e identifica las 2 conexiones ssh establecidas. Mira en cuál es cliente es el servidor `sshd` y en cual el cliente `ssh`
+
+3. **Ejecución en el CLIENTE (Ventana 1):**
+
+    Realiza en la otra ventana las mismas operaciones. Identifica las 2 conexiones establecidas y comprueba cómo el que era servidor en la otra ventana es cliente en esta y viceversa.
 
 
 4. **Captura de Pantalla Obligatoria:**
-   * Realiza una captura de pantalla donde se vean **las dos terminales abiertas en paralelo en el mismo escritorio**.
-   * Abre la imagen con un editor gráfico (Pinta, GIMP o la herramienta de recortes de tu SO) y **resalta/marca con un recuadro de color** las dos líneas correspondientes a la conexión SSH (demostrando que el puerto efímero del cliente coincide exactamente en ambas ejecuciones).
+
+    * Realiza una captura de pantalla donde se vean **las dos terminales abiertas en paralelo en el mismo escritorio**.
+    * Abre la imagen con un editor gráfico (Pinta, GIMP o la herramienta de recortes de tu SO) y **resalta/marca con un recuadro de color distinto** las dos líneas correspondientes a cada conexión SSH (demostrando que el puerto efímero del cliente coincide exactamente en ambas ejecuciones).
 
 ---
 
@@ -224,21 +218,26 @@ Utiliza esta tabla de referencia rápida para tus tareas de administración de s
 
 ### Requisitos de Entrega:
 Elabora un informe en formato **PDF** que incluya:
+
 1. La **captura de pantalla editada de la Tarea 5** (donde se aprecie claramente el escritorio con las dos terminales paralelas y las líneas SSH marcadas).
-2. Las respuestas justificadas a las siguientes cuestiones de autoevaluación.
+
 
 ---
 
 ### Cuestiones de Autoevaluación:
 
 1. **Interpretación de Direcciones de Escucha:**
-   Si al ejecutar `ss -tulpn` en un servidor observas que el servicio de base de datos MySQL/MariaDB escucha en `127.0.0.1:3306`, ¿podrá un cliente conectado desde otra máquina de la red de área local realizar consultas a la base de datos? ¿Qué dirección debería figurar en la escucha para permitir el acceso remoto?
+
+    Si al ejecutar `ss -tulpn` en un servidor observas que el servicio de base de datos MySQL/MariaDB escucha en `127.0.0.1:3306`, ¿podrá un cliente conectado desde otra máquina de la red de área local realizar consultas a la base de datos? ¿Qué dirección debería figurar en la escucha para permitir el acceso remoto?
 
 2. **Puertos Efímeros:**
-   ¿Qué es un puerto efímero (*ephemeral port*)? ¿Quién lo asigna, en qué rango de puertos se suele situar y cuál es su función en una comunicación cliente-servidor?
+
+    ¿Qué es un puerto efímero (*ephemeral port*)? ¿Quién lo asigna, en qué rango de puertos se suele situar y cuál es su función en una comunicación cliente-servidor?
 
 3. **Detección de Conexiones Anómalas:**
-   Si sospechas que un servidor Linux ha sido comprometido por un proceso no autorizado que envía datos a un servidor remoto en Internet, ¿por qué el parámetro `-p` en `ss -tulpn` o `netstat -tulpn` es crucial para la investigación del incidente?
+
+    Si sospechas que un servidor Linux ha sido comprometido por un proceso no autorizado que envía datos a un servidor remoto en Internet, ¿por qué el parámetro `-p` en `ss -tulpn` o `netstat -tulpn` es crucial para la investigación del incidente?
 
 4. **Rendimiento de Diagnóstico:**
-   ¿Por qué en servidores con un volumen de tráfico muy elevado (decenas de miles de sockets abiertos) se desaconseja el uso de `netstat` y se exige utilizar `ss`? Explica la diferencia en la fuente de datos que consulta cada comando dentro del sistema Linux.
+
+    ¿Por qué en servidores con un volumen de tráfico muy elevado (decenas de miles de sockets abiertos) se desaconseja el uso de `netstat` y se exige utilizar `ss`? Explica la diferencia en la fuente de datos que consulta cada comando dentro del sistema Linux.
