@@ -566,17 +566,13 @@ Para que los clientes comprueben si un certificado presentado sigue siendo váli
 ### 3.9.1. Arquitectura de SSL/TLS y HTTPS
 Los protocolos **SSL** (*Secure Sockets Layer*) y su sucesor moderno **TLS** (*Transport Layer Security*) operan en el modelo TCP/IP como una capa intermedia de seguridad insertada entre los protocolos de la capa de aplicación (HTTP, SMTP, IMAP, FTP) y la capa de transporte TCP:
 
-```text
-    ┌────────────────────────────────────────────────────────┐
-    │  Capa de Aplicación:  HTTP   |   SMTP   |   IMAP / POP │
-    ├────────────────────────────────────────────────────────┤
-    │  Capa de Seguridad:            SSL / TLS               │
-    ├────────────────────────────────────────────────────────┤
-    │  Capa de Transporte:                 TCP               │
-    ├────────────────────────────────────────────────────────┤
-    │  Capa de Red:                        IP                │
-    └────────────────────────────────────────────────────────┘
-```
+| Capa | Protocolo |
+| :--- | :---: |
+| Capa de Aplicación | HTTP - SMTP - IMAP / POP |
+| Capa de Seguridad | SSL / TLS |
+| Capa de Transporte | TCP |
+| Capa de Red | IP |
+
 
 Cuando HTTP opera sobre TLS, pasa a denominarse **HTTPS** (utilizando por defecto el puerto **TCP 443** en lugar del puerto TCP 80). Todo el contenido transmitido (cabeceras, URLs, cookies de sesión, contraseñas y datos HTML) viaja íntegramente cifrado a través de la red.
 

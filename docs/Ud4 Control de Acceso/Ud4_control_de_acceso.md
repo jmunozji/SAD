@@ -201,8 +201,16 @@ Una vez que la BIOS/UEFI valida el hardware, pasa el control al cargador de arra
 
 Si la BIOS/UEFI está protegida pero el menú de GRUB2 se deja abierto sin contraseña, el sistema presenta una **vulnerabilidad crítica de acceso local**:
 
-```
- Menú de GRUB2 ──> Edición interactiva [Tecla 'e'] ──> Añadir 'init=/bin/bash' ──> Consola ROOT sin Contraseña
+```mermaid
+flowchart LR
+    Menu([Menú de GRUB2]) --> Edicion["Edición interactiva (Tecla 'e')"]
+    Edicion --> INIT["Añadir 'init=/bin/bash'"]
+    INIT --> ROOT["Consola ROOT sin Contraseña"]
+
+    style Menu fill:#eceff1,stroke:#607d8b,stroke-width:2px
+    style Edicion fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style INIT fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style ROOT fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
 
 #### Anatomía del Ataque por Edición de GRUB2 (Bypass de Root)
