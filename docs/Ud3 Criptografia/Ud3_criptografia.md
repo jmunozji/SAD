@@ -328,26 +328,18 @@ Una arquitectura PKI completa está compuesta por los siguientes roles y compone
 
 En entornos corporativos y en la arquitectura global de Internet, una PKI nunca se implementa con una única Autoridad de Certificación que firma todos los certificados directamente. Para garantizar la seguridad operativa y mitigar riesgos catastróficos, se utilizan **jerarquías de certificación multinivel**:
 
-```text
-               ┌────────────────────────────────────────┐
-               │              CA RAÍZ (Root CA)         │
-               │   • Clave autofirmada (Self-Signed)    │
-               │   • Fuera de línea (Offline Vault)     │
-               └───────────────────┬────────────────────┘
-                                   │ Firma
-                                   ▼
-               ┌────────────────────────────────────────┐
-               │     CA INTERMEDIA (Intermediate CA)     │
-               │   • Certificado firmado por la CA Raíz │
-               │   • En línea (Emisión operativa)       │
-               └───────────────────┬────────────────────┘
-                                   │ Firma
-                                   ▼
-               ┌────────────────────────────────────────┐
-               │    CERTIFICADO FINAL (End-Entity / Leaf)│
-               │   • Servidor Web (HTTPS), Usuario, VPN │
-               │   • NO puede firmar otros certificados │
-               └────────────────────────────────────────┘
+```mermaid
+graph TD
+    Root["CA RAÍZ (Root CA)<br>• Clave autofirmada (Self-Signed)<br>• Fuera de línea (Offline Vault)"]
+    Inter["CA INTERMEDIA (Intermediate CA)<br>• Certificado firmado por la CA Raíz<br>• En línea (Emisión operativa)"]
+    Leaf["CERTIFICADO FINAL (End-Entity / Leaf)<br>• Servidor Web (HTTPS), Usuario o VPN<br>• Restricción: no puede firmar otros certificados"]
+
+    Root -->|Firma digitalmente| Inter
+    Inter -->|Firma y expide| Leaf
+
+    style Root fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style Inter fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style Leaf fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
 ```
 
 #### 1. CA Raíz (*Root CA*):
@@ -510,30 +502,19 @@ La siguiente tabla resume los formatos estándar y su uso operativo:
 
 Para obtener un certificado digital firmado sin exponer jamás la clave privada ante terceros, la industria sigue un procedimiento riguroso de dos etapas basado en una solicitud **CSR (PKCS#10)**:
 
-```text
-┌───────────────────────────────────────┐                    ┌────────────────────────────────────────┐
-│     SOLICITANTE (Servidor Web)        │                    │   AUTORIDAD DE CERTIFICACIÓN (CA)      │
-└──────────────────┬────────────────────┘                    └───────────────────┬────────────────────┘
-                   │                                                             │
-  1. Genera par de claves localmente:                                            │
-     - Clave privada (srv.key) [SECRETO]                                         │
-     - Clave pública                                                             │
-                   │                                                             │
-  2. Empaqueta clave pública + datos en                                          │
-     la solicitud CSR (srv.req)                                                  │
-                   │                                                             │
-  3. Envía ÚNICAMENTE el fichero CSR ───────────────────────────────────────────>│
-     (por scp, web o API)                                                        │ 4. Verifica identidad (AR)
-                                                                                 │
-                                                                                 │ 5. Firma el CSR con la clave
-                                                                                 │    privada de la CA (ca.key)
-                                                                                 │    y genera el certificado (srv.crt)
-                                                                                 │
-  6. Recibe el certificado srv.crt <─────────────────────────────────────────────│ 
-                   │                                                             │
-  7. Configura Apache/Nginx con:                                                 │
-     - Su clave privada local (srv.key)                                          │
-     - El certificado firmado (srv.crt)                                          │
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Sol as Solicitante (Servidor Web)
+    actor CA as Autoridad de Certificación (CA)
+
+    Note over Sol: 1. Genera par de claves localmente:<br>• Clave privada (srv.key) [SECRETO]<br>• Clave pública
+    Note over Sol: 2. Empaqueta clave pública + datos en CSR (srv.req)
+    Sol->>CA: 3. Envía ÚNICAMENTE el fichero CSR (srv.req)<br>(por scp, web o API)
+    Note over CA: 4. Verifica identidad del solicitante (AR)
+    Note over CA: 5. Firma el CSR con la clave privada de la CA (ca.key)<br>y genera el certificado (srv.crt)
+    CA-->>Sol: 6. Recibe el certificado firmado (srv.crt)
+    Note over Sol: 7. Configura el servidor web con:<br>• Su clave privada local (srv.key)<br>• El certificado firmado (srv.crt)
 ```
 
 !!! danger "Regla de Oro en Administración de PKI"
@@ -614,35 +595,34 @@ El **TLS Handshake** es el procedimiento inicial mediante el cual el cliente y e
 
 Es la demostración práctica definitiva de la **Criptografía Híbrida**:
 
-```text
-CLIENTE (Navegador)                                            SERVIDOR WEB (HTTPS)
-       │                                                                 │
-       │ 1. ClientHello (Versiones TLS soportadas,                       │
-       │    Ciphersuites disponibles, valor aleatorio R_c)               │
-       ├────────────────────────────────────────────────────────────────>│
-       │                                                                 │
-       │ 2. ServerHello (Ciphersuite elegida, valor aleatorio R_s)       │
-       │ 3. Certificate (Certificado X.509 del servidor + cadena CA)     │
-       │ 4. ServerKeyExchange (Parámetros Diffie-Hellman efímeros ECDHE) │
-       │ 5. ServerHelloDone                                              │
-       │<────────────────────────────────────────────────────────────────┤
-       │                                                                 │
-[Verifica certificado y cadena]                                          │
-       │                                                                 │
-       │ 6. ClientKeyExchange (Parámetros DH del cliente)                │
-       │ 7. ChangeCipherSpec (A partir de ahora, todo viaja cifrado)     │
-       │ 8. Finished (Hash autenticado del intercambio)                  │
-       ├────────────────────────────────────────────────────────────────>│
-       │                                                                 │
-[Ambos derivan idéntica Clave Simétrica de Sesión (K_sesion)]            │
-       │                                                                 │
-       │ 9. ChangeCipherSpec                                             │
-       │ 10. Finished                                                    │
-       │<────────────────────────────────────────────────────────────────┤
-       │                                                                 │
-       │═════════════════════════════════════════════════════════════════│
-       │    CANAL SEGURO HTTPS: Cifrado Simétrico (AES-GCM / ChaCha20)   │
-       │═════════════════════════════════════════════════════════════════│
+```mermaid
+sequenceDiagram
+    autonumber
+    actor C as Cliente (Navegador)
+    actor S as Servidor Web HTTPS
+
+    Note over C,S: FASE 1: Negociación de Capacidades
+    C->>S: ClientHello (Versiones TLS, Cipher Suites, Random_C)
+    S-->>C: ServerHello (Cipher Suite acordada, Random_S)
+
+    Note over C,S: FASE 2: Autenticación del Servidor e Intercambio
+    S-->>C: Certificate (Certificado X.509 + Cadena CA)
+    S-->>C: ServerKeyExchange (Parámetros Diffie-Hellman efímeros ECDHE)
+    S-->>C: ServerHelloDone
+
+    Note over C: Verifica certificado y ancla en CA Raíz
+
+    Note over C,S: FASE 3: Clave de Sesión y Cifrado
+    C->>S: ClientKeyExchange (Parámetros DH del cliente)
+    C->>S: ChangeCipherSpec (A partir de aquí, todo viaja cifrado)
+    C->>S: Finished (Hash autenticado del intercambio)
+    Note over C,S: Ambos derivan idéntica Clave Simétrica de Sesión (K_sesion)
+    S-->>C: ChangeCipherSpec
+    S-->>C: Finished
+
+    Note over C,S: CANAL SEGURO HTTPS: Cifrado Simétrico (AES-GCM / ChaCha20)
+    C->>S: Solicitud HTTP Cifrada (GET /index.html)
+    S-->>C: Respuesta HTTP Cifrada (200 OK)
 ```
 
 1. **Negociación Inicial (*Hello*):** El cliente y el servidor acuerdan la versión más alta de TLS soportada por ambos y la suite criptográfica (*Cipher Suite*) que utilizarán.

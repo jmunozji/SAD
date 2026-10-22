@@ -46,36 +46,43 @@ Para maximizar la seguridad perimetral se adopta el esquema de **doble cortafueg
     * Aplica una política de aislamiento tajante: **bloquea cualquier intento de conexión originado desde la DMZ hacia la LAN**. Si un atacante compromete totalmente un servidor web en la DMZ, el cortafuegos Backend le impide pivotar (*lateral movement*) hacia los equipos de los empleados.
     * Permite que los puestos internos naveguen hacia Internet y consuman los servicios de la DMZ, aplicando a su vez privilegios mínimos para las tareas de administración (sólo `PCAdmin` puede acceder por SSH a los servidores).
 
-```text
-  [ INTERNET / WAN ] (192.168.122.0/24)
-          │
-          │ ether1 (DHCP / 192.168.122.2)
-  ┌───────▼───────────────────────────┐
-  │     ROUTER FRONTEND (FW1)         │ ◄── Cortafuegos Perimetral Externo
-  └───────┬───────────────────────────┘
-          │ ether2 (192.168.101.1/24)
-          │
-          ├─────────────────────────────────────────┐
-          │                                         │
-  ┌───────▼────────────────┐               ┌────────▼───────────────┐
-  │  Server Web HTTP       │               │  Server FTP            │
-  │  (192.168.101.11/24)   │               │  (192.168.101.12/24)   │
-  └────────────────────────┘               └────────────────────────┘
-          │                                 [ ZONA DMZ ] (192.168.101.0/24)
-          │
-          │ ether1 (192.168.101.2/24)
-  ┌───────▼───────────────────────────┐
-  │     ROUTER BACKEND (FW2)          │ ◄── Cortafuegos Interno
-  └───────┬───────────────────────────┘
-          │ ether2 (192.168.100.1/24)
-          │
-          ├─────────────────────────────────────────┐
-          │                                         │
-  ┌───────▼────────────────┐               ┌────────▼───────────────┐
-  │  PCAdmin (Gestión)     │               │  PCEscritorio (Usuario)│
-  │  (192.168.100.100/24)  │               │  (192.168.100.150/24)  │
-  └────────────────────────┘               └────────────────────────┘
-                                            [ RED CORPORATIVA LAN ] (192.168.100.0/24)
+```mermaid
+graph TD
+    subgraph WANZone ["Red Externa (WAN)"]
+        WAN["INTERNET / WAN<br>(192.168.122.0/24)"]
+    end
+
+    subgraph FW1Zone ["Cortafuegos Perimetral Externo"]
+        FW1["ROUTER FRONTEND (FW1)<br>ether1: 192.168.122.2 (WAN)<br>ether2: 192.168.101.1 (DMZ)"]
+    end
+
+    subgraph DMZZone ["Zona Desmilitarizada / DMZ (192.168.101.0/24)"]
+        Web["Server Web HTTP<br>192.168.101.11/24"]
+        FTP["Server FTP<br>192.168.101.12/24"]
+    end
+
+    subgraph FW2Zone ["Cortafuegos Interno Backend"]
+        FW2["ROUTER BACKEND (FW2)<br>ether1: 192.168.101.2 (DMZ)<br>ether2: 192.168.100.1 (LAN)"]
+    end
+
+    subgraph LANZone ["Red Corporativa / LAN (192.168.100.0/24)"]
+        Admin["PCAdmin (Gestión)<br>192.168.100.100/24"]
+        User["PCEscritorio (Usuario)<br>192.168.100.150/24"]
+    end
+
+    WAN --- FW1
+    FW1 --- Web
+    FW1 --- FTP
+    Web --- FW2
+    FTP --- FW2
+    FW2 --- Admin
+    FW2 --- User
+
+    style WANZone fill:#ffebee,stroke:#e53935,stroke-width:1px
+    style FW1Zone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style DMZZone fill:#fff8e1,stroke:#ffa000,stroke-width:1px
+    style FW2Zone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style LANZone fill:#e8f5e9,stroke:#43a047,stroke-width:1px
 ```
 
 !!! tip "Principio de Heterogeneidad de Fabricantes"

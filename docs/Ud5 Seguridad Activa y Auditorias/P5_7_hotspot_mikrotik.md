@@ -22,9 +22,16 @@
 
 Un **Hotspot o Portal Cautivo** es un mecanismo de seguridad de Capa 3/7 que intercepta todo el tráfico de red no autenticado procedentes de una interfaz o VLAN específica, redirigiendo las peticiones HTTP/HTTPS del usuario hacia una página web de inicio de sesión.
 
-```
-  [ CLIENTE INVITADO ] ─── (Tráfico HTTP/80) ───> [ MIKROTIK HOTSPOT ] ─── (Intercepta y Redirige) ───> [ PÁGINA LOGIN ]
-   (IP: 192.168.101.50)                           (Interface: ether3)                                    (HTTPS / Login)
+```mermaid
+flowchart LR
+    Cli["Cliente Invitado<br>IP: 192.168.101.50<br>Petición HTTP/80"] -->|ether3| Mkt["MikroTik Hotspot<br>Reglas NAT automáticas<br>Intercepta y redirige"]
+    Mkt -->|Redirección HTTP 302| Log["Página de Login<br>Servidor Web local<br>Solicita credenciales"]
+    Log -.->|Login validado| Wan["Salida a Internet<br>Tráfico habilitado"]
+
+    style Cli fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Mkt fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Log fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    style Wan fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
 
 ### Flujo de Funcionamiento del Hotspot:

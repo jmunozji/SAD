@@ -42,19 +42,18 @@ En la página web de la norma ISO/IEC 27001 puedes encontrar respuestas a las si
 ### 2.1.2. El Ciclo de Deming o Ciclo PDCA
 Para asegurar que la seguridad de la información no sea un estado estático sino un **proceso de mejora continua**, la norma ISO/IEC 27001 adopta la metodología del **Ciclo PDCA** (*Plan-Do-Check-Act* / Planificar-Hacer-Verificar-Actuar):
 
-```
-       [ PLAN ] (Planificar)  <------ Establecer políticas y riesgos
-             |
-             v
-        [ DO ] (Hacer)        <------ Implementar controles y procesos
-             |
-             v
-      [ CHECK ] (Verificar)   <------ Monitorear, medir y auditar
-             |
-             v
-       [ ACT ] (Actuar)       <------ Aplicar acciones correctivas
-             |
-             +----------------------- Reiniciar ciclo para mejora continua
+```mermaid
+graph TD
+    subgraph SGSI ["Ciclo de Mejora Continua PDCA (ISO/IEC 27001)"]
+        P["1. PLAN (Planificar)<br>• Establecer políticas y alcance<br>• Análisis y evaluación de riesgos"] --> D["2. DO (Hacer)<br>• Implementar controles técnicos<br>• Formar y concienciar"]
+        D --> C["3. CHECK (Verificar)<br>• Monitorizar y auditar el SGSI<br>• Medir eficacia de controles"]
+        C --> A["4. ACT (Actuar)<br>• Aplicar acciones correctivas<br>• Revisión por la dirección"]
+        A -->|Revisión y Mejora Continua| P
+    end
+    style P fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style D fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style A fill:#fce4ec,stroke:#c2185b,stroke-width:2px
 ```
 
 El ciclo PDCA es un proceso continuo.

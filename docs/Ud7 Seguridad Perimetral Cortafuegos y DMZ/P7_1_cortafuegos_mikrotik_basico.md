@@ -34,26 +34,38 @@ RouterOS permite gestionar su cortafuegos mediante:
 * **Consola de Comandos (CLI):** Accesible por SSH, Telnet o consola serie de GNS3.
 * **WinBox:** Utilidad gráfica oficial de administración remota de MikroTik.
 
-```text
-                  [ RED EXTERNA / WAN ] (Nube NAT de GNS3)
-                            │
-               ┌────────────┴────────────┐
-               │                         │
-      [ Equipo Atacante ]                ▼
-         (VPCS WAN)             (ether1 - DHCP/virbr0)
-                          ┌───────────────────────────┐
-                          │     ROUTER MIKROTIK       │
-                          │   RouterOS (Cortafuegos)  │
-                          └─────────────┬─────────────┘
-                                        │ (ether2 - 192.168.100.1/24)
-                                        ▼
-                              [ SWITCH RED INTERNA ]
-                                        │
-                    ┌───────────────────┼───────────────────┐
-                    │                   │                   │
-                    ▼                   ▼                   ▼
-                 [ PC1 ]           [ Firefox ]        [ Server SSH ]
-              (192.168.100.2)     (192.168.100.3)     (192.168.100.10)
+```mermaid
+graph TD
+    subgraph WAN ["Red Externa / WAN (Nube NAT de GNS3)"]
+        NAT["Nube NAT GNS3<br>virbr0"]
+        Atacante["Equipo Atacante<br>(VPCS WAN)"]
+    end
+
+    NAT --- ether1
+    Atacante -.->|Pruebas hostiles| ether1
+
+    subgraph MKT ["Router MikroTik RouterOS"]
+        ether1["ether1 (WAN)<br>DHCP virbr0"]
+        FW["Firewall Filter & NAT"]
+        ether2["ether2 (LAN)<br>192.168.100.1/24"]
+        ether1 --- FW --- ether2
+    end
+
+    ether2 --- SW
+
+    subgraph LAN ["Red Corporativa / LAN (192.168.100.0/24)"]
+        SW["Switch LAN"]
+        PC1["PC1 (VPCS)<br>192.168.100.2"]
+        Browser["Firefox (WebFig)<br>192.168.100.3"]
+        SSH["Servidor SSH Debian<br>192.168.100.10"]
+        SW --- PC1
+        SW --- Browser
+        SW --- SSH
+    end
+
+    style WAN fill:#fbe9e7,stroke:#ff5722,stroke-width:1px
+    style MKT fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style LAN fill:#e8f5e9,stroke:#388e3c,stroke-width:1px
 ```
 
 ### Tabla de Direccionamiento del Laboratorio
@@ -237,14 +249,14 @@ Simularemos un escenario profesional en el que se requiere publicar un servidor 
 
 ![Escenario de publicación mediante DNAT](img/Selección_833.png)
 
-```text
-  [ Cliente Externo / Host ] ─── SSH a IP_MikroTik:2222 ───> [ ether1 MikroTik ]
-                                                                     │
-                                                              Redirecciona a:
-                                                              192.168.100.10:22
-                                                                     │
-                                                                     ▼
-                                                             [ Servidor SSH Debian ]
+```mermaid
+flowchart LR
+    Cli["Cliente Externo / Host<br>SSH a IP_MikroTik:2222"] -->|ether1 WAN| MKT["Router MikroTik<br>DST-NAT: dst-port=2222<br>to-addresses=192.168.100.10:22"]
+    MKT -->|ether2 LAN| Srv["Servidor SSH Debian<br>192.168.100.10:22"]
+
+    style Cli fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style MKT fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Srv fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
 ```
 
 ![Flujo de paquetes con Port Forwarding](img/Selección_834.png)

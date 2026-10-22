@@ -25,9 +25,14 @@ En redes corporativas, el uso de claves compartidas (WPA2-Personal / PSK) presen
 
 Para resolver esto se emplea el estándar **IEEE 802.1X** con un servidor **RADIUS** (Modelo AAA):
 
-```
-  [ SUPLICANTE / CLIENTE ] ─── (EAP-PEAP) ───> [ AUTENTICADOR / AP ] ─── (RADIUS) ───> [ SERVIDOR FREERADIUS ]
-   (Usuario y Contraseña)                       (Punto de Acceso NAS)                   (Base de datos local/LDAP)
+```mermaid
+flowchart LR
+    Sup["Suplicante / Cliente<br>Laptop / Smartphone<br>Credenciales nominales"] -->|EAP-PEAP / TLS| Auth["Autenticador / AP<br>Punto de Acceso NAS<br>Filtro de puerto 802.1X"]
+    Auth -->|Protocolo RADIUS / UDP| Rad["Servidor FreeRADIUS<br>Servicio AAA<br>Base de datos local / LDAP"]
+
+    style Sup fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Auth fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Rad fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
 
 ### Componentes de la Arquitectura:

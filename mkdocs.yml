@@ -36,7 +36,11 @@ markdown_extensions:
   - meta
   - tables
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_div_format
   - admonition
   - pymdownx.inlinehilite
   - pymdownx.arithmatex:
@@ -67,3 +71,7 @@ extra:
   analytics: 
       provider: google 
       property: G-3NX5MD5C8H
+
+# Carga de la biblioteca Mermaid (CDN) o script local
+extra_javascript:
+  - "https://unpkg.com/mermaid@10/dist/mermaid.min.js"

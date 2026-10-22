@@ -22,9 +22,16 @@ En los entornos operativos contemporáneos, la frontera perimetral tradicional h
 
 Toda arquitectura rigurosa de control de acceso se fundamenta en un flujo secuencial de cuatro fases conocido como el **Modelo IAAA**:
 
-```
-  [ Identificación ]    ──>  [ Autenticación ]     ──>  [ Autorización ]  ──>  [ Anotación / Auditoría ]
-   "¿Quién dices ser?"     "Demuestra quién eres"   "¿A qué tienes acceso?"    "Registro de lo que haces"
+```mermaid
+flowchart LR
+    I["1. Identificación<br>«¿Quién dices ser?»<br>Usuario, NIF, Email"] --> A1["2. Autenticación<br>«Demuestra quién eres»<br>Password, OTP, Biometría"]
+    A1 --> A2["3. Autorización<br>«¿A qué tienes acceso?»<br>Permisos, Roles, ACLs"]
+    A2 --> A3["4. Anotación / Auditoría<br>«Registro de lo que haces»<br>Logs, Trazabilidad, SIEM"]
+
+    style I fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style A1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style A2 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style A3 fill:#f3e5f5,stroke:#8e24aa,stroke-width:2px
 ```
 
 1. **Identificación (I):** Proceso mediante el cual una entidad (usuario, proceso o dispositivo) declara su identidad ante el sistema. Ejemplos habituales son el nombre de usuario (*username*), el NIF, el código de empleado o la dirección de correo electrónico corporativo.
@@ -141,11 +148,16 @@ La **BIOS** (*Basic Input Output System*) y su evolución **UEFI** (*Unified Ext
 
 Toda política de seguridad informática debe considerar el firmware de arranque como la primera línea de contención frente a intrusiones físicas o manipulación de dispositivos.
 
-```
- [ Encendido ] ──> [ Firmware: BIOS/UEFI ] ──> [ Cargador: GRUB2 ] ──> [ Kernel / Sistema Operativo ]
-                         │                            │
-                   Contraseñas y                Protección por
-                    Secure Boot                 Contraseña GRUB
+```mermaid
+flowchart LR
+    Pwr([Encendido del Equipo]) --> FW["Firmware: BIOS / UEFI<br>• Contraseña Setup y Arranque<br>• Secure Boot activo"]
+    FW --> GRUB["Cargador: GRUB2<br>• Menú protegido con contraseña<br>• Edición bloqueada"]
+    GRUB --> OS["Kernel / Sistema Operativo<br>• Carga de módulos firmados<br>• Control de acceso y servicios"]
+
+    style Pwr fill:#eceff1,stroke:#607d8b,stroke-width:2px
+    style FW fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style GRUB fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style OS fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
 
 #### Objetivos Principales de Seguridad en el Firmware
@@ -280,20 +292,31 @@ En UNIX clásico, los archivos nuevos heredan la máscara `umask` del proceso cr
 
 Cuando un proceso intenta leer, escribir o ejecutar un archivo protegido por ACLs, el kernel de Linux evalúa los permisos de forma estrictamente secuencial y **se detiene en la primera coincidencia**:
 
-```text
-       [ Proceso solicita acceso a un archivo ]
-                          │
-                          ▼
-        ¿Es el Usuario Propietario (owner)? ───── SÍ ───> Aplica permisos de 'user::' y TERMINA.
-                          │ NO
-                          ▼
-       ¿Hay regla para este Usuario específico? ── SÍ ───> Aplica regla AND 'mask' y TERMINA.
-                          │ NO
-                          ▼
-      ¿Pertenece al Grupo principal o nombrados? ─ SÍ ───> Une los permisos de sus grupos (OR),
-                          │ NO                             aplica la 'mask' (AND) y TERMINA.
-                          ▼
-            Aplica permisos de 'other::' y TERMINA.
+```mermaid
+graph TD
+    A([Proceso solicita acceso a un archivo]) --> B{¿Es el Usuario<br>Propietario?}
+    B -- Sí --> C[Aplica permisos de 'user::'<br>Lectura / Escritura / Ejecución]
+    C --> END1([Fin de Evaluación])
+
+    B -- No --> D{¿Existe regla ACL<br>para este UID específico?}
+    D -- Sí --> E[Aplica regla de usuario ACL<br>aplicando máscara AND 'mask']
+    E --> END2([Fin de Evaluación])
+
+    D -- No --> F{¿Pertenece al GID propietario<br>o a grupos ACL nombrados?}
+    F -- Sí --> G[Une permisos de los grupos<br>y aplica máscara AND 'mask']
+    G --> END3([Fin de Evaluación])
+
+    F -- No --> H[Aplica permisos del resto del mundo<br>'other::']
+    H --> END4([Fin de Evaluación])
+
+    style A fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style D fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style F fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style C fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style E fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style G fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style H fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
 ```
 
 !!! note "Prioridad de Reglas"

@@ -32,22 +32,37 @@ Para neutralizar este vector de ataque se implementa una **Zona Desmilitarizada 
 
 ![Concepto de DMZ con un solo router](img/MikroTik%20-%20DMZ%20básica.png)
 
-```text
-                                [ INTERNET / WAN ]
-                                  (Red Externa)
-                                        │
-                                        │ (ether1)
-                          ┌─────────────▼─────────────┐
-                          │      ROUTER MIKROTIK      │
-                          │   Cortafuegos Perimetral  │
-                          └──────┬─────────────┬──────┘
-                                 │             │
-                (ether2 - LAN)   │             │   (ether3 - DMZ)
-       ┌─────────────────────────┘             └─────────────────────────┐
-       ▼                                                                 ▼
-[ RED CORPORATIVA / LAN ]                                     [ ZONA DMZ / SERVICIOS ]
-• Clientes de usuario (PC1)                                   • Servidor Web HTTP (Debian)
-• Estación Administrador (Webterm)                            • Servidor FTP / Archivos
+```mermaid
+graph TD
+    subgraph WANZone ["Red Externa (WAN)"]
+        WAN["INTERNET / WAN<br>(Nube NAT virbr0)"]
+    end
+
+    subgraph RouterZone ["Cortafuegos Perimetral"]
+        MKT["Router MikroTik RouterOS<br>Three-Legged Firewall"]
+    end
+
+    subgraph DMZZone ["Zona DMZ / Servicios (ether3)"]
+        Web["Servidor Web HTTP (Debian)<br>192.168.101.11:80"]
+        FTP["Servidor FTP / Archivos<br>192.168.101.20"]
+    end
+
+    subgraph LANZone ["Red Corporativa / LAN (ether2)"]
+        PC1["PC1 (Cliente VPCS)<br>192.168.100.2"]
+        Admin["Estación Administrador (Webterm)<br>192.168.100.3"]
+    end
+
+    WAN -->|ether1 WAN| MKT
+    MKT -->|ether3: Publicación hacia Internet| DMZZone
+    MKT -->|ether2: Protegida de WAN y DMZ| LANZone
+    LANZone -.->|Navegación permitida| WAN
+    LANZone -.->|Gestión permitida| DMZZone
+    DMZZone -.-x|PROHIBIDO: Conexión DMZ hacia LAN| LANZone
+
+    style WANZone fill:#ffebee,stroke:#e53935,stroke-width:1px
+    style RouterZone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style DMZZone fill:#fff8e1,stroke:#ffa000,stroke-width:1px
+    style LANZone fill:#e8f5e9,stroke:#43a047,stroke-width:1px
 ```
 
 ![Arquitectura detallada DMZ con 1 router](img/dmz1router.png)

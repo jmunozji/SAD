@@ -186,27 +186,24 @@ La capacidad de filtrado de un cortafuegos depende de la profundidad con la que 
 
 En los sistemas basados en Linux y en el sistema operativo **RouterOS de MikroTik**, el motor de filtrado organiza las reglas en **cadenas (*chains*)** según el recorrido que siguen los paquetes:
 
-```text
-                          [ Paquete llega a la interfaz del Router ]
-                                              │
-                                              ▼
-                             ¿La IP destino es la del propio Router?
-                                      │                    │
-                                     SÍ                    NO
-                                      ▼                    ▼
-                               Cadena: [ INPUT ]   Cadena: [ FORWARD ]
-                             (Procesos del router:   (Tráfico entre LAN,
-                              WebFig, WinBox, SSH)    WAN y DMZ)
-                                      │                    │
-                                      ▼                    ▼
-                          [ Procesado localmente ]  [ Hacia interfaz salida ]
-                                      │
-                         [ El router genera un paquete ]
-                                      │
-                                      ▼
-                             Cadena: [ OUTPUT ]
-                            (Pings del router, DNS,
-                             actualizaciones)
+```mermaid
+graph TD
+    In([Paquete llega a la interfaz del Router]) --> Dest{¿La IP destino es la<br>del propio Router?}
+    
+    Dest -- Sí --> Input["Cadena INPUT<br>Procesos locales del router:<br>WebFig, WinBox, SSH, DNS cache"]
+    Input --> LocalProc([Procesado localmente])
+    
+    Dest -- No --> Forward["Cadena FORWARD<br>Tráfico en tránsito entre interfaces:<br>LAN, WAN y DMZ"]
+    Forward --> OutInt([Encaminado hacia interfaz de salida])
+
+    RouterGen([El Router genera un paquete local]) --> Output["Cadena OUTPUT<br>Pings del router, NTP, actualizaciones"]
+    Output --> OutInt
+
+    style In fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Dest fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Input fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Forward fill:#f3e5f5,stroke:#8e24aa,stroke-width:2px
+    style Output fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
 ```
 
 1. **Cadena `INPUT`:** Procesa los paquetes dirigidos a las direcciones IP del propio cortafuegos (por ejemplo, cuando un administrador se conecta a la interfaz WebFig del router o mediante SSH).
@@ -247,17 +244,14 @@ Cuando la empresa dispone de un servidor web, FTP o correo electrónico alojado 
 
 Se implementa entonces **Destination NAT (DNAT)**:
 
-```text
-  [ Cliente en Internet ] ── Petición a IP_PÚBLICA:80 ──> [ Router MikroTik (WAN) ]
-                                                                   │
-                                                            Regla DNAT:
-                                                            dst-port=80
-                                                            action=dst-nat
-                                                            to-addresses=192.168.101.11
-                                                                   │
-                                                                   ▼
-                                                            [ Servidor Web DMZ ]
-                                                             (192.168.101.11:80)
+```mermaid
+flowchart TD
+    Cli["Cliente en Internet<br>Petición HTTP: IP_PÚBLICA:80"] -->|ether1 WAN| Mkt["Router MikroTik RouterOS<br>Regla DNAT: dst-port=80 action=dst-nat<br>to-addresses=192.168.101.11"]
+    Mkt -->|ether3 DMZ| Srv["Servidor Web DMZ<br>192.168.101.11:80"]
+
+    style Cli fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style Mkt fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Srv fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
 ```
 
 1. El router perimetral recibe una petición dirigida a su propia interfaz externa (`dst-address=IP_WAN`) en un puerto específico (ej. TCP 80).
@@ -311,21 +305,35 @@ El principio rector de la DMZ es la **contención perimetral**: los servidores d
 
 Utiliza un único dispositivo de encaminamiento dotado de al menos tres interfaces de red físicas: una para la WAN, otra para la LAN corporativa y una tercera para la DMZ.
 
-```text
-                                [ INTERNET / WAN ]
-                                       │ (ether1)
-                                       ▼
-                         ┌───────────────────────────┐
-                         │   ROUTER / CORTAFUEGOS    │
-                         │     MikroTik RouterOS     │
-                         └───────┬───────────┬───────┘
-                     (ether2)    │           │ (ether3)
-                 ┌───────────────┘           └───────────────┐
-                 ▼                                           ▼
-       [ RED LOCAL (LAN) ]                         [ RED PÚBLICA (DMZ) ]
-       Subred: 192.168.100.0/24                    Subred: 192.168.101.0/24
-       - PC Administrador                          - Servidor Web Apache (HTTP :80)
-       - Estaciones de trabajo                     - Servidor de Archivos (FTP :21)
+```mermaid
+graph TD
+    subgraph WANZone ["Zona Externa (No Confiable)"]
+        WAN["INTERNET / WAN<br>(Red Externa)"]
+    end
+
+    subgraph FWZone ["Cortafuegos Perimetral"]
+        MKT["Router MikroTik RouterOS<br>Three-Legged Firewall"]
+    end
+
+    subgraph DMZZone ["Zona DMZ (Semi-Confiable)"]
+        Web["Servidor Web Apache (HTTP :80)<br>Servidor FTP (:21)<br>Subred: 192.168.101.0/24"]
+    end
+
+    subgraph LANZone ["Zona Corporativa LAN (Confiable)"]
+        LAN["PC Administrador y Estaciones<br>Subred: 192.168.100.0/24"]
+    end
+
+    WAN -->|ether1 WAN| MKT
+    MKT -->|ether3 DMZ: Publicación controlada| DMZZone
+    MKT -->|ether2 LAN: Protegida de WAN y DMZ| LANZone
+    LANZone -.->|Tráfico saliente autorizado| WAN
+    LANZone -.->|Gestión autorizada| DMZZone
+    DMZZone -.-x|PROHIBIDO: Conexión entrante DMZ hacia LAN| LANZone
+
+    style WANZone fill:#ffebee,stroke:#e53935,stroke-width:1px
+    style FWZone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style DMZZone fill:#fff8e1,stroke:#ffa000,stroke-width:1px
+    style LANZone fill:#e8f5e9,stroke:#43a047,stroke-width:1px
 ```
 
 * **Ventajas:** Menor coste de equipamiento y configuración centralizada en un único equipo.
@@ -342,30 +350,38 @@ Utiliza un único dispositivo de encaminamiento dotado de al menos tres interfac
 
 Representa el estándar de alta seguridad para infraestructuras críticas. La DMZ queda emparedada físicamente entre dos cortafuegos diferenciados:
 
-```text
-                            [ INTERNET / WAN ]
-                                   │
-                                   ▼
-                    ┌──────────────────────────────┐
-                    │  CORTAFUEGOS EXTERNO / FRONT │
-                    │     (Filtro WAN ↔ DMZ)       │
-                    └──────────────┬───────────────┘
-                                   │
-                                   ▼
-                    [ ZONA DESMILITARIZADA (DMZ) ]
-                    - Servidor Web Público
-                    - Servidor de Correo
-                                   │
-                                   ▼
-                    ┌──────────────────────────────┐
-                    │  CORTAFUEGOS INTERNO / BACK  │
-                    │     (Filtro DMZ ↔ LAN)       │
-                    └──────────────┬───────────────┘
-                                   │
-                                   ▼
-                          [ RED LOCAL (LAN) ]
-                          - Puestos corporativos
-                          - Base de Datos interna
+```mermaid
+graph TD
+    subgraph WANZone ["Zona Externa / Internet"]
+        WAN["INTERNET / WAN"]
+    end
+
+    subgraph FrontZone ["Primer Nivel de Defensa"]
+        FW1["Cortafuegos Externo (Frontal)<br>Filtro estricto WAN ↔ DMZ"]
+    end
+
+    subgraph DMZZone ["Zona Desmilitarizada (DMZ)"]
+        DMZ["Servidores Públicos<br>• Servidor Web Apache<br>• Servidor de Correo"]
+    end
+
+    subgraph BackZone ["Segundo Nivel de Defensa"]
+        FW2["Cortafuegos Interno (Trasero)<br>Filtro estricto DMZ ↔ LAN"]
+    end
+
+    subgraph LANZone ["Zona Corporativa Interna (LAN)"]
+        LAN["Red Corporativa LAN<br>• Base de Datos confidencial<br>• Estaciones de trabajo"]
+    end
+
+    WAN --> FW1
+    FW1 --> DMZ
+    DMZ --> FW2
+    FW2 --> LAN
+
+    style WANZone fill:#ffebee,stroke:#e53935,stroke-width:1px
+    style FrontZone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style DMZZone fill:#fff8e1,stroke:#ffa000,stroke-width:1px
+    style BackZone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style LANZone fill:#e8f5e9,stroke:#43a047,stroke-width:1px
 ```
 
 * **Cortafuegos Frontal (*Frontend*):** Conectado directamente a Internet. Filtra el tráfico hacia la DMZ y bloquea cualquier paquete anómalo.

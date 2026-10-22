@@ -14,10 +14,22 @@ En la arquitectura clásica de redes, un cortafuegos (*firewall*) opera filtrand
 
 Un **Servidor Proxy** (del inglés *proxy*, que significa «representante» o «intermediario») es un dispositivo o servicio de software que se interpone entre un cliente que solicita un recurso y el servidor que lo proporciona, operando en la **Capa de Aplicación (Capa 7 OSI)**:
 
-```text
-  [ CLIENTE ] ──────── Solicitud ───────> [ SERVIDOR PROXY ] ──────── Solicitud ───────> [ SERVIDOR WEB ]
-  (Navegador) <─────── Respuesta ─────── (Intermediario)   <─────── Respuesta ─────── (Destino Final)
-                     Conexión 1                                  Conexión 2
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Cli as Cliente (Navegador)
+    actor Prx as Servidor Proxy (Squid)
+    actor Srv as Servidor Web Destino
+
+    Note over Cli,Prx: Conexión TCP 1 (Cliente ↔ Proxy)
+    Cli->>Prx: 1. Solicitud HTTP (GET /recurso)
+    Note over Prx: Inspección de Capa 7 (ACLs, URLs, Caché)
+    
+    Note over Prx,Srv: Conexión TCP 2 (Proxy ↔ Servidor Web)
+    Prx->>Srv: 2. Solicitud HTTP propia en nombre del cliente
+    Srv-->>Prx: 3. Respuesta HTTP (200 OK + Payload)
+    Note over Prx: Análisis de contenido y almacenamiento en caché
+    Prx-->>Cli: 4. Respuesta HTTP entregada al cliente
 ```
 
 ### El Principio de Ruptura de Conexión
@@ -126,16 +138,31 @@ Al desplegar un proxy directo en una red local existen dos filosofías de integr
 
 El servicio de **caché web** almacena copias de respuestas HTTP previamente solicitadas para satisfacer solicitudes idénticas posteriores de forma instantánea:
 
-```text
-1. Petición inicial del Cliente 1:
-[ Cliente 1 ] ── GET /logo.png ──> [ Proxy ] ── GET /logo.png ──> [ Servidor Web ]
-                                   (MISS: no está en caché)
-[ Cliente 1 ] <── 200 OK (logo) ── [ Proxy ] <── 200 OK (logo) ── [ Servidor Web ]
-                                   (Guarda copia en disco/RAM)
+```mermaid
+graph TD
+    Client([Cliente solicita recurso Web]) --> Proxy{¿Está en la Caché<br>del Servidor Proxy?}
+    
+    Proxy -- Sí (TCP_HIT) --> Fresh{¿El objeto sigue<br>siendo fresco?}
+    Fresh -- Sí --> ServeFast[Entrega inmediata desde disco o RAM<br>• Latencia casi nula<br>• Cero consumo de WAN]
+    Fresh -- No (TCP_REFRESH) --> Revalidate[Petición condicional al origen<br>If-Modified-Since]
+    
+    Revalidate --> Modified{¿El servidor responde<br>304 Not Modified?}
+    Modified -- Sí --> UpdateTimer[Actualiza tiempo de frescura y entrega caché]
+    Modified -- No --> FetchNew[Descarga nuevo recurso y actualiza caché]
 
-2. Petición posterior del Cliente 2:
-[ Cliente 2 ] ── GET /logo.png ──> [ Proxy ] (HIT: ¡está en caché!)
-[ Cliente 2 ] <── 200 OK (logo) ── [ Proxy ] (Respuesta inmediata; 0 tráfico a Internet)
+    Proxy -- No (TCP_MISS) --> FetchServer[Conecta con el Servidor Web Destino<br>Descarga recurso vía WAN]
+    FetchServer --> Cacheable{¿Cabeceras permiten caché?<br>Cache-Control / Expires}
+    Cacheable -- Sí --> Store[Almacena copia en /var/spool/squid]
+    Cacheable -- No --> Forward[Entrega al cliente sin almacenar]
+    Store --> Deliver([Entrega respuesta al Cliente])
+    Forward --> Deliver
+    ServeFast --> Deliver
+    UpdateTimer --> Deliver
+    FetchNew --> Deliver
+
+    style Proxy fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style ServeFast fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style FetchServer fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
 ```
 
 #### Estados de Registro en la Caché (`access.log`)
@@ -166,22 +193,22 @@ Para aplicar políticas diferenciadas y auditar qué personas navegan por la red
 4. El navegador reenvía la petición original incluyendo la cabecera `Proxy-Authorization: Basic <credenciales_en_base64>`.
 5. El proxy valida las credenciales contra su base de datos local (fichero `/etc/squid/passwd` generado con la utilidad `htpasswd`) o contra un servidor de directorio corporativo centralizado (**LDAP / Active Directory**).
 
-```text
-[ NAVEGADOR ]                                            [ PROXY SQUID ]
-     │                                                         │
-     │ ─────────────── 1. GET http://ejemplo.com ────────────> │
-     │ <────────────── 2. 407 Proxy Authentication Required ── │
-     │                    Proxy-Authenticate: Basic            │
-     │                                                         │
-     │ [Ventana emergente en pantalla: usuario y contraseña]   │
-     │                                                         │
-     │ ─────────────── 3. GET http://ejemplo.com ────────────> │
-     │                    Proxy-Authorization: Basic dXNlcj... │
-     │                                                         │
-     │ [Proxy valida contra /etc/squid/passwd]                 │
-     │                                                         │
-     │ ────────────────── 4. Descarga de Internet ───────────> [ INTERNET ]
-     │ <───────────────── 5. Entrega de la página web ──────── │
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Navegador Web
+    actor Proxy as Servidor Proxy Squid
+    actor Web as Servidor Web Destino
+
+    User->>Proxy: 1. GET http://ejemplo.com
+    Note over Proxy: Inspecciona ACL: autenticación obligatoria
+    Proxy-->>User: 2. HTTP 407 Proxy Authentication Required<br>Proxy-Authenticate: Basic realm="Acceso Corporativo"
+    Note over User: Ventana emergente: usuario y contraseña
+    User->>Proxy: 3. GET http://ejemplo.com<br>Proxy-Authorization: Basic dXNlcjpwYXNz
+    Note over Proxy: Valida credenciales contra /etc/squid/passwd (ncsa_auth)
+    Proxy->>Web: 4. GET / HTTP/1.1 (Conexión propia del Proxy hacia Internet)
+    Web-->>Proxy: 5. HTTP 200 OK + Contenido Web
+    Proxy-->>User: 6. HTTP 200 OK + Contenido Web entregado
 ```
 
 ---

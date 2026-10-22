@@ -14,17 +14,16 @@ En el ámbito de la seguridad de la información (gobernado por la tríada clás
 
 A diferencia de las medidas de seguridad activa (que buscan evitar intrusiones mediante cortafuegos, autenticación o parches), las soluciones de **Alta Disponibilidad (*High Availability - HA*)** forman parte de la **seguridad pasiva y de las medidas correctoras**: asumen con realismo que los componentes de hardware fallarán tarde o temprano (discos duros rotos, cortes de suministro eléctrico, caídas de enlace de red, bloqueos del kernel o saturación de servidores) y estructuran la infraestructura para **tolerar dichos fallos sin que se produzca una interrupción del servicio** perceptible por el usuario final.
 
-```text
-                  ARQUITECTURA DE ALTA DISPONIBILIDAD (HA)
-  ┌────────────────────────────────────────────────────────────────────────┐
-  │ 1. Detección Temprana del Fallo (Latidos / Heartbeat / Health Checks)  │
-  ├────────────────────────────────────────────────────────────────────────┤
-  │ 2. Aislamiento del Componente Afectado (Fencing / Quorum)              │
-  ├────────────────────────────────────────────────────────────────────────┤
-  │ 3. Conmutación Automática por Error (Failover Transparente)            │
-  ├────────────────────────────────────────────────────────────────────────┤
-  │ 4. Restauración del Servicio sin Pérdida de Datos                      │
-  └────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    D1["1. Detección Temprana del Fallo<br>• Latidos de red (Heartbeat)<br>• Comprobaciones de salud (Health Checks)<br>• Umbrales de timeout estrictos"] --> D2["2. Aislamiento y Quórum<br>• Evitar Split-Brain<br>• Expulsión del nodo degradado (Fencing / STONITH)"]
+    D2 --> D3["3. Conmutación por Error (Failover)<br>• Migración inmediata de la IP Virtual (VIP)<br>• Promoción automática de Backup a Master"]
+    D3 --> D4["4. Restauración del Servicio<br>• Sincronización de estado y datos<br>• Retorno controlado a la normalidad"]
+
+    style D1 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style D2 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style D3 fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style D4 fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
 ```
 
 ---
@@ -197,20 +196,30 @@ Para solucionar este problema se crearon los protocolos **FHRP (*First Hop Redun
     * Permanecen a la escucha pasiva de los anuncios de latido del Master.
     * Si dejan de recibir paquetes del Master durante un tiempo determinado (*Master Down Interval*, aproximadamente 3,6 segundos), asumen que el Master ha caído y el Backup de mayor prioridad se autoproclama nuevo Master, emitiendo un anuncio **Gratuitous ARP (GARP)** para que los switches actualicen sus tablas MAC.
 
-```text
-ESTADO NORMAL:
-[ Router 1 (MASTER) ] ══════ Anuncios VRRP (224.0.0.18) ══════> [ Router 2 (BACKUP) ]
-  (Posee la VIP 192.168.100.1)                                   (A la escucha pasiva)
-           ▲
-           │ Tráfico de los clientes
-     [ CLIENTES ]
+```mermaid
+flowchart TD
+    subgraph Normal ["ESTADO NORMAL: Master Operativo"]
+        R1N["Router 1 (MASTER)<br>• Posee la VIP: 192.168.100.1<br>• VMAC: 00:00:5E:00:01:0A<br>• Prioridad: 150"]
+        R2N["Router 2 (BACKUP)<br>• Prioridad: 100<br>• Escucha en multicast 224.0.0.18"]
+        CliN["Clientes LAN<br>Tráfico enrutado por Router 1"]
+        
+        R1N == "Anuncios VRRP (1 por segundo)" ==> R2N
+        CliN --> R1N
+    end
 
-CAÍDA DEL MASTER (Failover automático):
-[ Router 1 (CAÍDO) ]  X                                         [ Router 2 (NUEVO MASTER) ]
-                                                                  (Asume la VIP y la VMAC)
-                                                                           ▲
-                                                                           │ Tráfico redirigido
-                                                                     [ CLIENTES ]
+    subgraph Failover ["ESCENARIO DE FALLO: Caída y Promoción Automática"]
+        R1F["Router 1 (CAÍDO)<br>Avería física o corte de enlace"]
+        R2F["Router 2 (NUEVO MASTER)<br>• Asume la VIP 192.168.100.1<br>• Emite Gratuitous ARP<br>• Enruta todo el tráfico LAN"]
+        CliF["Clientes LAN<br>Tráfico redirigido sin cambiar de IP"]
+
+        R1F -.->|Pérdida de latidos > 3.6s| R2F
+        CliF --> R2F
+    end
+
+    style R1N fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style R2N fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style R1F fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style R2F fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
 ```
 
 #### Parámetros de Elección y Preempción

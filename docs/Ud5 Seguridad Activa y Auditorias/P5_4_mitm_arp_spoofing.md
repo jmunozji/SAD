@@ -34,17 +34,23 @@ El estándar ARP (RFC 826) fue diseñado sin funciones criptográficas ni compro
 
 Un atacante en el mismo dominio de colisión/difusión puede enviar periódicamente paquetes ARP falsificados (*ARP Poisoning*):
 
-```
-                     [ ATACANTE (MAC: CC:CC:CC:CC:CC:CC) ]
-                    /                                     \
-(Respuesta ARP falsa:                                (Respuesta ARP falsa:
- "La IP 192.168.1.1                                   "La IP 192.168.1.50
-  está en CC:CC:CC:CC:CC:CC")                          está en CC:CC:CC:CC:CC:CC")
-                  v                                         v
-   [ VÍCTIMA (MAC: AA:AA:AA:AA:AA:AA) ]      [ GATEWAY (MAC: BB:BB:BB:BB:BB:BB) ]
-     IP: 192.168.1.50                          IP: 192.168.1.1
-     Tabla ARP corrupta:                       Tabla ARP corrupta:
-     192.168.1.1 -> CC:CC:CC:CC:CC:CC          192.168.1.50 -> CC:CC:CC:CC:CC:CC
+```mermaid
+flowchart TD
+    Atacante["Atacante (MAC: CC:CC:CC:CC:CC:CC)<br>IP: 192.168.1.100<br>Genera Gratuitous ARP falsas"]
+    
+    Victima["Víctima (MAC: AA:AA:AA:AA:AA:AA)<br>IP: 192.168.1.50<br>Caché corrupta: 192.168.1.1 → CC"]
+    
+    Gateway["Gateway (MAC: BB:BB:BB:BB:BB:BB)<br>IP: 192.168.1.1<br>Caché corrupta: 192.168.1.50 → CC"]
+
+    Atacante -->|Respuesta ARP falsa:<br>«192.168.1.1 está en MAC CC»| Victima
+    Atacante -->|Respuesta ARP falsa:<br>«192.168.1.50 está en MAC CC»| Gateway
+
+    Victima -.->|Tráfico saliente interceptado| Atacante
+    Gateway -.->|Tráfico de retorno interceptado| Atacante
+
+    style Atacante fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style Victima fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Gateway fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
 
 1. La víctima cree que la pasarela es el atacante y le envía a él todo el tráfico con destino exterior.

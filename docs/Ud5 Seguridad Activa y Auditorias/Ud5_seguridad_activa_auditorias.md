@@ -58,9 +58,18 @@ Esta falta de seguridad desde el diseño (*security by design*) en los protocolo
 
 Una **auditoría de seguridad informática** es un proceso sistemático, independiente y documentado para evaluar la eficacia de los controles de seguridad lógicos, físicos y organizativos de un sistema de información.
 
-```
-  [ 1. Planificación ] ──> [ 2. Reconocimiento ] ──> [ 3. Análisis Vuln. ] ──> [ 4. Explotación ] ──> [ 5. Informe ]
-    Definición del alcance     OSINT y Footprinting     Escaneo de Puertos       Prueba de Concepto      Técnico y Ejecutivo
+```mermaid
+flowchart LR
+    P1["1. Planificación<br>Alcance y acuerdos NDA"] --> P2["2. Reconocimiento<br>OSINT y Footprinting"]
+    P2 --> P3["3. Análisis Vuln.<br>Escaneo y evaluación"]
+    P3 --> P4["4. Explotación<br>Pruebas de concepto"]
+    P4 --> P5["5. Informe<br>Técnico y Ejecutivo"]
+
+    style P1 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style P2 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style P3 fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style P4 fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style P5 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
 
 #### Clasificación según el Grado de Conocimiento Inicial:
@@ -200,10 +209,20 @@ Buscan agotar los recursos de procesamiento, memoria o ancho de banda de un serv
 
 Un ataque **Man-In-The-Middle (MITM)** ocurre cuando un atacante logra posicionarse en la trayectoria lógica de comunicación entre dos hosts legítimos, siendo capaz de interceptar, inspeccionar, alterar o destruir el tráfico transmitido.
 
-```
- [ VÍCTIMA A ] ─── (Tráfico hacia Router) ───> [ ATACANTE (MITM) ] ─── (Tráfico Reenviado) ───> [ ROUTER / INTERNET ]
-   (Cree que la MAC                                (Inspecciona / Modifica                        (Cree que la MAC
-    del Router es C)                                el tráfico en claro)                            de Víctima A es C)
+```mermaid
+flowchart LR
+    V["Víctima A<br>IP: 192.168.1.50<br>Cree que MAC Router = Atacante"]
+    A["Atacante (MITM)<br>IP: 192.168.1.100<br>Inspecciona y altera tráfico"]
+    R["Router / Internet<br>IP: 192.168.1.1<br>Cree que MAC Víctima = Atacante"]
+
+    V -->|Tráfico saliente interceptado| A
+    A -->|Tráfico reenviado (IP forwarding)| R
+    R -->|Respuesta interceptada| A
+    A -->|Respuesta reenviada| V
+
+    style V fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style A fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style R fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
 
 #### Mecánica del Envenenamiento ARP (*ARP Spoofing / ARP Poisoning*):
@@ -256,18 +275,28 @@ Los protocolos **SSL/TLS** proporcionan cifrado y autenticación sobre las conex
 
 Un **Sistema de Detección de Intrusiones (IDS)** es un mecanismo de seguridad que monitoriza eventos en una red o sistema informático para analizar e identificar patrones de actividad maliciosa o violaciones de las políticas de seguridad. Un **Sistema de Prevención de Intrusiones (IPS)** añade la capacidad de actuar en línea para **bloquear activamente** la amenaza detectada.
 
-```
-                         ┌────────────────────────────────────────────────────────┐
-                         │         SISTEMAS DE PROTECCIÓN DE INTRUSIONES          │
-                         └────────────────────────────────────────────────────────┘
-                                                     │
-                       ┌─────────────────────────────┴─────────────────────────────┐
-                       ▼                                                           ▼
-             [ UBICACIÓN DE DESPLIEGUE ]                                 [ MODO DE RESPUESTA ]
-       ┌───────────────────────┬───────────────────────┐           ┌───────────────────────┬───────────────────────┐
-       ▼                       ▼                       ▼           ▼                       ▼                       ▼
-    [ NIDS ]                [ HIDS ]                [ WIDS ]     [ IDS ]                 [ IPS ]                 [ HIPS ]
- (Nivel de Red)         (En el Host)          (Inalámbrico)   (Pasivo / Alerta)       (Activo / Bloqueo)    (Defensa Host)
+```mermaid
+graph TD
+    Root["Sistemas de Detección y Prevención de Intrusiones (IDS/IPS)"]
+
+    subgraph Ubicacion ["Por Ubicación de Despliegue"]
+        NIDS["NIDS / NIPS<br>Nivel de Red<br>(SPAN / Inline)"]
+        HIDS["HIDS / HIPS<br>En el Host<br>(Agente local)"]
+        WIDS["WIDS / WIPS<br>Inalámbrico<br>(Espectro Wi-Fi)"]
+    end
+
+    subgraph Respuesta ["Por Modo de Respuesta"]
+        IDS["IDS (Pasivo)<br>Fuera de línea (SPAN)<br>Genera alertas"]
+        IPS["IPS (Activo)<br>En línea (Inline)<br>Bloquea tráfico malicioso"]
+        HIPS["HIPS (Defensa Host)<br>Protege llamadas al sistema<br>Bloquea procesos"]
+    end
+
+    Root --> Ubicacion
+    Root --> Respuesta
+
+    style Root fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Ubicacion fill:#f3e5f5,stroke:#8e24aa,stroke-width:1px
+    style Respuesta fill:#fff3e0,stroke:#f57c00,stroke-width:1px
 ```
 
 #### Clasificación según la Ubicación de Despliegue:
@@ -364,9 +393,14 @@ A lo largo de la historia de los estándares IEEE 802.11, los mecanismos de prot
 #### Wi-Fi Enterprise (IEEE 802.1X + RADIUS):
 * Arquitectura donde cada usuario se autentica de forma **nominal e individual** con su propio usuario y contraseña corporativa o mediante certificado digital.
 
-```
- [ CLIENTE / SUPLICANTE ] ─── (802.1X / EAP) ───> [ PUNTO DE ACCESO (AP) ] ─── (RADIUS / UDP) ───> [ SERVIDOR RADIUS ]
-  (Laptop / Smartphone)                            (Autenticador)                                  (Valida contra LDAP / AD)
+```mermaid
+flowchart LR
+    C["Cliente / Suplicante<br>Laptop / Smartphone<br>Credenciales de usuario"] -->|802.1X / EAP| AP["Punto de Acceso (AP)<br>Autenticador NAS<br>Bloquea tráfico no autenticado"]
+    AP -->|RADIUS / UDP 1812| RAD["Servidor RADIUS<br>FreeRADIUS / NPS<br>Valida contra LDAP / AD"]
+
+    style C fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style AP fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style RAD fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
 
 ![Arquitectura IEEE 802.1X y Autenticación con Servidor RADIUS](img/radius_escenario_ap.svg)

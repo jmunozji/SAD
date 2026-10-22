@@ -31,21 +31,28 @@ El laboratorio modela la salida a Internet de una red corporativa a través de u
 
 ![Escenario de trabajo en GNS3 para Squid Proxy](img/squid.png)
 
-```text
-                  [ INTERNET / WAN ] (Nube NAT de GNS3)
-                            │
-                            │ (eth0 - DHCP / 192.168.122.X)
-              ┌─────────────▼─────────────┐
-              │    PROXYSERVER (Debian)   │ ◄── Servidor Squid Proxy
-              │     Squid Cache & Auth    │
-              └─────────────┬─────────────┘
-                            │ (eth1 - 192.168.100.1/24)
-                            ▼
-                  [ SWITCH RED INTERNA ]
-                            │
-                            ▼
-                 [ CLIENTE FIREFOX (LAN) ]
-                    (192.168.100.2/24)
+```mermaid
+graph TD
+    subgraph WANZone ["Red Externa (WAN)"]
+        WAN["INTERNET / WAN<br>(Nube NAT virbr0 - 192.168.122.0/24)"]
+    end
+
+    subgraph ProxyZone ["Servidor Intermediario Proxy"]
+        Proxy["ProxyServer (Debian 12)<br>• eth0: DHCP WAN<br>• eth1: 192.168.100.1 (LAN)<br>• Servicio Squid (Puerto TCP 3128)"]
+    end
+
+    subgraph LANZone ["Red Corporativa / LAN (192.168.100.0/24)"]
+        SW["Switch Core LAN"]
+        Client["Cliente Firefox (LAN)<br>IP: 192.168.100.2<br>Proxy manual: 192.168.100.1:3128"]
+        SW --- Client
+    end
+
+    WAN ---|eth0 WAN| Proxy
+    Proxy ---|eth1 LAN| SW
+
+    style WANZone fill:#ffebee,stroke:#e53935,stroke-width:1px
+    style ProxyZone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style LANZone fill:#e8f5e9,stroke:#43a047,stroke-width:1px
 ```
 
 ### Tabla de Direccionamiento IP del Laboratorio

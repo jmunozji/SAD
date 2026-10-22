@@ -33,9 +33,14 @@ Las pérdidas de información no solo tienen su origen en ciberataques malicioso
 
 A la hora de diseñar un plan de continuidad de negocio (*Business Continuity Plan* - BCP) y de recuperación ante desastres (*Disaster Recovery Plan* - DRP), todo administrador de sistemas debe definir dos parámetros fundamentales acordados con la dirección:
 
-```
-  [ ÚLTIMO BACKUP ] ◄──── RPO ────► [ DESASTRE / INCIDENTE ] ◄──── RTO ────► [ SISTEMA RESTAURADO ]
-   (Datos guardados)               (Pérdida de datos tolerada)                (Tiempo de inactividad)
+```mermaid
+flowchart LR
+    B["Último Backup Válido<br>(Datos a salvo)"] <-->|RPO: Pérdida máxima tolerada| D["INCIDENTE / DESASTRE<br>(Caída del sistema)"]
+    D <-->|RTO: Tiempo máximo tolerado| R["Sistema Restaurado<br>(Servicio operativo)"]
+
+    style B fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style D fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style R fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
 ```
 
 1. **RPO (*Recovery Point Objective* - Objetivo de Punto de Recuperación):**
@@ -61,16 +66,22 @@ Una copia de seguridad o *backup* es un duplicado íntegro o selectivo de la inf
 
 Es el estándar de oro universalmente aceptado por los organismos de ciberseguridad (INCIBE, CISA, NIST) para el diseño de políticas de respaldo resistentes:
 
-```
-                      ┌──────────────────────────────────────┐
-                      │          LA REGLA 3 - 2 - 1          │
-                      └──────────────────────────────────────┘
-                                          │
-        ┌─────────────────────────────────┼─────────────────────────────────┐
-        ▼                                 ▼                                 ▼
-   [ 3 COPIAS ]                     [ 2 SOPORTES ]                    [ 1 OFFSITE ]
- 1 Original + 2 Respaldos        Tecnologías distintas             Copia en ubicación externa
- (evita punto único de fallo)    (ej. Disco Local + NAS / Nube)    (protección frente a incendios)
+```mermaid
+graph TD
+    Rule["La Regla Nemotécnica 3 - 2 - 1"]
+    
+    C3["3 COPIAS DE SEGURIDAD<br>• 1 Copia de Producción<br>• 2 Copias de Respaldo<br>• Evita punto único de fallo"]
+    C2["2 SOPORTES DIFERENTES<br>• Tecnologías independientes<br>• ej. Disco local + NAS o Cinta<br>• Evita fallos de un mismo medio"]
+    C1["1 COPIA FUERA DE LA SEDE (OFFSITE)<br>• Almacenamiento en la nube o centro remoto<br>• Protección frente a incendios o desastres físicos"]
+
+    Rule --> C3
+    Rule --> C2
+    Rule --> C1
+
+    style Rule fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style C3 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style C2 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style C1 fill:#fce4ec,stroke:#c2185b,stroke-width:2px
 ```
 
 * **3 Copias de los datos:** Debe existir el dato original de producción y al menos dos copias de respaldo adicionales.

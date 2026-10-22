@@ -14,14 +14,31 @@ En los primeros años de las telecomunicaciones corporativas, cuando una organiz
 
 Con la expansión universal de Internet surgió el concepto de **Red Privada Virtual (*Virtual Private Network - VPN*)**: una tecnología de red que permite crear una extensión virtual de una red local privada sobre una infraestructura pública y no confiable (habitualmente Internet), garantizando los mismos niveles de seguridad, autenticidad y privacidad que si los equipos estuvieran directamente interconectados por un cable físico privado.
 
-```text
-                      [ INFRAESTRUCTURA PÚBLICA (INTERNET) ]
-                               (Medio No Seguro)
-                                      │
-  ┌─────────────────┐                 ▼                 ┌─────────────────┐
-  │ SEDE CENTRAL    │ ═════════════════════════════════ │ SUCURSAL REMOTA │
-  │ Red 192.168.1.0 │    [ TÚNEL CIFRADO Y AUTÉNTICO ]   │ Red 192.168.2.0 │
-  └─────────────────┘                                   └─────────────────┘
+```mermaid
+flowchart LR
+    subgraph SedeA ["Sede Central"]
+        LAN1["Red 192.168.1.0/24<br>Servidores y Puestos"]
+        R1["Router VPN Sede A"]
+        LAN1 --- R1
+    end
+
+    subgraph WAN ["Infraestructura Pública (Internet)"]
+        Tunnel{{"TÚNEL VPN CIFRADO<br>(Cifrado AES + Integridad SHA)"}}
+    end
+
+    subgraph SedeB ["Sucursal Remota"]
+        R2["Router VPN Sede B"]
+        LAN2["Red 192.168.2.0/24<br>Clientes y Recursos"]
+        R2 --- LAN2
+    end
+
+    R1 <==> Tunnel
+    Tunnel <==> R2
+
+    style SedeA fill:#e8f5e9,stroke:#388e3c,stroke-width:1px
+    style SedeB fill:#e8f5e9,stroke:#388e3c,stroke-width:1px
+    style WAN fill:#ffebee,stroke:#e53935,stroke-width:1px
+    style Tunnel fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
 ```
 
 !!! tip "Recursos de Introducción a las VPN"
@@ -193,22 +210,28 @@ Para que dos routers puedan cifrar y descifrar paquetes mediante IPsec, primero 
 
 El establecimiento de una sesión IPsec mediante IKE se divide en dos fases consecutivas:
 
-```text
-[ ROUTER 1 ]                                            [ ROUTER 2 ]
-     │                                                       │
-     │ ────────── FASE 1: IKE SA (Canal de Control) ───────── │
-     │  • Negociación de cifrado (AES), hash (SHA) y DH      │
-     │  • Autenticación mutua con PSK o Certificado X.509    │
-     │  • Se crea el túnel IKE seguro (ISAKMP)               │
-     │                                                       │
-     │ ────────── FASE 2: IPSEC SA (Túnel de Datos) ───────── │
-     │  • Negociación de parámetros para tráfico real (ESP)  │
-     │  • Definición de selectores de tráfico (Red1 ↔ Red2)  │
-     │  • Se crean las SAs unidireccionales de IPsec         │
-     │                                                       │
-     │ ══════════ FLUJO DE DATOS CIFRADOS (ESP) ════════════ │
-     │ [PAQUETE CIFRADO CON CLAVES DE LA FASE 2]             │
-     ▼                                                       ▼
+```mermaid
+sequenceDiagram
+    autonumber
+    actor R1 as Router 1 (Sede Central)
+    actor R2 as Router 2 (Sucursal)
+
+    Note over R1,R2: FASE 1: IKE SA (Canal de Control Seguro ISAKMP - UDP 500)
+    R1->>R2: 1. Negociación IKE (Cifrado AES, Hash SHA256, DH Grupo 14)
+    R2-->>R1: 2. Propuesta aceptada
+    R1->>R2: 3. Intercambio Diffie-Hellman + Nonces aleatorios
+    R2-->>R1: 4. Intercambio DH completado (Clave compartida derivada)
+    R1->>R2: 5. Autenticación mutua cifrada (PSK / Clave Precompartida)
+    R2-->>R1: 6. Confirmación de autenticación (Túnel Fase 1 ACTIVO)
+
+    Note over R1,R2: FASE 2: IPsec SA / Quick Mode (Túnel de Datos ESP)
+    R1->>R2: 7. Negociación IPsec SA (Protocolo ESP, Selectores: 192.168.1.0/24 <-> 192.168.2.0/24)
+    R2-->>R1: 8. Aceptación y derivación de SPIs unidireccionales
+    R1->>R2: 9. Confirmación de SA (Túnel Fase 2 ACTIVO)
+
+    Note over R1,R2: FLUJO DE TRÁFICO VPN CIFRADO (Protocolo IP 50 ESP)
+    R1-)R2: Paquete ESP Cifrado [Cabecera IP Pública | Cabecera ESP | Subred 192.168.1.0 -> 192.168.2.0]
+    R2-)R1: Paquete ESP Cifrado
 ```
 
 #### Fase 1 (IKE SA / ISAKMP)

@@ -23,27 +23,20 @@
 
 Un **NIDS** (*Network-based Intrusion Detection System*) analiza los paquetes que atraviesan una interfaz de red, comparando las cabeceras y la carga útil (*payload*) contra un conjunto de firmas o reglas de comportamiento.
 
-```
-       [ TRÁFICO DE RED ] 
-               │
-               ▼
-   [ Interfaz en Modo Promiscuo ]
-               │
-               ▼
-   [ Decodificador de Paquetes ]
-               │
-               ▼
-   [ Preprocesadores (Normalización / Defrag) ]
-               │
-               ▼
-   [ Motor de Detección (Inspección de Reglas) ]
-               │
-       ┌───────┴───────┐
-       ▼               ▼
-  [ Coincidencia ] [ Sin Coincidencia ]
-       │               │
-       ▼               ▼
-[ Genera Alerta ] [ Tráfico Continúa ]
+```mermaid
+graph TD
+    Red([Tráfico de Red Bruto]) --> Promisc["Interfaz en Modo Promiscuo<br>(Captura todas las tramas)"]
+    Promisc --> Decod["Decodificador de Paquetes<br>(Ethernet → IP → TCP/UDP/ICMP)"]
+    Decod --> Preproc["Preprocesadores<br>(Normalización, Defrag IP, Reensamblado TCP)"]
+    Preproc --> Engine{Motor de Detección<br>¿Coincide con Reglas Snort?}
+    
+    Engine -- Coincidencia --> Alert["Genera Alerta y Registro<br>(/var/log/snort/alert)"]
+    Engine -- Sin coincidencia --> Pass([Tráfico Continúa Normal])
+
+    style Red fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Engine fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Alert fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style Pass fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
 ```
 
 ### Anatomía de una Regla Snort

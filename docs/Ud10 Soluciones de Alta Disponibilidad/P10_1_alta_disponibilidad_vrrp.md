@@ -29,32 +29,40 @@ El laboratorio modela una infraestructura corporativa resiliente donde ningún f
 
 ![Escenario completo de Alta Disponibilidad en GNS3](img/Selección_002.png)
 
-```text
-                  [ INTERNET / WAN ] (Nube NAT - 192.168.122.0/24)
-                            │
-            ┌───────────────┴───────────────┐
-            │                               │
-            ▼ ether1                        ▼ ether1
-    ┌───────────────┐               ┌───────────────┐
-    │  MikroTik 1   │  Anuncios     │  MikroTik 2   │
-    │  (VRRP Master)│ ════════════> │  (VRRP Backup)│
-    │  Prio: 150    │   VRRP (224.0.0.18) Prio: 100 │
-    └───────┬───────┘               └───────┬───────┘
-     ether2 │ 192.168.100.1/24       ether2 │ 192.168.100.2/24
-            │                               │
-            └───────────────┬───────────────┘
-                            │ VIP Pasarela: 192.168.100.1 (VRID 10)
-                            ▼
-                  [ SWITCH RED INTERNA ] (192.168.100.0/24)
-                            │
-         ┌──────────────────┼──────────────────┐
-         │                  │                  │
-         ▼                  ▼                  ▼
-┌─────────────────┐┌─────────────────┐┌─────────────────┐
-│   Servidor 1    ││   Servidor 2    ││     Firefox     │
-│ (Apache Master) ││ (Apache Backup) ││  Cliente LAN    │
-│ IP: .11 / VIP:.50││ IP: .12 / VIP:.50││ IP: .100        │
-└─────────────────┘└─────────────────┘└─────────────────┘
+```mermaid
+flowchart TD
+    subgraph WANZone ["Red Externa (WAN)"]
+        WAN["INTERNET / WAN<br>(Nube NAT - 192.168.122.0/24)"]
+    end
+
+    subgraph VRRPZone ["Clúster de Pasarelas VRRP (VRID 10 - VIP: 192.168.100.1)"]
+        MT1["MikroTik 1 (VRRP Master)<br>• Prioridad: 150<br>• ether1: DHCP WAN<br>• ether2: 192.168.100.1/24"]
+        MT2["MikroTik 2 (VRRP Backup)<br>• Prioridad: 100<br>• ether1: DHCP WAN<br>• ether2: 192.168.100.2/24"]
+    end
+
+    WAN --- MT1
+    WAN --- MT2
+    MT1 == "Anuncios VRRP (224.0.0.18)" ==> MT2
+
+    subgraph LANZone ["Red Corporativa / LAN (192.168.100.0/24)"]
+        SW["Switch Core LAN"]
+        S1["Servidor 1 (Apache Master)<br>• IP: 192.168.100.11<br>• VIP Keepalived: .50"]
+        S2["Servidor 2 (Apache Backup)<br>• IP: 192.168.100.12<br>• VIP Keepalived: .50"]
+        Cli["Cliente LAN (Firefox)<br>• IP: 192.168.100.100<br>• GW: 192.168.100.1 (VIP)"]
+        
+        SW --- S1
+        SW --- S2
+        SW --- Cli
+    end
+
+    MT1 ---|ether2 LAN| SW
+    MT2 ---|ether2 LAN| SW
+
+    style WANZone fill:#ffebee,stroke:#e53935,stroke-width:1px
+    style VRRPZone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style LANZone fill:#e8f5e9,stroke:#43a047,stroke-width:1px
+    style MT1 fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style MT2 fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
 ```
 
 ### Tabla de Direccionamiento IP del Laboratorio
