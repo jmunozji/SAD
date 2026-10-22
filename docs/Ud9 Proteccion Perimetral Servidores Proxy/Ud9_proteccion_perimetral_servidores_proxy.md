@@ -150,19 +150,9 @@ graph TD
     Modified -- Sí --> UpdateTimer[Actualiza tiempo de frescura y entrega caché]
     Modified -- No --> FetchNew[Descarga nuevo recurso y actualiza caché]
 
-    Proxy -- No (TCP_MISS) --> FetchServer[Conecta con el Servidor Web Destino<br>Descarga recurso vía WAN]
-    FetchServer --> Cacheable{¿Cabeceras permiten caché?<br>Cache-Control / Expires}
-    Cacheable -- Sí --> Store[Almacena copia en /var/spool/squid]
-    Cacheable -- No --> Forward[Entrega al cliente sin almacenar]
-    Store --> Deliver([Entrega respuesta al Cliente])
-    Forward --> Deliver
-    ServeFast --> Deliver
-    UpdateTimer --> Deliver
-    FetchNew --> Deliver
-
-    style Proxy fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style ServeFast fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
-    style FetchServer fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+2. Petición posterior del Cliente 2:
+[ Cliente 2 ] ── GET /logo.png ──> [ Proxy ] (HIT: ¡está en caché!)
+[ Cliente 2 ] <── 200 OK (logo) ── [ Proxy ] (Respuesta inmediata; 0 tráfico a Internet)
 ```
 
 #### Estados de Registro en la Caché (`access.log`)
