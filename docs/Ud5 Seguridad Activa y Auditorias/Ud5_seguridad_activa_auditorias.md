@@ -13,18 +13,24 @@ En el diseño de una arquitectura de seguridad informática se distinguen dos en
 * **Seguridad Pasiva:** Conjunto de medidas orientadas a **minimizar los daños y facilitar la recuperación** una vez que se ha producido un incidente de seguridad o desastre. Incluye la programación de copias de seguridad (*backups*), el uso de sistemas de alimentación ininterrumpida (SAI), el despliegue de almacenamiento redundante (RAID) y los planes de continuidad de negocio y recuperación ante desastres (DRP).
 * **Seguridad Activa:** Conjunto de mecanismos, herramientas y protocolos diseñados para **prevenir, detectar, neutralizar y bloquear** de forma proactiva y en tiempo real las amenazas o intentos de acceso no autorizado antes de que comprometan el sistema. Incluye el uso de cortafuegos, sistemas de detección y prevención de intrusiones (IDS/IPS), antivirus/EDR, autenticación multifactor, cifrado de datos y la ejecución periódica de auditorías de seguridad.
 
-```
-                    ┌─────────────────────────────────────────────────────────┐
-                    │           ESTRATEGIA DE SEGURIDAD INTEGRAL              │
-                    └─────────────────────────────────────────────────────────┘
-                                                 │
-                        ┌────────────────────────┴────────────────────────┐
-                        ▼                                                 ▼
-             [ SEGURIDAD ACTIVA ]                              [ SEGURIDAD PASIVA ]
-          • Prevención y Detección                           • Mitigación y Recuperación
-          • Auditorías y Pentesting                          • Copias de Seguridad (Backups)
-          • IDS/IPS y Cortafuegos                            • Tolerancia a Fallos (RAID)
-          • Detección de Malware                             • Planes de Continuidad (DRP)
+```mermaid
+graph TD
+    Root["Estrategia de Seguridad Integral"]
+    
+    subgraph Activa ["SEGURIDAD ACTIVA (Proactiva)"]
+        A1["• Prevención y Detección en tiempo real<br>• Auditorías técnicas y Pentesting<br>• Cortafuegos e IDS/IPS<br>• Antivirus / EDR y Control de Acceso"]
+    end
+
+    subgraph Pasiva ["SEGURIDAD PASIVA (Revisora / Recuperación)"]
+        P1["• Mitigación y Recuperación ante desastres<br>• Copias de Seguridad (Backups)<br>• Tolerancia a Fallos (RAID / SAI)<br>• Planes de Continuidad de Negocio (DRP)"]
+    end
+
+    Root --> Activa
+    Root --> Pasiva
+
+    style Root fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Activa fill:#e8f5e9,stroke:#388e3c,stroke-width:1px
+    style Pasiva fill:#fff3e0,stroke:#f57c00,stroke-width:1px
 ```
 
 #### El Mito del Perímetro Seguro: La Realidad de la Amenaza Interna
@@ -128,10 +134,17 @@ El escaneo de puertos es la técnica que permite consultar remotamente un rango 
 | **Cerrado (*Closed*)** | El host recibe el paquete pero no hay ningún servicio escuchando; responde rechazando la conexión. |
 | **Filtrado (*Filtered*)** | Un dispositivo intermedio (cortafuegos) o regla local bloquea el tráfico y el escáner no puede determinar si está abierto o cerrado. |
 
-```
- [ TCP SYN / Stealth Scan ]  ──>  Host envía TCP SYN
-                             <──  Objetivo responde SYN/ACK (Puerto Abierto)
-                             ──>  Host envía TCP RST (Termina sin completar Handshake)
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Scanner as Equipo Auditor (Nmap)
+    actor Target as Host Objetivo (Servidor)
+
+    Note over Scanner,Target: Escaneo TCP SYN (Stealth / Medio Abierto)
+    Scanner->>Target: 1. TCP SYN (Puerto de sondeo, ej. 80)
+    Target-->>Scanner: 2. TCP SYN/ACK (¡Puerto Abierto / Escuchando!)
+    Scanner->>Target: 3. TCP RST (Interrumpe la conexión sin completar 3-Way Handshake)
+    Note over Scanner: Determina estado: ABIERTO sin registrar sesión completa
 ```
 
 #### Mecánica de los Tipos de Escaneo Principales:
@@ -178,24 +191,29 @@ El **malware** (*software malicioso*) abarca cualquier programa diseñado con el
 * **Rootkit:** Conjunto de herramientas diseñadas para ocultar la presencia de malware y mantener acceso de superusuario modificando estructuras del kernel o del sistema operativo.
 * **Botnet:** Red de equipos informáticos o dispositivos IoT infectados (*zombis*) controlados remotamente por un atacante a través de un servidor de Mando y Control (*C&C - Command & Control*).
 
-```
-                      ┌────────────────────────────────────────────────────────┐
-                      │          ATACANTE / SERVIDOR C&C (BOTMASTER)           │
-                      └────────────────────────────────────────────────────────┘
-                                                  │
-                                   Comandos de Ataque Coordinado
-                                                  │
-                      ┌───────────────────────────┼───────────────────────────┐
-                      ▼                           ▼                           ▼
-              [ Dispositivo IoT ]         [ Servidor Infectado ]         [ PC de Oficina ]
-                      │                           │                           │
-                      └───────────────────────────┼───────────────────────────┘
-                                                  │
-                                   Inundación Masiva de Tráfico (DDoS)
-                                                  ▼
-                                     ┌─────────────────────────┐
-                                     │  OBJETIVO DE LA VÍCTIMA │
-                                     └─────────────────────────┘
+```mermaid
+graph TD
+    Attacker["Atacante / Servidor C&C (Botmaster)"]
+    
+    subgraph Zombies ["Red de Bots / Zombis (Botnet)"]
+        IoT["Dispositivo IoT Infectado"]
+        Srv["Servidor Comprometido"]
+        PC["PC de Oficina Infectado"]
+    end
+
+    Victim["Servidor Objetivo de la Víctima<br>(Agotamiento por Saturación / DDoS)"]
+
+    Attacker -->|Comandos de ataque coordinado| IoT
+    Attacker -->|Comandos de ataque coordinado| Srv
+    Attacker -->|Comandos de ataque coordinado| PC
+
+    IoT ==>|Inundación masiva de tráfico| Victim
+    Srv ==>|Inundación masiva de tráfico| Victim
+    PC ==>|Inundación masiva de tráfico| Victim
+
+    style Attacker fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style Zombies fill:#fff3e0,stroke:#f57c00,stroke-width:1px
+    style Victim fill:#ffebee,stroke:#c62828,stroke-width:2px
 ```
 
 #### Ataques de Denegación de Servicio (DoS / DDoS):
@@ -210,19 +228,19 @@ Buscan agotar los recursos de procesamiento, memoria o ancho de banda de un serv
 Un ataque **Man-In-The-Middle (MITM)** ocurre cuando un atacante logra posicionarse en la trayectoria lógica de comunicación entre dos hosts legítimos, siendo capaz de interceptar, inspeccionar, alterar o destruir el tráfico transmitido.
 
 ```mermaid
-flowchart LR
-    V["Víctima A<br>IP: 192.168.1.50<br>Cree que MAC Router = Atacante"]
-    A["Atacante (MITM)<br>IP: 192.168.1.100<br>Inspecciona y altera tráfico"]
-    R["Router / Internet<br>IP: 192.168.1.1<br>Cree que MAC Víctima = Atacante"]
+sequenceDiagram
+    autonumber
+    actor V as Víctima (192.168.1.50)
+    actor A as Atacante MITM (192.168.1.100)
+    actor R as Router / Internet (192.168.1.1)
 
-    V -->|Tráfico saliente interceptado| A
-    A -->|Tráfico reenviado (IP forwarding)| R
-    R -->|Respuesta interceptada| A
-    A -->|Respuesta reenviada| V
-
-    style V fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style A fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
-    style R fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    Note over V,R: Envenenamiento previo de tablas ARP (ARP Spoofing)
+    V->>A: 1. Tráfico saliente a Internet (Cree que MAC Router = MAC Atacante)
+    Note over A: Intercepta, copia y analiza el paquete (Wireshark)
+    A->>R: 2. Reenvía paquete a la pasarela legítima (IP Forwarding)
+    R->>A: 3. Tráfico de retorno desde Internet (Cree que MAC Víctima = MAC Atacante)
+    Note over A: Intercepta y analiza la respuesta
+    A->>V: 4. Reenvía la respuesta a la Víctima (Conexión transparente)
 ```
 
 #### Mecánica del Envenenamiento ARP (*ARP Spoofing / ARP Poisoning*):
@@ -332,8 +350,33 @@ Los motores NIDS/NIPS estándar de la industria (como **Snort** y **Suricata**) 
 
 #### Estructura General de una Regla IDS/IPS:
 
-```text
- [ Acción ] [ Protocolo ] [ IP Origen ] [ Puerto Origen ] -> [ IP Destino ] [ Puerto Destino ] ( Opciones de la Regla )
+```mermaid
+flowchart TD
+    subgraph Regla ["Anatomía de una Regla NIDS (Snort / Suricata)"]
+        direction TB
+        subgraph Header ["1. ENCABEZADO DE LA REGLA (Header) - Define el Flujo de Red"]
+            direction LR
+            A1["Acción<br>alert / drop / pass"] --> A2["Protocolo<br>tcp / udp / icmp / ip"]
+            A2 --> A3["Red Origen<br>$EXTERNAL_NET"]
+            A3 --> A4["Puerto Origen<br>any"]
+            A4 --> A5["Dirección<br>->"]
+            A5 --> A6["Red Destino<br>$HOME_NET"]
+            A6 --> A7["Puerto Destino<br>80, 443, 22"]
+        end
+        
+        subgraph Options ["2. CUERPO DE OPCIONES (Options) - Inspección Profunda (DPI)"]
+            direction LR
+            O1["msg: 'Alerta Ataque'"] --- O2["flow: to_server,established"]
+            O2 --- O3["content: '/admin.php'"]
+            O3 --- O4["classtype: web-application-attack"]
+            O4 --- O5["sid: 1000001 / rev: 1"]
+        end
+        
+        Header ==> Options
+    end
+
+    style Header fill:#e1f5fe,stroke:#0288d1,stroke-width:1px
+    style Options fill:#fff3e0,stroke:#f57c00,stroke-width:1px
 ```
 
 * **Encabezado de la Regla (*Header*):** Define la acción a tomar (`alert`, `drop`, `pass`), el protocolo (`ip`, `icmp`, `tcp`, `udp`), el flujo de direcciones IP y los puertos involucrados.
@@ -360,9 +403,16 @@ Las redes inalámbricas (WLAN - IEEE 802.11) ofrecen movilidad y reducción de c
 
 A lo largo de la historia de los estándares IEEE 802.11, los mecanismos de protección han evolucionado para subsanar graves fallos criptográficos:
 
-```
-    [ WEP ] ───> [ WPA (TKIP) ] ───> [ WPA2 (AES-CCMP) ] ───> [ WPA3 (SAE / Dragonfly) ]
- (Totalmente Inseguro)  (Transición Temporal)   (Estándar Extendido)     (Máxima Seguridad Actual)
+```mermaid
+flowchart LR
+    WEP["WEP (1999)<br>• Cifrado RC4 + IV 24 bits<br>• Totalmente Roto / Inseguro"] --> WPA["WPA (2003)<br>• Protocolo TKIP + IV 48 bits<br>• Transición temporal (Obsoleto)"]
+    WPA --> WPA2["WPA2 (2004)<br>• Cifrado AES-CCMP<br>• Estándar maduro (Vulnerable a KRACK)"]
+    WPA2 --> WPA3["WPA3 (2018)<br>• Handshake SAE / Dragonfly<br>• Cifrado robusto 192 bits<br>• Máxima Seguridad Actual"]
+
+    style WEP fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style WPA fill:#ffe0b2,stroke:#f57c00,stroke-width:2px
+    style WPA2 fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style WPA3 fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
 ```
 
 #### 1. WEP (*Wired Equivalent Privacy*) - OBSOLETO E INSEGURO
@@ -455,9 +505,17 @@ Una política de auditoría eficaz debe registrar:
 
 En los sistemas GNU/Linux, la gestión de eventos combina la arquitectura tradicional de ficheros de texto con el diario binario indexado de **systemd**.
 
-```
- [ Evento del Sistema / App ] ──> [ Demonio rsyslog ] ──> /var/log/auth.log, /var/log/syslog (Texto)
-                              └──> [ systemd-journald ] ──> Diario Binario Indexado (journalctl)
+```mermaid
+flowchart LR
+    Evt["Evento del Sistema<br>(Kernel / Aplicación / Auth)"] --> Syslog["Demonio rsyslog<br>(/etc/rsyslog.conf)"]
+    Evt --> Journal["Demonio systemd-journald<br>(/run/log o /var/log/journal)"]
+
+    Syslog --> LogsTxt["Archivos de Texto Plano<br>• /var/log/auth.log (Autenticación)<br>• /var/log/syslog (General)<br>Legibles con cat, grep, tail"]
+    Journal --> LogsBin["Diario Binario Indexado<br>• Registro estructurado<br>• Consulta rápida con journalctl"]
+
+    style Evt fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Syslog fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Journal fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
 
 * **Arquitectura Syslog / rsyslog:** Los eventos se clasifican por **Facilidad** (*Facility*: `auth`, `cron`, `kern`, `daemon`) y **Prioridad/Severidad** (*Severity*: `emerg`, `alert`, `crit`, `err`, `warning`, `notice`, `info`, `debug`). Los ficheros habituales en `/var/log/` son `auth.log` (autenticación) y `syslog` (eventos generales).
