@@ -22,16 +22,66 @@
 
 En la gestión de la seguridad informática, mientras que utilidades como `ss` o `netstat` ofrecen una visión **local** de los sockets abiertos desde el propio sistema operativo, las herramientas de escaneo activo de red como **Nmap** permiten auditar un sistema o red completa desde una posición **remota**.
 
-```
-  [ EQUIPO AUDITOR / NMAP ]  ─── Sondaje de Paquetes TCP/UDP ───>  [ SERVIDOR OBJETIVO ]
-  (Analiza respuestas)                                             (Puertos Open / Filtered)
+```mermaid
+flowchart LR
+    subgraph Auditor ["EQUIPO AUDITOR (Remoto)"]
+        A["<b>Nmap Security Scanner</b><br>• Generación de paquetes a medida<br>• Análisis de respuestas y latencia"]
+    end
+
+    subgraph Objetivo ["SERVIDOR OBJETIVO"]
+        B["<b>Pila de Red y Servicios</b><br>• Estado <b>Open</b> (Acepta conexión)<br>• Estado <b>Closed</b> (Rechazo / RST)<br>• Estado <b>Filtered</b> (Bloqueo / Firewall)"]
+    end
+
+    A -->|"1. Envío de sondas TCP / UDP"| B
+    B -.->|"2. Respuesta (SYN/ACK, RST o ICMP)"| A
+
+    style Auditor fill:#e1f5fe,stroke:#0288d1,stroke-width:1px
+    style Objetivo fill:#fff3e0,stroke:#f57c00,stroke-width:1px
+    style A fill:#ffffff,stroke:#0288d1,stroke-width:2px
+    style B fill:#ffffff,stroke:#f57c00,stroke-width:2px
 ```
 
 El escaneo de puertos cumple un doble propósito en el ciclo de vida de la seguridad:
+
 1. **Perspectiva del Administrador / Auditor (Defensivo):** Permite inventariar los equipos activos en la red, identificar qué servicios están escuchando realmente, verificar que no existan puertos no autorizados o servicios obsoletos y validar el correcto funcionamiento de los cortafuegos perimetrales.
 2. **Perspectiva del Atacante (Ofensivo):** Constituye la primera fase de una intrusión (*Footprinting* / Reconocimiento). Un atacante busca puertos abiertos para identificar versiones de software específicas y buscar fallos conocidos capaces de comprometer el servicio.
 
+---
+
+### Mecánica de Sondaje y Estados de los Puertos
+
+Para determinar la superficie de exposición de un host, Nmap envía paquetes de sondeo (*probes*) y clasifica la respuesta obtenida en tres estados fundamentales:
+
+| Estado del Puerto | Interpretación Técnica | Respuesta del Objetivo |
+| :--- | :--- | :--- |
+| **`open` (Abierto)** | Un servicio o aplicación está escuchando activamente y acepta conexiones. | Responde con `SYN/ACK` (en TCP) o respuesta de aplicación (en UDP). |
+| **`closed` (Cerrado)** | El host es accesible pero ninguna aplicación está escuchando en ese puerto. | Responde con `RST` (en TCP) o ICMP *Port Unreachable* (en UDP). |
+| **`filtered` (Filtrado)** | Un cortafuegos (*firewall*) o regla de filtrado bloquea los paquetes e impide determinar el estado. | No hay respuesta (*drop*) o responde con ICMP *Administratively Prohibited*. |
+
+#### Tipos de Escaneo Principales:
+* **Escaneo TCP SYN (`-sS` - *Stealth Scan* / Medio Abierto):** Es el método por defecto cuando se ejecuta Nmap con privilegios de superusuario (`sudo`). Permite auditar puertos de forma rápida sin llegar a establecer una conexión TCP completa. El escáner envía un paquete con la bandera `SYN`. Si el puerto está abierto, el objetivo responde con `SYN/ACK`. El escáner responde de inmediato con un paquete `RST` para abortar la conexión sin completar el apretón de manos de tres vías (*3-Way Handshake*), evitando ser registrado por muchas aplicaciones y reduciendo la sobrecarga de conexiones semiabiertas.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Scanner as Equipo Auditor (Nmap)
+    actor Target as Host Objetivo (Servidor)
+
+    Note over Scanner,Target: Escaneo TCP SYN (Stealth / Medio Abierto)
+    Scanner->>Target: TCP SYN (Puerto de sondeo, ej. 80)
+    Target-->>Scanner: TCP SYN/ACK (¡Puerto Abierto / Escuchando!)
+    Scanner->>Target: TCP RST (Interrumpe la conexión sin completar 3-Way Handshake)
+    Note over Scanner: Determina estado: ABIERTO sin registrar sesión completa
+```
+
+* **Escaneo TCP Connect (`-sT`):** Completa el flujo `SYN` → `SYN/ACK` → `ACK`. Es más ruidoso y queda registrado en los logs de aplicación, pero no requiere privilegios de superusuario en la máquina auditora.
+* **Escaneo UDP (`-sU`):** Dado que UDP es un protocolo no orientado a conexión, el escáner envía datagramas vacíos. Si el puerto está cerrado, el host suele responder con un mensaje ICMP *Port Unreachable*. Si no hay respuesta tras reintentos, el puerto se clasifica como `open|filtered`.
+* **Identificación de Versiones (`-sV`) y Sistema Operativo (`-O` / *Fingerprinting*):** Análisis de las respuestas del servicio y del comportamiento de las cabeceras IP/TCP (valores TTL, tamaño de ventana TCP, números de secuencia inicial ISN) para deducir la versión exacta del software y el sistema operativo.
+
+---
+
 ### Legalidad y Ética en el Escaneo de Puertos
+
 !!! warning "Regla Fundamental de Seguridad"
     El escaneo de puertos sin autorización explícita sobre sistemas o redes de terceros **puede ser considerado un ataque de reconocimiento o intento de intrusión**, activando alertas en los sistemas IDS/IPS e incluso dando lugar a la suspensión de cuentas o acciones legales.
 
@@ -43,10 +93,11 @@ Para la realización de pruebas de aprendizaje fuera del laboratorio local, el p
 
 ### Tarea 1: Instalación de Nmap y Verificación del Entorno
 
-1. Abre una terminal en tu sistema Linux (Debian o Ubuntu).
+1. Crea un proyecto GNS3 con una máquina Debian conectada a una nube NAT. Recuerda configurar la red del Debian y activarla.
+1. Abre una terminal en tu sistema Linux (Debian ).
 2. Actualiza los repositorios de paquetes e instala la herramienta `nmap`:
    ```bash
-   sudo apt update && sudo apt install -y nmap
+   sudo apt update && sudo apt install nmap -y 
    ```
 3. Verifica la correcta instalación consultando la versión del programa:
    ```bash
@@ -66,12 +117,11 @@ Ejecutaremos un escaneo compuesto sobre el servidor oficial de pruebas para audi
    ```
 
 2. Observa la salida generada por Nmap en la terminal.
-3. **Captura de Pantalla N.º 1:** Realiza una captura de la terminal donde se aprecie claramente el comando ejecutado y la salida devuelta.
-4. **Análisis Inicial:**
-   * ¿Cuántos puertos se han encontrado en estado `open`?
-   * ¿Qué servicios de red corresponden a esos puertos (ejemplo: SSH, HTTP)?
-   * ¿Qué versión concreta del servidor SSH y del servidor Web Apache están escuchando en la máquina remota?
-   * ¿Qué sistema operativo deduce Nmap que ejecuta el servidor?
+3. **Análisis Inicial:**
+    * ¿Cuántos puertos se han encontrado en estado `open`?
+    * ¿Qué servicios de red corresponden a esos puertos (ejemplo: SSH, HTTP)?
+    * ¿Qué versión concreta del servidor SSH y del servidor Web Apache están escuchando en la máquina remota?
+    * ¿Qué sistema operativo deduce Nmap que ejecuta el servidor?
 
 ---
 
@@ -90,11 +140,11 @@ Analiza la función técnica de cada uno de los modificadores utilizados en el c
 #### 3. Parámetro `-T4` (*Timing Template - Aggressive*)
 * **Función:** Establece la plantilla de velocidad y temporización del escaneo en nivel 4 (*Aggressive*).
 * **Escala de Plantillas de Temporización:**
-  * `-T0` (*Paranoid*) y `-T1` (*Sneaky*): Escaneos lentos para evadir sistemas de detección.
-  * `-T2` (*Polite*): Reduce la velocidad para consumir menos ancho de banda.
-  * `-T3` (*Normal*): Modo por defecto.
-  * **`-T4` (*Aggressive*):** Optimizado para redes modernas de alta velocidad y conexiones estables.
-  * `-T5` (*Insane*): Velocidad máxima sacrificando precisión si la red se satura.
+    * `-T0` (*Paranoid*) y `-T1` (*Sneaky*): Escaneos lentos para evadir sistemas de detección.
+    * `-T2` (*Polite*): Reduce la velocidad para consumir menos ancho de banda.
+    * `-T3` (*Normal*): Modo por defecto.
+    * **`-T4` (*Aggressive*):** Optimizado para redes modernas de alta velocidad y conexiones estables.
+    * `-T5` (*Insane*): Velocidad máxima sacrificando precisión si la red se satura.
 
 #### 4. Parámetro `-O` (*Operating System Detection*)
 * **Función:** Habilita el reconocimiento del sistema operativo (*OS Fingerprinting*).
@@ -124,7 +174,7 @@ Para comprender las diferencias operativas entre los distintos métodos de trans
    ```bash
    nmap -sT -p 22,80,443 scanme.nmap.org
    ```
-   *Este método utiliza la llamada al sistema `connect()`, completando la conexión TCP completa.*
+   *Este método utiliza la llamada al sistema `connect()`, completando la conexión TCP completa y no hace falta ejecutarlo como sudo*
 
 3. **Escaneo UDP:**
    ```bash
@@ -142,31 +192,29 @@ Una de las fases más críticas de la auditoría de seguridad consiste en transf
 
 2. Accede a las bases de datos públicas de vulnerabilidades conocidas:
 
-   * **[NIST National Vulnerability Database (NVD)](https://nvd.nist.gov/vuln/search)**
-   * **[CVE Program (Common Vulnerabilities and Exposures)](https://cve.mitre.org/)**
+    * **[NIST National Vulnerability Database (NVD)](https://nvd.nist.gov/vuln/search)**
+    * **[CVE Program (Common Vulnerabilities and Exposures)](https://cve.mitre.org/)**
 
 3. **Búsqueda en NVD:**
 
-   * Introduce en el cuadro de búsqueda el nombre del producto y la versión identificada.
-   * Examina el listado de vulnerabilidades CVE asociadas.
+    * Introduce en el cuadro de búsqueda el nombre del producto y la versión identificada.
+    * Examina el listado de vulnerabilidades CVE asociadas.
 
 4. **Selección y Análisis de un CVE Específico:**
 
-   * Elige una vulnerabilidad de la lista (identificador con formato `CVE-YYYY-NNNN`).
-   * Abre los detalles del CVE e identifica los siguientes parámetros de auditoría:
-     * **Identificador CVE:** Código único del fallo.
-     * **Puntuación CVSS (*Common Vulnerability Scoring System*):** Valor numérico de gravedad (de 0.0 a 10.0) y nivel (*Medium, High, Critical*).
-     * **Descripción del Fallo:** En qué consiste la vulnerabilidad.
-     * **Vector de Ataque:** Si es explotable de forma remota a través de la red (*Network*).
-
-5. **Captura de Pantalla N.º 2:** Toma una captura del navegador donde se muestre la ficha detallada del CVE seleccionado en la web de la NVD.
+    * Elige una vulnerabilidad de la lista (identificador con formato `CVE-YYYY-NNNN`).
+    * Abre los detalles del CVE e identifica los siguientes parámetros de auditoría:
+          * **Identificador CVE:** Código único del fallo.
+          * **Puntuación CVSS (*Common Vulnerability Scoring System*):** Valor numérico de gravedad (de 0.0 a 10.0) y nivel (*Medium, High, Critical*).
+          * **Descripción del Fallo:** En qué consiste la vulnerabilidad.
+          * **Vector de Ataque:** Si es explotable de forma remota a través de la red (*Network*).
 
    ![Ejemplo de auditoría con Nmap y correlación en base de datos CVE/NVD](img/nmap_escaneo_red.png)
 
 6. **Redacción de Conclusiones de Auditoría:**
 
-   * ¿Crees que la versión de software analizada es segura para mantenerse en un entorno corporativo de producción expuesto a Internet?
-   * ¿Qué medidas correctoras urgentes debe aplicar el equipo de administración de sistemas para mitigar el riesgo descubierto?
+    * ¿Crees que la versión de software analizada es segura para mantenerse en un entorno corporativo de producción expuesto a Internet?
+    * ¿Qué medidas correctoras urgentes debe aplicar el equipo de administración de sistemas para mitigar el riesgo descubierto?
 
 ---
 

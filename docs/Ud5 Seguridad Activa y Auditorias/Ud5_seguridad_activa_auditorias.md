@@ -10,8 +10,18 @@ El despliegue de infraestructuras informáticas en las organizaciones actuales e
 
 En el diseño de una arquitectura de seguridad informática se distinguen dos enfoques complementarios:
 
-* **Seguridad Pasiva:** Conjunto de medidas orientadas a **minimizar los daños y facilitar la recuperación** una vez que se ha producido un incidente de seguridad o desastre. Incluye la programación de copias de seguridad (*backups*), el uso de sistemas de alimentación ininterrumpida (SAI), el despliegue de almacenamiento redundante (RAID) y los planes de continuidad de negocio y recuperación ante desastres (DRP).
-* **Seguridad Activa:** Conjunto de mecanismos, herramientas y protocolos diseñados para **prevenir, detectar, neutralizar y bloquear** de forma proactiva y en tiempo real las amenazas o intentos de acceso no autorizado antes de que comprometan el sistema. Incluye el uso de cortafuegos, sistemas de detección y prevención de intrusiones (IDS/IPS), antivirus/EDR, autenticación multifactor, cifrado de datos y la ejecución periódica de auditorías de seguridad.
+* **Seguridad Pasiva:** Conjunto de medidas orientadas a **minimizar los daños y facilitar la recuperación** una vez que se ha producido un incidente de seguridad o desastre. Incluye:
+    * la programación de copias de seguridad (*backups*), 
+    * el uso de sistemas de alimentación ininterrumpida (SAI),
+    * el despliegue de almacenamiento redundante (RAID) y 
+    * los planes de continuidad de negocio y recuperación ante desastres (DRP).
+* **Seguridad Activa:** Conjunto de mecanismos, herramientas y protocolos diseñados para **prevenir, detectar, neutralizar y bloquear** de forma proactiva y en tiempo real las amenazas o intentos de acceso no autorizado antes de que comprometan el sistema. Incluye:
+    * el uso de cortafuegos, 
+    * sistemas de detección y prevención de intrusiones (IDS/IPS), 
+    * antivirus/EDR, 
+    * autenticación multifactor, 
+    * cifrado de datos y 
+    * la ejecución periódica de auditorías de seguridad.
 
 ```mermaid
 graph TD
@@ -64,6 +74,14 @@ Esta falta de seguridad desde el diseño (*security by design*) en los protocolo
 
 Una **auditoría de seguridad informática** es un proceso sistemático, independiente y documentado para evaluar la eficacia de los controles de seguridad lógicos, físicos y organizativos de un sistema de información.
 
+#### Clasificación según el Grado de Conocimiento Inicial:
+* **Auditoría de Caja Negra (*Black Box*):** El auditor no dispone de ninguna información previa sobre la infraestructura interna (no conoce direcciones IP internas, esquemas de red ni código fuente). Simula el ataque de un ciberdelincuente externo desde Internet.
+* **Auditoría de Caja Gris (*Grey Box*):** El auditor dispone de información parcial (por ejemplo, acceso como usuario estándar sin privilegios o un esquema general de la red). Simula la amenaza de un usuario interno o un atacante que ha comprometido credenciales básicas.
+* **Auditoría de Caja Blanca (*White Box*):** El auditor cuenta con acceso completo a la documentación técnica, esquemas de red, códigos fuente, configuraciones de cortafuegos y credenciales de administración. Permite una revisión exhaustiva y profunda de todas las capas del sistema.
+
+#### Fases de una Auditoría Técnica de Red (*Pentesting*):
+
+
 ```mermaid
 flowchart LR
     P1["1. Planificación<br>Alcance y acuerdos NDA"] --> P2["2. Reconocimiento<br>OSINT y Footprinting"]
@@ -78,12 +96,7 @@ flowchart LR
     style P5 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
 
-#### Clasificación según el Grado de Conocimiento Inicial:
-* **Auditoría de Caja Negra (*Black Box*):** El auditor no dispone de ninguna información previa sobre la infraestructura interna (no conoce direcciones IP internas, esquemas de red ni código fuente). Simula el ataque de un ciberdelincuente externo desde Internet.
-* **Auditoría de Caja Gris (*Grey Box*):** El auditor dispone de información parcial (por ejemplo, acceso como usuario estándar sin privilegios o un esquema general de la red). Simula la amenaza de un usuario interno o un atacante que ha comprometido credenciales básicas.
-* **Auditoría de Caja Blanca (*White Box*):** El auditor cuenta con acceso completo a la documentación técnica, esquemas de red, códigos fuente, configuraciones de cortafuegos y credenciales de administración. Permite una revisión exhaustiva y profunda de todas las capas del sistema.
 
-#### Fases de una Auditoría Técnica de Red (*Pentesting*):
 1. **Planificación y Definición del Alcance:** Firma de acuerdos legales (NDA), límites de actuación, ventanas horarias autorizadas y objetivos fijados por el cliente.
 2. **Reconocimiento y Huella (*Footprinting / Reconnaissance*):** Recolección pasiva y activa de información técnica sobre la organización objetivo.
 3. **Análisis de Vulnerabilidades (*Vulnerability Assessment*):** Identificación de servicios expuestos, versiones de software desactualizadas y fallos de configuración.
@@ -134,24 +147,10 @@ El escaneo de puertos es la técnica que permite consultar remotamente un rango 
 | **Cerrado (*Closed*)** | El host recibe el paquete pero no hay ningún servicio escuchando; responde rechazando la conexión. |
 | **Filtrado (*Filtered*)** | Un dispositivo intermedio (cortafuegos) o regla local bloquea el tráfico y el escáner no puede determinar si está abierto o cerrado. |
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Scanner as Equipo Auditor (Nmap)
-    actor Target as Host Objetivo (Servidor)
+El estado de los puertos nos permitirá detectar servicios que pudieran haber sido instalados fraudulentamente y a las que un atacante puede conectarse.
 
-    Note over Scanner,Target: Escaneo TCP SYN (Stealth / Medio Abierto)
-    Scanner->>Target: 1. TCP SYN (Puerto de sondeo, ej. 80)
-    Target-->>Scanner: 2. TCP SYN/ACK (¡Puerto Abierto / Escuchando!)
-    Scanner->>Target: 3. TCP RST (Interrumpe la conexión sin completar 3-Way Handshake)
-    Note over Scanner: Determina estado: ABIERTO sin registrar sesión completa
-```
+En sistemas linux la identificación de puertos y versiones de servicios expuestos, la detección remota de sistemas operativos y la auditoría automatizada de vulnerabilidades conocidas podemos realizarla mediante scripts de Nmap Engine (NSE).
 
-#### Mecánica de los Tipos de Escaneo Principales:
-* **Escaneo TCP SYN (*Stealth Scan* / Medio Abierto):** El escáner envía un paquete con la bandera `SYN`. Si el puerto está abierto, el objetivo responde con `SYN/ACK`. El escáner responde de inmediato con un paquete `RST` para abortar la conexión sin completar el apretón de manos de tres vías (*3-Way Handshake*), evitando ser registrado por aplicaciones sencillas.
-* **Escaneo TCP Connect:** Completa el flujo `SYN` → `SYN/ACK` → `ACK`. Es más ruidoso pero no requiere privilegios de superusuario en la máquina atacante.
-* **Escaneo UDP:** Dado que UDP es un protocolo no orientado a conexión, el escáner envía datagramas vacíos. Si el puerto está cerrado, el host responde con un mensaje ICMP *Port Unreachable*. Si no hay respuesta, el puerto se clasifica como abierto/filtrado.
-* **Identificación de Versiones y Sistema Operativo (*Fingerprinting*):** Análisis de las respuestas del servicio y del comportamiento del formato de la cabecera IP/TCP (valores TTL, tamaño de ventana TCP) para deducir la versión exacta del software y el sistema operativo.
 
 !!! note "Práctica de Laboratorio"
     !!! info "Puesta en práctica en el laboratorio de seguridad"

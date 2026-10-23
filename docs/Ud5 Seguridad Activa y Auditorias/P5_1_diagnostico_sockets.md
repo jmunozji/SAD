@@ -26,10 +26,22 @@ Socket = Dirección IP, Puerto transportador, Protocolo TCP/UDP
 
 Cuando un servidor ofrece un servicio (por ejemplo, un servidor web o SSH), abre un socket en estado **`LISTEN`** (escucha) a la espera de peticiones entrantes. Cuando un cliente se conecta, el sistema operativo establece una conexión en estado **`ESTABLISHED`**, asignando en el cliente un puerto efímero de origen (puerto alto aleatorio, ej. 54321) y conectándolo al puerto bien conocido del servidor (ej. 80 o 22).
 
-```
-  [ CLIENTE (192.168.1.50) ]                           [ SERVIDOR (192.168.1.100) ]
-  Socket Origen: 192.168.1.50:54321 ── ESTABLISHED ──> Socket Destino: 192.168.1.100:22
-  (Puerto Efímero)                                     (Puerto de Servicio SSH)
+```mermaid
+flowchart LR
+    subgraph ClientSide ["CLIENTE (192.168.1.50)"]
+        Cli["Socket Origen: 192.168.1.50:54321<br>• Puerto Efímero aleatorio<br>• Proceso: cliente ssh"]
+    end
+
+    subgraph ServerSide ["SERVIDOR (192.168.1.100)"]
+        Srv["Socket Destino: 192.168.1.100:22<br>• Puerto de Servicio conocido<br>• Proceso: demonio sshd"]
+    end
+
+    Cli <-->|ESTABLISHED: Sesión TCP activa| Srv
+
+    style ClientSide fill:#e1f5fe,stroke:#0288d1,stroke-width:1px
+    style ServerSide fill:#e8f5e9,stroke:#388e3c,stroke-width:1px
+    style Cli fill:#ffffff,stroke:#0288d1,stroke-width:2px
+    style Srv fill:#ffffff,stroke:#388e3c,stroke-width:2px
 ```
 
 ### ¿Por qué auditar los sockets del sistema?
