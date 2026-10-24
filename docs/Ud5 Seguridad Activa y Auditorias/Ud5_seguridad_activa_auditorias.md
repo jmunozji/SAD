@@ -169,10 +169,11 @@ Un **escáner de vulnerabilidades corporativo** es una solución software que au
 3. **Priorización por Riesgo:** Clasificación del impacto utilizando la métrica **CVSS** (*Common Vulnerability Scoring System*, de 0.0 a 10.0).
 4. **Informe y Plan de Remediación:** Recomendaciones de parcheado, actualización o mitigación temporal.
 
-!!! note "Práctica de Laboratorio"
+!!! note "Práctica de Laboratorio Opcional"
     !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.3: Análisis de Vulnerabilidades con OpenVAS / Nessus](P5_3_escaner_vulnerabilidades.md)**
-        *En esta práctica desplegarás un motor corporativo de evaluación de vulnerabilidades (OpenVAS / Greenbone), configurarás tareas de escaneo sobre una red simulada, analizarás la severidad de las vulnerabilidades detectadas (CVSS) y generarás informes de auditoría técnica y ejecutiva.*
+        **[Práctica Opcional 5.1: Análisis de Vulnerabilidades con OpenVAS / Nessus](PO5_1_escaner_vulnerabilidades.md)**
+        *En esta práctica opcional desplegarás un motor corporativo de evaluación de vulnerabilidades (OpenVAS / Greenbone), configurarás tareas de escaneo sobre una red simulada, analizarás la severidad de las vulnerabilidades detectadas (CVSS) y generarás informes de auditoría técnica y ejecutiva.*
+
 
 ---
 
@@ -217,6 +218,7 @@ graph TD
 
 #### Ataques de Denegación de Servicio (DoS / DDoS):
 Buscan agotar los recursos de procesamiento, memoria o ancho de banda de un servicio para dejarlo inoperativo frente a usuarios legítimos:
+
 * **SYN Flood (Agotamiento de Conexiones):** Inundación de paquetes `TCP SYN` con direcciones IP de origen falsificadas, obligando al servidor a mantener miles de conexiones semiabiertas hasta agotar la tabla de estado.
 * **Ataques de Amplificación y Reflexión (UDP):** Uso de servidores públicos (DNS, NTP, Memcached) para enviar peticiones con la IP de la víctima suplantada, logrando que el servidor responda con paquetes significativamente más grandes dirigidos contra la víctima.
 
@@ -225,6 +227,18 @@ Buscan agotar los recursos de procesamiento, memoria o ancho de banda de un serv
 ### 3.2. Intercepción de Tráfico y Ataques Man-In-The-Middle (MITM) por ARP Spoofing
 
 Un ataque **Man-In-The-Middle (MITM)** ocurre cuando un atacante logra posicionarse en la trayectoria lógica de comunicación entre dos hosts legítimos, siendo capaz de interceptar, inspeccionar, alterar o destruir el tráfico transmitido.
+
+
+
+#### Mecánica del Envenenamiento ARP (*ARP Spoofing / ARP Poisoning*):
+El protocolo **ARP** (*Address Resolution Protocol*) vincula direcciones lógicas IP (Capa 3) con direcciones físicas MAC (Capa 2). Dado que ARP carece de autenticación, cualquier host puede enviar respuestas ARP gratuitas (*Gratuitous ARP*) no solicitadas a la red.
+
+
+1. El atacante envía periódicamente paquetes ARP falsificados a la **Víctima A**, afirmando que la dirección IP del *Router/Gateway* corresponde a la dirección MAC del atacante.
+2. Simultáneamente, envía paquetes ARP falsificados al **Router**, afirmando que la dirección IP de la *Víctima A* corresponde a la dirección MAC del atacante.
+3. Ambos hosts actualizan su tabla de memoria caché ARP local con la asociación falsa.
+4. **Resultado:** Todo el tráfico entre la Víctima A e Internet pasa obligatoriamente a través de la tarjeta de red del atacante antes de ser reenviado a su destino real.
+
 
 ```mermaid
 sequenceDiagram
@@ -242,14 +256,6 @@ sequenceDiagram
     A->>V: 4. Reenvía la respuesta a la Víctima (Conexión transparente)
 ```
 
-#### Mecánica del Envenenamiento ARP (*ARP Spoofing / ARP Poisoning*):
-El protocolo **ARP** (*Address Resolution Protocol*) vincula direcciones lógicas IP (Capa 3) con direcciones físicas MAC (Capa 2). Dado que ARP carece de autenticación, cualquier host puede enviar respuestas ARP gratuitas (*Gratuitous ARP*) no solicitadas a la red.
-
-1. El atacante envía periódicamente paquetes ARP falsificados a la **Víctima A**, afirmando que la dirección IP del *Router/Gateway* corresponde a la dirección MAC del atacante.
-2. Simultáneamente, envía paquetes ARP falsificados al **Router**, afirmando que la dirección IP de la *Víctima A* corresponde a la dirección MAC del atacante.
-3. Ambos hosts actualizan su tabla de memoria caché ARP local con la asociación falsa.
-4. **Resultado:** Todo el tráfico entre la Víctima A e Internet pasa obligatoriamente a través de la tarjeta de red del atacante antes de ser reenviado a su destino real.
-
 #### Contramedidas en la Infraestructura de Red:
 * **Entradas ARP Estáticas:** Fijar manualmente la relación IP-MAC en equipos críticos (eficaz pero inviable en redes grandes).
 * **Inspección Dinámica de ARP (*Dynamic ARP Inspection - DAI*):** Función en conmutadores gestionables que valida las tramas ARP comparándolas contra la base de datos de enlaces autorizados.
@@ -257,7 +263,7 @@ El protocolo **ARP** (*Address Resolution Protocol*) vincula direcciones lógica
 
 !!! note "Práctica de Laboratorio"
     !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.4: Intercepción MITM y Envenenamiento ARP](P5_4_mitm_arp_spoofing.md)**
+        **[Práctica 5.3: Intercepción MITM y Envenenamiento ARP](P5_3_mitm_arp_spoofing.md)**
         *En esta práctica simularás un escenario de ataque Man-In-The-Middle mediante envenenamiento de caché ARP en una red local virtualizada, analizarás la interceptación de tráfico no cifrado en Wireshark y verificarás la efectividad de las contramedidas de red.*
 
 ---

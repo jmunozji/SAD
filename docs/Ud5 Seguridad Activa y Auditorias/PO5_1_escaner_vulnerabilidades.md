@@ -1,4 +1,4 @@
-# Práctica 5.3: Auditoría Automatizada de Vulnerabilidades con OpenVAS / Greenbone
+# Práctica Opcional 5.1: Auditoría Automatizada de Vulnerabilidades con OpenVAS / Greenbone
 
 !!! note "Datos de la Práctica"
     * **Módulo:** Seguridad y Alta Disponibilidad (SAD - 0378)
@@ -6,6 +6,10 @@
     * **Requisitos:** Una máquina virtual Linux (Debian o Ubuntu) con la suite de auditoría **Greenbone Vulnerability Management (GVM / OpenVAS)** instalada, y una máquina virtual de pruebas como objetivo en una red aislada (GNS3, VirtualBox o KVM).
     * **Privilegios:** Acceso de superusuario (`sudo`) en el servidor auditor.
 
+
+!!! warning "Practica Opcional"
+    Esta práctica se presenta como opcional para aquel alumnado que quiera ir un paso más alla.
+    El motivo es que la instalación de Greenbone es intensiva en recursos de almacenamiento(+15GB) y un tiempo alto de descarga.
 ---
 
 ## 1. Objetivos de la Práctica
@@ -40,11 +44,28 @@ La solución corporativa Greenbone se estructura en varios componentes modulares
 3. **OpenVAS Scanner:** Motor de ejecución que lanza las pruebas de seguridad (*scripts NVT* escritos en lenguaje NASL) contra los equipos auditados.
 4. **Feed de Vulnerabilidades (*Greenbone Community Feed*):** Repositorio actualizado continuamente con miles de pruebas NVT y referencias directas a los registros internacionales CVE y puntuaciones CVSS.
 
+Aquí puedes acceder a [Greenbone Community Edition – Documentation](https://greenbone.github.io/)
+
 ---
 
 ## 3. Desarrollo Paso a Paso de la Práctica
 
-### Tarea 1: Verificación del Estado del Servicio GVM/OpenVAS y Acceso Web
+### Tarea 1: Instalación de Greenbone Community Edition
+
+En primer lugar necesitas instalar Greenbone Community Edition. Puedes hacerlo de 2 formas, ambas disponibles en [Greenbone Community Edition – Documentation](https://greenbone.github.io/):
+
+* En contenedores Docker - Si tienes linux y dominas docker es la opción recomendada.
+* En Kali linux - Si tienes un Kali linux esta opción será más rápida. También puedes usar una máquina virtual Kali Linux (en VirtualBox o GNS3) y realizar ahí la instalación.
+
+
+!!! warning "Espacio disponible"
+    En cualquiera de los casos necesitarás descargar más de 15GB de datos del sistema. Y después sincronizar las bases de datos de vulnerabilidades de varios GB
+
+
+### Tarea 2: Verificación del Estado del Servicio GVM/OpenVAS y Acceso Web
+
+La verificación será algo parecido a lo siguiente. En cualquier caso, sigue el proceso de verificación indicado en los manuales de instalación.
+
 
 1. En el servidor Linux donde se encuentra instalado GVM/OpenVAS, verifica que todos los servicios y demonios auxiliares se encuentran operativos:
     ```bash

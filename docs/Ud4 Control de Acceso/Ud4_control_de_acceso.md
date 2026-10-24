@@ -36,9 +36,9 @@ flowchart LR
 
 1. **Identificación (I):** Proceso mediante el cual una entidad (usuario, proceso o dispositivo) declara su identidad ante el sistema. Ejemplos habituales son el nombre de usuario (*username*), el NIF, el código de empleado o la dirección de correo electrónico corporativo.
 2. **Autenticación (A):** Verificación técnica de que la entidad es legítima y corresponde realmente a la identidad declarada. Se apoya en la validación de factores pertenecientes a tres categorías clásicas:
-   * *Algo que sabes:* Elementos memorísticos como contraseñas, PINs, códigos de acceso o respuestas a preguntas secretas.
-   * *Algo que tienes:* Objetos físicos o lógicos en posesión del usuario, como tarjetas inteligentes (DNIe), tokens criptográficos hardware, tarjetas de coordenadas o aplicaciones generadoras de códigos temporales (OTP).
-   * *Algo que eres:* Rasgos biológicos e inalterables, como la huella dactilar, el patrón de iris, el reconocimiento facial o el análisis de la voz.
+     * *Algo que sabes:* Elementos memorísticos como contraseñas, PINs, códigos de acceso o respuestas a preguntas secretas.
+     * *Algo que tienes:* Objetos físicos o lógicos en posesión del usuario, como tarjetas inteligentes (DNIe), tokens criptográficos hardware, tarjetas de coordenadas o aplicaciones generadoras de códigos temporales (OTP).
+     * *Algo que eres:* Rasgos biológicos e inalterables, como la huella dactilar, el patrón de iris, el reconocimiento facial o el análisis de la voz.
 3. **Autorización (A):** Fase en la que el sistema consulta sus directrices de seguridad para conceder o denegar privilegios específicos (lectura, escritura, ejecución, administración) sobre los recursos solicitados.
 4. **Anotación y Auditoría (*Accounting / Auditing*) (A):** Registro sistemático en ficheros de eventos (*logs*) de las acciones realizadas durante la sesión. Permite verificar el cumplimiento de las políticas, detectar anomalías en tiempo real y realizar análisis forenses tras un incidente de ciberseguridad.
 
