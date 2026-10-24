@@ -1,0 +1,2283 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jmunozji.github.io/SAD/Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_5_ids_snort_suricata/">
+      
+      
+        <link rel="prev" href="../P5_3_mitm_arp_spoofing/">
+      
+      
+        <link rel="next" href="../P5_6_servidor_radius/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Práctica 5.5: Despliegue y Análisis de Reglas en IDS/IPS Snort - Seguridad y alta disponibilidad</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-3NX5MD5C8H"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-3NX5MD5C8H",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-3NX5MD5C8H",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#practica-55-despliegue-y-analisis-de-reglas-en-idsips-snort" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-header__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Seguridad y alta disponibilidad
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Práctica 5.5: Despliegue y Análisis de Reglas en IDS/IPS Snort
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-orange"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-nav__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    Seguridad y alta disponibilidad
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Introduccion/Ud1_introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1. Fundamentos de Seguridad Informática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Normativa%20y%20SGSI/Ud2_normativa_y_sgsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2. Normativa y sistemas de gestión de la seguridad de la información
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud3 Criptografia
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud3 Criptografia
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/Ud3_criptografia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3. Criptografía y Mecanismos de Certificación Digital
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.1: Cifrado Simétrico con GnuPG (GPG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.2: Criptografía Asimétrica y Gestión de Claves con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.3: Funciones Hash y Verificación de Integridad de Datos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.4: Firma Digital y Verificación de la Integridad con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.5: PKI - Gestión de Claves con Easy-RSA en Servidores Separados
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud4 Control de Acceso
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud4 Control de Acceso
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/Ud4_control_de_acceso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4. Control de accesos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.1: Protección del Gestor de Arranque GRUB2 con Contraseña
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.2: Listas de Control de Acceso (ACLs POSIX) en GNU/Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.3: Monitorización de Accesos y Defensa Activa con Fail2ban en SSH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud5 Seguridad Activa y Auditorias
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud5 Seguridad Activa y Auditorias
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Ud5_seguridad_activa_auditorias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD5: Seguridad Activa y Auditorías en Redes Corporativas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P5_1_diagnostico_sockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.1: Diagnóstico Local de Sockets y Conexiones de Red con ss y netstat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P5_2_auditoria_nmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.2: Auditoría e Inventariado de Redes con Nmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P5_3_mitm_arp_spoofing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.3: Intercepción Man-In-The-Middle (MITM) y ARP Spoofing con Ettercap y Wireshark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.5: Despliegue y Análisis de Reglas en IDS/IPS Snort
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.5: Despliegue y Análisis de Reglas en IDS/IPS Snort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-objetivos-de-la-practica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Objetivos de la Práctica
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-introduccion-teorica-arquitectura-nids-y-sintaxis-de-reglas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Introducción Teórica: Arquitectura NIDS y Sintaxis de Reglas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Introducción Teórica: Arquitectura NIDS y Sintaxis de Reglas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anatomia-de-una-regla-snort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anatomía de una Regla Snort
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-desarrollo-paso-a-paso-de-la-practica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Desarrollo Paso a Paso de la Práctica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Desarrollo Paso a Paso de la Práctica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#escenario-de-trabajo-requerido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escenario de Trabajo Requerido:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tarea-1-instalacion-de-snort-y-verificacion-de-la-interfaz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tarea 1: Instalación de Snort y Verificación de la Interfaz
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tarea-2-configuracion-de-variables-de-perimetro-en-snortconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tarea 2: Configuración de Variables de Perímetro en snort.conf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tarea-3-creacion-de-reglas-de-deteccion-personalizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tarea 3: Creación de Reglas de Detección Personalizadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tarea-4-ejecucion-de-snort-en-modo-escucha-y-registro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tarea 4: Ejecución de Snort en Modo Escucha y Registro
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tarea-5-generacion-de-trafico-y-validacion-de-alertas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tarea 5: Generación de Tráfico y Validación de Alertas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tarea 5: Generación de Tráfico y Validación de Alertas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prueba-1-sondeo-icmp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prueba 1: Sondeo ICMP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prueba-2-escaneo-tcp-syn-al-puerto-ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prueba 2: Escaneo TCP SYN al puerto SSH
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prueba-3-peticion-http-sospechosa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prueba 3: Petición HTTP sospechosa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prueba-4-simulacion-de-payload-sqli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prueba 4: Simulación de payload SQLi
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tarea-6-auditoria-de-registros-en-ficheros-de-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tarea 6: Auditoría de Registros en Ficheros de Log
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-cheatsheet-de-sintaxis-y-comandos-de-snort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Cheatsheet de Sintaxis y Comandos de Snort
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cuestiones-de-autoevaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cuestiones de Autoevaluación
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P5_6_servidor_radius/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.6: Despliegue de un Servidor de Autenticación RADIUS con FreeRADIUS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P5_7_hotspot_mikrotik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.7: Configuración de un Hotspot con Portal Cautivo en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P5_8_monitorizacion_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.8: Monitorización Activa y Análisis de Registros de Auditoría en Linux y Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PO5_1_escaner_vulnerabilidades/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica Opcional 5.1: Auditoría Automatizada de Vulnerabilidades con OpenVAS / Greenbone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud6 Copias de Seguridad y Recuperacion
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud6 Copias de Seguridad y Recuperacion
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/Ud6_copias_de_seguridad_y_recuperacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD6: Copias de Seguridad, Recuperación ante Desastres y Borrado Seguro
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_1_copias_deja_dup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.1: Copias de Seguridad en GNU/Linux con Déjà Dup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_2_recuperacion_testdisk_photorec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.2: Recuperación de Archivos y Particiones con TestDisk y PhotoRec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_3_borrado_seguro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.3: Borrado Seguro de Datos y Sanitización de Soportes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud7 Seguridad Perimetral Cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud7 Seguridad Perimetral Cortafuegos y DMZ
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/Ud7_seguridad_perimetral_cortafuegos_y_dmz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD7. Seguridad perimetral: cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_1_cortafuegos_mikrotik_basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.1: Configuración de Cortafuegos de Red y Filtrado con Estado en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_2_dmz_un_router/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.2: Despliegue de una DMZ con un Cortafuegos de Tres Interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_3_dmz_dos_routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.3: Arquitectura Avanzada de DMZ con Doble Cortafuegos en Cascada
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud8 Seguridad Perimetral Acceso Remoto y VPN
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud8 Seguridad Perimetral Acceso Remoto y VPN
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/Ud8_seguridad_perimetral_acceso_remoto_y_vpn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD8. Seguridad perimetral: Acceso remoto y Redes Privadas Virtuales (VPN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/P8_1_vpn_ipsec_site_to_site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 8.1: VPN Sitio a Sitio (Site-to-Site) con IPsec en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud9 Proteccion Perimetral Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud9 Proteccion Perimetral Servidores Proxy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/Ud9_proteccion_perimetral_servidores_proxy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD9. Protección perimetral mediante Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/P9_1_proxy_squid_filtrado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 9.1: Servidor Proxy-Caché, Control de Acceso y Filtrado Web con Squid en Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud10 Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud10 Soluciones de Alta Disponibilidad
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud10%20Soluciones%20de%20Alta%20Disponibilidad/Ud10_soluciones_de_alta_disponibilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD10. Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud10%20Soluciones%20de%20Alta%20Disponibilidad/P10_1_alta_disponibilidad_vrrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 10.1: Redundancia y Tolerancia a Fallos de Pasarelas y Servicios Web con VRRP en MikroTik y Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="practica-55-despliegue-y-analisis-de-reglas-en-idsips-snort">Práctica 5.5: Despliegue y Análisis de Reglas en IDS/IPS Snort</h1>
+<div class="admonition note">
+<p class="admonition-title">Datos de la Práctica</p>
+<ul>
+<li><strong>Módulo:</strong> Seguridad y Alta Disponibilidad (SAD - 0378)</li>
+<li><strong>Unidad Didáctica:</strong> UD5 - Seguridad Activa y Auditorías en Redes Corporativas</li>
+<li><strong>Requisitos:</strong> Dos máquinas virtuales Linux (Debian o Ubuntu) conectadas a la misma red virtual (en GNS3, VirtualBox o KVM): una máquina actuará como <strong>Sensor NIDS / Servidor</strong> y la otra como <strong>Equipo Atacante / Auditor</strong>. Acceso a terminal y privilegios <code>sudo</code>.</li>
+</ul>
+</div>
+<hr>
+<h2 id="1-objetivos-de-la-practica">1. Objetivos de la Práctica</h2>
+<ul>
+<li>Comprender la función de los <strong>Sistemas de Detección de Intrusiones de Red (NIDS)</strong> en la arquitectura de seguridad activa.</li>
+<li>Instalar y verificar el funcionamiento del motor de inspección <strong>Snort</strong> en un entorno GNU/Linux.</li>
+<li>Configurar las variables de red del sensor (<code>HOME_NET</code> y <code>EXTERNAL_NET</code>) para delimitar el perímetro vigilado.</li>
+<li>Dominar la sintaxis formal de las <strong>reglas de detección</strong> (cabecera y opciones).</li>
+<li>Diseñar reglas personalizadas en <code>local.rules</code> para detectar tráfico ICMP anómalo, escaneos de puertos y peticiones web sospechosas.</li>
+<li>Ejecutar Snort en modo escucha y analizar las trazas de alerta generadas en tiempo real.</li>
+<li>Evaluar la diferencia conceptual y operativa entre el modo detección (<strong>IDS</strong>) y el modo prevención activa (<strong>IPS</strong>).</li>
+</ul>
+<hr>
+<h2 id="2-introduccion-teorica-arquitectura-nids-y-sintaxis-de-reglas">2. Introducción Teórica: Arquitectura NIDS y Sintaxis de Reglas</h2>
+<p>Un <strong>NIDS</strong> (<em>Network-based Intrusion Detection System</em>) analiza los paquetes que atraviesan una interfaz de red, comparando las cabeceras y la carga útil (<em>payload</em>) contra un conjunto de firmas o reglas de comportamiento.</p>
+<div class="mermaid">graph TD
+    Red([Tráfico de Red Bruto]) --&gt; Promisc["Interfaz en Modo Promiscuo&lt;br&gt;(Captura todas las tramas)"]
+    Promisc --&gt; Decod["Decodificador de Paquetes&lt;br&gt;(Ethernet → IP → TCP/UDP/ICMP)"]
+    Decod --&gt; Preproc["Preprocesadores&lt;br&gt;(Normalización, Defrag IP, Reensamblado TCP)"]
+    Preproc --&gt; Engine{Motor de Detección&lt;br&gt;¿Coincide con Reglas Snort?}
+
+    Engine -- Coincidencia --&gt; Alert["Genera Alerta y Registro&lt;br&gt;(/var/log/snort/alert)"]
+    Engine -- Sin coincidencia --&gt; Pass([Tráfico Continúa Normal])
+
+    style Red fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Engine fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Alert fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style Pass fill:#c8e6c9,stroke:#388e3c,stroke-width:2px</div>
+<h3 id="anatomia-de-una-regla-snort">Anatomía de una Regla Snort</h3>
+<p>Una regla se divide en dos bloques obligatorios:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[ Acción ] [ Protocolo ] [ IP Origen ] [ Puerto Origen ] -&gt; [ IP Destino ] [ Puerto Destino ] ( Opciones )
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>\______________________________________________________/ \________________________________/
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>               Cabecera de la Regla (Header)                    Opciones de la Regla
+</code></pre></div>
+<ol>
+<li><strong>Cabecera (<em>Header</em>):</strong></li>
+<li><strong>Acción:</strong> Determina qué hacer si el paquete coincide (<code>alert</code> genera alerta y anota el evento; <code>log</code> solo registra el paquete; <code>pass</code> ignora el paquete; <code>drop</code> descarta el paquete en modo IPS).</li>
+<li><strong>Protocolo:</strong> <code>ip</code>, <code>icmp</code>, <code>tcp</code> o <code>udp</code>.</li>
+<li>
+<p><strong>Direcciones y Puertos:</strong> Flujo del tráfico (ej. <code>$EXTERNAL_NET any -&gt; $HOME_NET 80</code>). El operador <code>-&gt;</code> indica dirección unívoca y <code>&lt;&gt;</code> bidireccional.</p>
+</li>
+<li>
+<p><strong>Opciones (<em>Options</em>):</strong></p>
+</li>
+<li><code>msg</code>: Texto descriptivo que se mostrará en el log de alertas.</li>
+<li><code>content</code>: Cadena de texto o secuencia hexadecimal a buscar en el cuerpo del paquete.</li>
+<li><code>nocase</code>: Modificador para ignorar mayúsculas y minúsculas en la búsqueda.</li>
+<li><code>sid</code> (<em>Signature ID</em>): Identificador numérico único de la regla (las reglas personalizadas deben usar números a partir de <code>1000001</code>).</li>
+<li><code>rev</code>: Número de revisión de la regla.</li>
+<li><code>classtype</code>: Categoría del ataque para clasificar la severidad.</li>
+</ol>
+<hr>
+<h2 id="3-desarrollo-paso-a-paso-de-la-practica">3. Desarrollo Paso a Paso de la Práctica</h2>
+<h3 id="escenario-de-trabajo-requerido">Escenario de Trabajo Requerido:</h3>
+<ul>
+<li><strong>Máquina 1 - Servidor NIDS (Snort):</strong> Debian/Ubuntu (ej. IP <code>192.168.1.10</code>).</li>
+<li><strong>Máquina 2 - Atacante / Auditor:</strong> Kali Linux o Debian/Ubuntu (ej. IP <code>192.168.1.20</code>).</li>
+</ul>
+<p>Ambas máquinas deben pertenecer a la misma red y tener conectividad directa.</p>
+<hr>
+<h3 id="tarea-1-instalacion-de-snort-y-verificacion-de-la-interfaz">Tarea 1: Instalación de Snort y Verificación de la Interfaz</h3>
+<ol>
+<li>
+<p>En la máquina <strong>Servidor NIDS</strong>, actualiza los repositorios e instala el paquete <code>snort</code>:
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>snort
+</code></pre></div>
+</li>
+<li>
+<p>Durante la instalación, el asistente solicitará la interfaz de red a monitorizar (ej. <code>eth0</code>, <code>ens33</code> o <code>enp0s3</code>) y el rango de la red local (ej. <code>192.168.1.0/24</code>). Si no aparece el menú, se configurará manualmente a continuación.</p>
+</li>
+<li>
+<p>Identifica el nombre exacto de tu interfaz de red:
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ip<span class="w"> </span>-brief<span class="w"> </span>address
+</code></pre></div>
+</li>
+<li>
+<p>Detén temporalmente el demonio de fondo para trabajar en modo interactivo:
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>snort
+</code></pre></div>
+</li>
+</ol>
+<hr>
+<h3 id="tarea-2-configuracion-de-variables-de-perimetro-en-snortconf">Tarea 2: Configuración de Variables de Perímetro en <code>snort.conf</code></h3>
+<ol>
+<li>
+<p>Abre el archivo principal de configuración de Snort:
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/snort/snort.conf
+</code></pre></div>
+</li>
+<li>
+<p>Localiza la sección <strong>Step #1: Set the network variables</strong> y define tu red protegida y la red externa:
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ipvar HOME_NET 192.168.1.0/24
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>ipvar EXTERNAL_NET !$HOME_NET
+</code></pre></div>
+   <em>(Sustituye <code>192.168.1.0/24</code> por el rango real de tu subred de pruebas).</em>
+</li>
+<li>
+<p>Desplázate hacia el final del archivo hasta la sección de inclusión de reglas (Step #7). Asegúrate de que la línea <code>include $RULE_PATH/local.rules</code> no esté comentada:
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>include $RULE_PATH/local.rules
+</code></pre></div>
+</li>
+<li>
+<p>Guarda los cambios (<code>Ctrl + O</code>, <code>Enter</code>, <code>Ctrl + X</code>).</p>
+</li>
+<li>
+<p>Valida que no existen errores de sintaxis en el archivo de configuración:
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-T<span class="w"> </span>-c<span class="w"> </span>/etc/snort/snort.conf
+</code></pre></div>
+   <em>Comprueba que al final del test aparece el mensaje: <code>Snort successfully validated the configuration!</code>.</em>
+</li>
+</ol>
+<hr>
+<h3 id="tarea-3-creacion-de-reglas-de-deteccion-personalizadas">Tarea 3: Creación de Reglas de Detección Personalizadas</h3>
+<p>Editaremos el archivo de reglas locales <code>/etc/snort/rules/local.rules</code> para incorporar nuestras propias firmas de seguridad.</p>
+<ol>
+<li>
+<p>Abre el archivo de reglas:
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/snort/rules/local.rules
+</code></pre></div>
+</li>
+<li>
+<p>Borra o comenta las líneas existentes y añade las siguientes cuatro reglas:</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a># Regla 1: Detección de paquetes ICMP Echo Request (Ping)
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>alert icmp any any -&gt; $HOME_NET any (msg:"[ALERTA-SAD] Sondeo ICMP Ping detectado"; itype:8; sid:1000001; rev:1;)
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a># Regla 2: Detección de intentos de conexión al puerto SSH (Puerto 22)
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>alert tcp any any -&gt; $HOME_NET 22 (msg:"[ALERTA-SAD] Intento de conexion SSH"; flags:S; sid:1000002; rev:1;)
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a># Regla 3: Detección de accesos a panel de administracion web (/admin)
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>alert tcp any any -&gt; $HOME_NET 80 (msg:"[ALERTA-SAD] Peticion sospechosa a /admin"; content:"/admin"; nocase; sid:1000003; rev:1;)
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a># Regla 4: Detección de patrón básico de inyección SQL en tráfico HTTP
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>alert tcp any any -&gt; $HOME_NET 80 (msg:"[ALERTA-SAD] Posible Inyeccion SQL detectada (OR 1=1)"; content:"%27%20OR%20"; nocase; sid:1000004; rev:1;)
+</code></pre></div>
+<ol>
+<li>
+<p>Guarda los cambios.</p>
+</li>
+<li>
+<p>Vuelve a comprobar la configuración para asegurar que Snort carga las nuevas reglas sin fallos:
+   </p><div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-T<span class="w"> </span>-c<span class="w"> </span>/etc/snort/snort.conf
+</code></pre></div>
+</li>
+</ol>
+<hr>
+<h3 id="tarea-4-ejecucion-de-snort-en-modo-escucha-y-registro">Tarea 4: Ejecución de Snort en Modo Escucha y Registro</h3>
+<p>Iniciaremos Snort en primer plano, indicándole que muestre las alertas de forma rápida por consola y escuche en la interfaz activa:</p>
+<p></p><div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-A<span class="w"> </span>console<span class="w"> </span>-q<span class="w"> </span>-u<span class="w"> </span>snort<span class="w"> </span>-c<span class="w"> </span>/etc/snort/snort.conf<span class="w"> </span>-i<span class="w"> </span>eth0
+</code></pre></div>
+<em>(Sustituye <code>eth0</code> por el nombre de tu tarjeta de red).</em>
+<p><em>Parámetros del comando:</em>
+* <code>-A console</code>: Imprime las alertas directamente en la pantalla de la terminal.
+* <code>-q</code>: Modo silencioso (<em>quiet</em>), omite banners y estadísticas iniciales.
+* <code>-u snort</code>: Ejecuta el proceso con el usuario de sistema sin privilegios <code>snort</code>.
+* <code>-c</code>: Ruta al archivo de configuración.
+* <code>-i</code>: Interfaz de red a monitorizar.</p>
+<hr>
+<h3 id="tarea-5-generacion-de-trafico-y-validacion-de-alertas">Tarea 5: Generación de Tráfico y Validación de Alertas</h3>
+<p>Desde la máquina <strong>Atacante / Auditor</strong>, abre una terminal y lanza las siguientes pruebas dirigidas contra la IP del Servidor NIDS (ej. <code>192.168.1.10</code>):</p>
+<h4 id="prueba-1-sondeo-icmp">Prueba 1: Sondeo ICMP</h4>
+<ol>
+<li>En el atacante ejecuta:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>ping<span class="w"> </span>-c<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="m">192</span>.168.1.10
+</code></pre></div></li>
+<li><strong>Observación en el NIDS:</strong> Verifica que aparecen en pantalla las alertas correspondientes:
+   <code>[**] [1:1000001:1] [ALERTA-SAD] Sondeo ICMP Ping detectado [**] ...</code></li>
+</ol>
+<h4 id="prueba-2-escaneo-tcp-syn-al-puerto-ssh">Prueba 2: Escaneo TCP SYN al puerto SSH</h4>
+<ol>
+<li>En el atacante ejecuta:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-sS<span class="w"> </span>-p<span class="w"> </span><span class="m">22</span><span class="w"> </span><span class="m">192</span>.168.1.10
+</code></pre></div></li>
+<li><strong>Observación en el NIDS:</strong> Verifica la captura del paquete SYN con la regla <code>sid:1000002</code>.</li>
+</ol>
+<h4 id="prueba-3-peticion-http-sospechosa">Prueba 3: Petición HTTP sospechosa</h4>
+<ol>
+<li>En el servidor NIDS, asegúrate de tener un servidor web activo escuchando en el puerto 80 (puedes instalar <code>nginx</code> o <code>apache2</code>, o lanzar un servidor Python provisional: <code>sudo python3 -m http.server 80</code>).</li>
+<li>En la máquina atacante lanza una petición con <code>curl</code>:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>curl<span class="w"> </span>http://192.168.1.10/admin
+</code></pre></div></li>
+<li><strong>Observación en el NIDS:</strong> Comprueba que salta la alerta <code>sid:1000003</code> por coincidencia de contenido (<em>content</em>).</li>
+</ol>
+<h4 id="prueba-4-simulacion-de-payload-sqli">Prueba 4: Simulación de payload SQLi</h4>
+<ol>
+<li>En la máquina atacante simula un ataque de inyección:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>curl<span class="w"> </span><span class="s2">"http://192.168.1.10/login?user=%27%20OR%201=1"</span>
+</code></pre></div></li>
+<li><strong>Observación en el NIDS:</strong> Verifica que Snort identifica la firma codificada con <code>sid:1000004</code>.</li>
+</ol>
+<hr>
+<h3 id="tarea-6-auditoria-de-registros-en-ficheros-de-log">Tarea 6: Auditoría de Registros en Ficheros de Log</h3>
+<p>Por defecto, además de emitir alertas por consola, Snort almacena las trazas en el directorio <code>/var/log/snort/</code>:</p>
+<ol>
+<li>Detén la ejecución en consola de Snort pulsando <code>Ctrl + C</code>.</li>
+<li>Inspecciona el contenido del fichero de alertas rápidas:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/snort/snort.alert.fast
+</code></pre></div>
+   <em>(O <code>sudo cat /var/log/snort/alert</code> según la versión instalada).</em></li>
+<li>Comprueba que quedan registradas las marcas temporales, IPs de origen y destino, puertos y mensajes descriptivos de cada incidente.</li>
+</ol>
+<hr>
+<h2 id="4-cheatsheet-de-sintaxis-y-comandos-de-snort">4. Cheatsheet de Sintaxis y Comandos de Snort</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Elemento / Parámetro</th>
+<th style="text-align: left;">Sintaxis de Ejemplo</th>
+<th style="text-align: left;">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Validar configuración</strong></td>
+<td style="text-align: left;"><code>snort -T -c /etc/snort/snort.conf</code></td>
+<td style="text-align: left;">Comprueba sintaxis y reglas sin capturar tráfico.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ejecutar con alertas en pantalla</strong></td>
+<td style="text-align: left;"><code>snort -A console -q -c snort.conf -i eth0</code></td>
+<td style="text-align: left;">Modo interactivo para depuración y laboratorio.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Acciones en cabecera</strong></td>
+<td style="text-align: left;"><code>alert</code>, <code>log</code>, <code>pass</code>, <code>drop</code></td>
+<td style="text-align: left;">Tipo de respuesta que ejecuta el motor.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Coincidencia de texto</strong></td>
+<td style="text-align: left;"><code>content:"/wp-admin"; nocase;</code></td>
+<td style="text-align: left;">Busca una subcadena en la carga útil del paquete.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Banderas TCP</strong></td>
+<td style="text-align: left;"><code>flags:S;</code> o <code>flags:FSR;</code></td>
+<td style="text-align: left;">Filtra por banderas TCP (<code>S</code> = SYN, <code>F</code> = FIN, <code>R</code> = RST).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Filtro de tipo ICMP</strong></td>
+<td style="text-align: left;"><code>itype:8;</code> (Echo Request)</td>
+<td style="text-align: left;">Especifica el código de control del protocolo ICMP.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Identificadores locales</strong></td>
+<td style="text-align: left;"><code>sid:1000001; rev:1;</code></td>
+<td style="text-align: left;">Obligatorio <code>sid &gt; 1000000</code> para reglas de usuario.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="5-cuestiones-de-autoevaluacion">5. Cuestiones de Autoevaluación</h2>
+<ol>
+<li><strong>Modo Promiscuo:</strong> ¿Por qué la tarjeta de red del sensor NIDS debe configurarse en modo promiscuo cuando se monitoriza un segmento mediante un puerto espejo (<em>SPAN</em>) de un conmutador?</li>
+<li><strong>Falsos Positivos vs. Falsos Negativos:</strong> Si configuramos una regla que alerte ante cualquier paquete HTTP que contenga la palabra <code>SELECT</code>, ¿qué tipo de error cometerá el IDS con frecuencia y por qué?</li>
+<li><strong>IDS vs. IPS:</strong> En esta práctica hemos utilizado la acción <code>alert</code>. Si cambiásemos la acción a <code>drop</code>, ¿qué requisitos arquitectónicos adicionales debe cumplir el servidor para que el tráfico malicioso sea realmente bloqueado en la red?</li>
+<li><strong>Cifrado HTTPS:</strong> Si la víctima y el atacante se comunican mediante HTTPS (puerto 443 con TLS 1.3), ¿por qué las reglas basadas en <code>content</code> (como la de <code>/admin</code> o SQLi) dejan de ser efectivas en un NIDS tradicional? ¿Qué solución técnica se requeriría?</li>
+</ol></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "toc.integrate", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

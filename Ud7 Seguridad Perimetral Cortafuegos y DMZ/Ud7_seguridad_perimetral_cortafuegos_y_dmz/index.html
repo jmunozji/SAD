@@ -1,0 +1,2602 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jmunozji.github.io/SAD/Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/Ud7_seguridad_perimetral_cortafuegos_y_dmz/">
+      
+      
+        <link rel="prev" href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_3_borrado_seguro/">
+      
+      
+        <link rel="next" href="../P7_1_cortafuegos_mikrotik_basico/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>UD7. Seguridad perimetral: cortafuegos y DMZ - Seguridad y alta disponibilidad</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-3NX5MD5C8H"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-3NX5MD5C8H",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-3NX5MD5C8H",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ud7-seguridad-perimetral-cortafuegos-y-dmz" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-header__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Seguridad y alta disponibilidad
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              UD7. Seguridad perimetral: cortafuegos y DMZ
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-orange"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-nav__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    Seguridad y alta disponibilidad
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Introduccion/Ud1_introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1. Fundamentos de Seguridad Informática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Normativa%20y%20SGSI/Ud2_normativa_y_sgsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2. Normativa y sistemas de gestión de la seguridad de la información
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud3 Criptografia
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud3 Criptografia
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/Ud3_criptografia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3. Criptografía y Mecanismos de Certificación Digital
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.1: Cifrado Simétrico con GnuPG (GPG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.2: Criptografía Asimétrica y Gestión de Claves con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.3: Funciones Hash y Verificación de Integridad de Datos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.4: Firma Digital y Verificación de la Integridad con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.5: PKI - Gestión de Claves con Easy-RSA en Servidores Separados
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud4 Control de Acceso
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud4 Control de Acceso
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/Ud4_control_de_acceso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4. Control de accesos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.1: Protección del Gestor de Arranque GRUB2 con Contraseña
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.2: Listas de Control de Acceso (ACLs POSIX) en GNU/Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.3: Monitorización de Accesos y Defensa Activa con Fail2ban en SSH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud5 Seguridad Activa y Auditorias
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud5 Seguridad Activa y Auditorias
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/Ud5_seguridad_activa_auditorias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD5: Seguridad Activa y Auditorías en Redes Corporativas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_1_diagnostico_sockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.1: Diagnóstico Local de Sockets y Conexiones de Red con ss y netstat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_2_auditoria_nmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.2: Auditoría e Inventariado de Redes con Nmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_3_mitm_arp_spoofing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.3: Intercepción Man-In-The-Middle (MITM) y ARP Spoofing con Ettercap y Wireshark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_5_ids_snort_suricata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.5: Despliegue y Análisis de Reglas en IDS/IPS Snort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_6_servidor_radius/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.6: Despliegue de un Servidor de Autenticación RADIUS con FreeRADIUS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_7_hotspot_mikrotik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.7: Configuración de un Hotspot con Portal Cautivo en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_8_monitorizacion_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.8: Monitorización Activa y Análisis de Registros de Auditoría en Linux y Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/PO5_1_escaner_vulnerabilidades/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica Opcional 5.1: Auditoría Automatizada de Vulnerabilidades con OpenVAS / Greenbone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud6 Copias de Seguridad y Recuperacion
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud6 Copias de Seguridad y Recuperacion
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/Ud6_copias_de_seguridad_y_recuperacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD6: Copias de Seguridad, Recuperación ante Desastres y Borrado Seguro
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_1_copias_deja_dup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.1: Copias de Seguridad en GNU/Linux con Déjà Dup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_2_recuperacion_testdisk_photorec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.2: Recuperación de Archivos y Particiones con TestDisk y PhotoRec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_3_borrado_seguro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.3: Borrado Seguro de Datos y Sanitización de Soportes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud7 Seguridad Perimetral Cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud7 Seguridad Perimetral Cortafuegos y DMZ
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD7. Seguridad perimetral: cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD7. Seguridad perimetral: cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-fundamentos-de-la-seguridad-perimetral-y-defensa-en-profundidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Fundamentos de la Seguridad Perimetral y Defensa en Profundidad
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Fundamentos de la Seguridad Perimetral y Defensa en Profundidad">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-concepto-y-retos-del-perimetro-de-red" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1. Concepto y Retos del Perímetro de Red
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-el-principio-de-defensa-en-profundidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2. El Principio de Defensa en Profundidad
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-niveles-de-confianza-y-zonas-de-seguridad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3. Niveles de Confianza y Zonas de Seguridad
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-politicas-de-seguridad-por-defecto-restrictiva-vs-permisiva" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4. Políticas de Seguridad por Defecto: Restrictiva vs. Permisiva
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-arquitectura-tipologia-y-funcionamiento-de-los-cortafuegos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Arquitectura, Tipología y Funcionamiento de los Cortafuegos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Arquitectura, Tipología y Funcionamiento de los Cortafuegos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-alcance-que-controla-un-cortafuegos-y-que-amenazas-no-evita" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1. Alcance: Qué Controla un Cortafuegos y Qué Amenazas NO Evita
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-clasificacion-de-los-cortafuegos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2. Clasificación de los Cortafuegos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2. Clasificación de los Cortafuegos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#segun-su-posicion-en-la-red" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Según su Posición en la Red
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#segun-su-implementacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Según su Implementación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-clasificacion-por-generaciones-y-nivel-del-modelo-osi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3. Clasificación por Generaciones y Nivel del Modelo OSI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3. Clasificación por Generaciones y Nivel del Modelo OSI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1a-generacion-filtrado-de-paquetes-sin-estado-stateless-packet-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1ª Generación: Filtrado de Paquetes sin Estado (Stateless Packet Filtering)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2a-generacion-inspeccion-de-paquetes-con-estado-stateful-packet-filtering-spi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2ª Generación: Inspección de Paquetes con Estado (Stateful Packet Filtering - SPI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3a-generacion-cortafuegos-a-nivel-de-aplicacion-y-ngfw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3ª Generación: Cortafuegos a Nivel de Aplicación y NGFW
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-cadenas-de-procesamiento-y-acciones-de-filtrado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4. Cadenas de Procesamiento y Acciones de Filtrado
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4. Cadenas de Procesamiento y Acciones de Filtrado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decisiones-y-acciones-de-filtrado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decisiones y Acciones de Filtrado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-traduccion-de-direcciones-de-red-nat-y-publicacion-de-servicios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Traducción de Direcciones de Red (NAT) y Publicación de Servicios
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Traducción de Direcciones de Red (NAT) y Publicación de Servicios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-snat-y-masquerade-salida-a-internet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1. SNAT y Masquerade (Salida a Internet)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-dnat-redireccionamiento-de-puertos-port-forwarding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2. DNAT / Redireccionamiento de Puertos (Port Forwarding)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-practica-de-laboratorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3. Práctica de Laboratorio
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-zonas-desmilitarizadas-dmz-arquitectura-y-politicas-de-aislamiento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Zonas Desmilitarizadas (DMZ): Arquitectura y Políticas de Aislamiento
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Zonas Desmilitarizadas (DMZ): Arquitectura y Políticas de Aislamiento">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-concepto-y-objetivos-de-la-dmz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1. Concepto y Objetivos de la DMZ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-matriz-de-politicas-de-trafico-entre-zonas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2. Matriz de Políticas de Tráfico entre Zonas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-topologias-de-despliegue-de-dmz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3. Topologías de Despliegue de DMZ
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3. Topologías de Despliegue de DMZ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#topologia-1-dmz-con-un-cortafuegos-de-tres-interfaces-three-legged-firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topología 1: DMZ con un Cortafuegos de Tres Interfaces (Three-Legged Firewall)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topologia-2-dmz-con-dos-cortafuegos-en-cascada-dual-firewall-back-to-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topología 2: DMZ con Dos Cortafuegos en Cascada (Dual Firewall / Back-to-Back)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-recursos-oficiales-y-lecturas-recomendadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4. Recursos Oficiales y Lecturas Recomendadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-resumen-de-la-unidad-y-buenas-practicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Resumen de la Unidad y Buenas Prácticas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P7_1_cortafuegos_mikrotik_basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.1: Configuración de Cortafuegos de Red y Filtrado con Estado en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P7_2_dmz_un_router/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.2: Despliegue de una DMZ con un Cortafuegos de Tres Interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P7_3_dmz_dos_routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.3: Arquitectura Avanzada de DMZ con Doble Cortafuegos en Cascada
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud8 Seguridad Perimetral Acceso Remoto y VPN
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud8 Seguridad Perimetral Acceso Remoto y VPN
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/Ud8_seguridad_perimetral_acceso_remoto_y_vpn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD8. Seguridad perimetral: Acceso remoto y Redes Privadas Virtuales (VPN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/P8_1_vpn_ipsec_site_to_site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 8.1: VPN Sitio a Sitio (Site-to-Site) con IPsec en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud9 Proteccion Perimetral Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud9 Proteccion Perimetral Servidores Proxy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/Ud9_proteccion_perimetral_servidores_proxy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD9. Protección perimetral mediante Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/P9_1_proxy_squid_filtrado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 9.1: Servidor Proxy-Caché, Control de Acceso y Filtrado Web con Squid en Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud10 Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud10 Soluciones de Alta Disponibilidad
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud10%20Soluciones%20de%20Alta%20Disponibilidad/Ud10_soluciones_de_alta_disponibilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD10. Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud10%20Soluciones%20de%20Alta%20Disponibilidad/P10_1_alta_disponibilidad_vrrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 10.1: Redundancia y Tolerancia a Fallos de Pasarelas y Servicios Web con VRRP en MikroTik y Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="ud7-seguridad-perimetral-cortafuegos-y-dmz">UD7. Seguridad perimetral: cortafuegos y DMZ</h1>
+<h2 id="1-fundamentos-de-la-seguridad-perimetral-y-defensa-en-profundidad">1. Fundamentos de la Seguridad Perimetral y Defensa en Profundidad</h2>
+<p>En el ámbito de la administración de sistemas informáticos en red, la seguridad de una organización no puede descansar únicamente en la protección individual de los servidores o equipos de usuario. Resulta imprescindible blindar los límites por los que fluye la información hacia el exterior y regular de forma granular el tráfico que accede a las infraestructuras corporativas.</p>
+<hr>
+<h3 id="11-concepto-y-retos-del-perimetro-de-red">1.1. Concepto y Retos del Perímetro de Red</h3>
+<p>Se define el <strong>perímetro de red</strong> como la frontera física y lógica que separa las redes internas bajo el control de la organización (redes de confianza) de las redes externas públicas no confiables (principalmente Internet) o de redes pertenecientes a colaboradores y proveedores.</p>
+<p>La <strong>seguridad perimetral</strong> abarca el conjunto de métodos, dispositivos y tecnologías concebidos para supervisar, filtrar, canalizar y registrar todo el tráfico que entra o sale de la organización a través de dicha frontera.</p>
+<p>En los entornos corporativos contemporáneos, la implantación de la seguridad perimetral se enfrenta a desafíos crecientes:</p>
+<ul>
+<li><strong>Disolución de la frontera física:</strong> La generalización del teletrabajo, el acceso móvil y las políticas BYOD (<em>Bring Your Own Device</em>) hacen que los puestos de trabajo se conecten desde cualquier ubicación geográfica.</li>
+<li><strong>Migración a la nube (IaaS/PaaS/SaaS):</strong> Los servicios y bases de datos se distribuyen entre centros de datos locales y nubes públicas (AWS, Azure, Google Cloud), exigiendo una segmentación perimetral híbrida.</li>
+<li><strong>Amenazas internas:</strong> Un alto porcentaje de los incidentes de ciberseguridad se originan en el interior del perímetro (empleados negligentes, credenciales comprometidas o dispositivos infectados por malware tras conectarse a una Wi-Fi externa).</li>
+</ul>
+<hr>
+<h3 id="12-el-principio-de-defensa-en-profundidad">1.2. El Principio de Defensa en Profundidad</h3>
+<p>La seguridad informática no debe depender de un único punto de control. Si una barrera es vulnerada, deben existir capas defensivas subsiguientes que detengan o retrasen al atacante. Este enfoque se conoce como <strong>Defensa en Profundidad (<em>Defense in Depth</em>)</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a> ═══════════════════════════════════════════════════════════════════════════════
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  CAPA 1: Seguridad Perimetral (Cortafuegos, IDS/IPS, UTM, DMZ)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a> ───────────────────────────────────────────────────────────────────────────────
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  CAPA 2: Seguridad de Red Interna (VLANs, Control de Acceso 802.1X, WPA3-Ent)
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a> ───────────────────────────────────────────────────────────────────────────────
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  CAPA 3: Seguridad de Host (Hardening SO, Cortafuegos Personal, EDR/Antivirus)
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a> ───────────────────────────────────────────────────────────────────────────────
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  CAPA 4: Seguridad de la Aplicación y Datos (Cifrado, ACLs, Copias de Seguridad)
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a> ═══════════════════════════════════════════════════════════════════════════════
+</code></pre></div>
+<p>El cortafuegos perimetral constituye la <strong>primera línea de defensa</strong>, impidiendo que el escaneo masivo y los vectores de ataque indiscriminados alcancen los sistemas internos de la organización.</p>
+<hr>
+<h3 id="13-niveles-de-confianza-y-zonas-de-seguridad">1.3. Niveles de Confianza y Zonas de Seguridad</h3>
+<p>Para administrar eficazmente el tráfico de red, los límites perimetrales se dividen en <strong>zonas de seguridad</strong> homogéneas en función de su nivel de confianza:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>               ┌───────────────────────────────────────────────┐
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>               │              RED EXTERNA (WAN)                │
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>               │             Nivel Confianza: NULO             │
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>               │                   (Internet)                  │
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>               └───────────────────────┬───────────────────────┘
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>                                       │
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>                                       ▼
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>                         ┌───────────────────────────┐
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>                         │   CORTAFUEGOS PERIMETRAL  │
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>                         └─────────────┬─────────────┘
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>                                       │
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>                 ┌─────────────────────┴─────────────────────┐
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>                 │                                           │
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>                 ▼                                           ▼
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>   ┌───────────────────────────┐               ┌───────────────────────────┐
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>   │    ZONA DESMILITARIZADA   │               │     RED INTERNA (LAN)     │
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>   │           (DMZ)           │               │   Nivel Confianza: ALTO   │
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>   │   Nivel Confianza: MEDIO  │               │                           │
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>   │  (Web, Correo, DNS, FTP)  │               │   (Estaciones, BBDD,      │
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>   └───────────────────────────┘               │    Controlador Dominio)   │
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>                                               └───────────────────────────┘
+</code></pre></div>
+<ol>
+<li><strong>Red Externa (WAN / Internet):</strong> Zona no confiable donde residen los clientes públicos, pero también los atacantes, <em>botnets</em> y sistemas automatizados de escaneo.</li>
+<li><strong>Red Interna (LAN corporativa):</strong> Zona de máxima confianza donde residen los equipos de trabajo de los empleados, estaciones de administración, servidores de bases de datos internas y controladores de dominio.</li>
+<li><strong>Zona Desmilitarizada (DMZ):</strong> Subred intermedia de confianza media diseñada para alojar servidores que prestan servicios hacia el exterior (Web, FTP, correo), manteniéndolos aislados de la LAN.</li>
+<li><strong>Extranet:</strong> Red perimetral restringida habilitada para que socios comerciales, sucursales o teletrabajadores accedan a aplicaciones específicas mediante túneles seguros (VPN).</li>
+</ol>
+<hr>
+<h3 id="14-politicas-de-seguridad-por-defecto-restrictiva-vs-permisiva">1.4. Políticas de Seguridad por Defecto: Restrictiva vs. Permisiva</h3>
+<p>A la hora de configurar cualquier dispositivo de filtrado perimetral, el administrador debe adoptar una postura de diseño global:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Enfoque</th>
+<th style="text-align: left;">Directiva por Defecto</th>
+<th style="text-align: left;">Funcionamiento y Filosofía</th>
+<th style="text-align: left;">Valoración de Seguridad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Política Restrictiva</strong><br><em>(Default Deny / Lista Blanca)</em></td>
+<td style="text-align: left;"><strong>DENEGAR TODO</strong><br>(Drop / Reject por defecto)</td>
+<td style="text-align: left;">Se bloquea cualquier comunicación por defecto. El administrador debe habilitar <strong>explícitamente</strong> cada puerto, protocolo e IP de origen y destino imprescindibles para el negocio.</td>
+<td style="text-align: left;"><strong>Máxima seguridad (Recomendada).</strong> Garantiza el cumplimiento del principio de mínimo privilegio.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Política Permisiva</strong><br><em>(Default Allow / Lista Negra)</em></td>
+<td style="text-align: left;"><strong>PERMITIR TODO</strong><br>(Accept por defecto)</td>
+<td style="text-align: left;">Se permite todo el tráfico por defecto y se crean reglas puntuales para bloquear únicamente amenazas conocidas o puertos peligrosos.</td>
+<td style="text-align: left;"><strong>Muy vulnerable.</strong> Inviable en entornos corporativos, ya que cualquier servicio nuevo u olvido del administrador queda expuesto.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Recursos de Apoyo: Fundamentos de Seguridad Perimetral</p>
+<p>Para asimilar los conceptos de segmentación y defensa en profundidad, puedes consultar los siguientes recursos audiovisuales y guías de referencia:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=sxg1nq17xj4" target="_blank">Vídeo: Intypedia - Lección 5: Seguridad Perimetral (Alejandro Ramos Fraile)</a>:<ul>
+<li><em>Escena 1 (01:17):</em> Fundamentos de la seguridad perimetral e introducción a los cortafuegos.</li>
+<li><em>Escena 2 (05:13):</em> Sistemas de detección de intrusiones (IDS) y Honeypots.</li>
+<li><em>Escena 3 (09:42):</em> Tráfico en la Red: Antivirus perimetral, antispam y VPNs.</li>
+<li><em>Escena 4 (11:26):</em> Gestión Unificada de Amenazas (UTM) y conclusiones.</li>
+</ul>
+</li>
+</ul>
+</div>
+<hr>
+<h2 id="2-arquitectura-tipologia-y-funcionamiento-de-los-cortafuegos">2. Arquitectura, Tipología y Funcionamiento de los Cortafuegos</h2>
+<p>Un <strong>cortafuegos (<em>firewall</em>)</strong> es un dispositivo hardware o software capaz de examinar y procesar los paquetes de datos que entran, salen o atraviesan una red, determinando su destino según una serie de reglas de seguridad preestablecidas.</p>
+<hr>
+<h3 id="21-alcance-que-controla-un-cortafuegos-y-que-amenazas-no-evita">2.1. Alcance: Qué Controla un Cortafuegos y Qué Amenazas NO Evita</h3>
+<p>Es un error común asumir que un cortafuegos proporciona protección total. Un cortafuegos es una herramienta de control de flujos de red, con capacidades y límites bien definidos:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a> ┌──────────────────────────────────────────────┐  ┌──────────────────────────────────────────────┐
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a> │          QUÉ CONTROLA EL CORTAFUEGOS         │  │          QUÉ NO EVITA EL CORTAFUEGOS         │
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a> ├──────────────────────────────────────────────┤  ├──────────────────────────────────────────────┤
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a> │ ✔ Accesos a equipos y servicios específicos  │  │ ✘ Ataques físicos directos a los servidores  │
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a> │ ✔ Conexiones salientes no autorizadas        │  │ ✘ Uso remoto de credenciales legítimas       │
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a> │ ✔ Filtrado de flujos según origen y destino  │  │ ✘ Ataques web en puertos abiertos (SQLi, XSS)│
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a> │ ✔ Tráfico no deseado entre distintas zonas   │  │ ✘ Infección por malware recibido por correo  │
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a> │ ✔ Ataques de escaneo y sondeo de puertos     │  │ ✘ Amenazas internas originadas en la LAN     │
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a> └──────────────────────────────────────────────┘  └──────────────────────────────────────────────┘
+</code></pre></div>
+<p>El cortafuegos reduce drásticamente la <strong>superficie de ataque expuesta</strong>, pero debe complementarse con autenticación robusta, sistemas IDS/IPS, WAF (<em>Web Application Firewall</em>), antimalware y copias de seguridad.</p>
+<hr>
+<h3 id="22-clasificacion-de-los-cortafuegos">2.2. Clasificación de los Cortafuegos</h3>
+<h4 id="segun-su-posicion-en-la-red">Según su Posición en la Red</h4>
+<ol>
+<li><strong>Cortafuegos de Equipo o Personal (<em>Host-based Firewall</em>):</strong><ul>
+<li>Se ejecuta directamente sobre el sistema operativo de una estación o servidor (por ejemplo, <code>iptables</code>/<code>nftables</code> y <code>ufw</code> en Linux, o Windows Defender Firewall).</li>
+<li>Solo protege al equipo donde está instalado, filtrando el tráfico entrante y saliente generado por sus propios procesos.</li>
+</ul>
+</li>
+<li><strong>Cortafuegos de Red o Perimetral (<em>Network Firewall</em>):</strong><ul>
+<li>Dispositivo autónomo (router o <em>appliance</em> dedicado) situado en la frontera entre dos o más redes.</li>
+<li>Su función principal es <strong>filtrar el tráfico que pasa a través de él</strong> (tráfico <em>forward</em>) sin que el propio router sea el origen ni el destino de la comunicación.</li>
+</ul>
+</li>
+</ol>
+<h4 id="segun-su-implementacion">Según su Implementación</h4>
+<ol>
+<li><strong>Cortafuegos Software / Lógico:</strong><ul>
+<li>Programas que se ejecutan sobre sistemas operativos de propósito general (ej. distribuciones Linux o BSD como pfSense u OPNsense, o soluciones integradas como <code>iptables</code>).</li>
+<li>Destacan por su coste reducido y gran flexibilidad de personalización.</li>
+</ul>
+</li>
+<li><strong>Cortafuegos Hardware / Físico:</strong><ul>
+<li>Dispositivos diseñados específicamente con procesadores optimizados (ASIC / FPGA) para el procesamiento y conmutación de paquetes a alta velocidad.</li>
+<li>Suelen comercializarse como equipos de <strong>Gestión Unificada de Amenazas (UTM - <em>Unified Threat Management</em>)</strong> o cortafuegos de nueva generación (<strong>NGFW - <em>Next Generation Firewall</em></strong>) de fabricantes como MikroTik, Fortinet, Cisco o Palo Alto Networks.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="23-clasificacion-por-generaciones-y-nivel-del-modelo-osi">2.3. Clasificación por Generaciones y Nivel del Modelo OSI</h3>
+<p>La capacidad de filtrado de un cortafuegos depende de la profundidad con la que examina los paquetes en las capas del modelo OSI:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a> [ Capa 7: Aplicación ] ──&gt; 3ª GENERACIÓN: Cortafuegos de Aplicación / WAF / NGFW (DPI)
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a> [ Capa 4: Transporte ] ──&gt; 2ª GENERACIÓN: Filtrado con Estado (Stateful Inspection / SPI)
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a> [ Capa 3: Red        ] ──&gt; 1ª GENERACIÓN: Filtrado de Paquetes sin Estado (Stateless)
+</code></pre></div>
+<h4 id="1a-generacion-filtrado-de-paquetes-sin-estado-stateless-packet-filtering">1ª Generación: Filtrado de Paquetes sin Estado (<em>Stateless Packet Filtering</em>)</h4>
+<ul>
+<li>Trabaja en las capas de <strong>Red (IP)</strong> y <strong>Transporte (TCP/UDP)</strong>.</li>
+<li>Analiza cada paquete de forma aislada, sin recordar los paquetes anteriores:<ul>
+<li>Dirección IP de origen y destino.</li>
+<li>Puerto de transporte de origen y destino.</li>
+<li>Protocolo (TCP, UDP, ICMP).</li>
+</ul>
+</li>
+<li><strong>Limitación:</strong> Es incapaz de distinguir si un paquete entrante corresponde a la respuesta legítima de una petición iniciada desde la LAN o si se trata de un ataque de inyección exterior no solicitado.</li>
+</ul>
+<h4 id="2a-generacion-inspeccion-de-paquetes-con-estado-stateful-packet-filtering-spi">2ª Generación: Inspección de Paquetes con Estado (<em>Stateful Packet Filtering - SPI</em>)</h4>
+<ul>
+<li>Mantiene una <strong>tabla interna de conexiones activas</strong> (<em>Connection Tracking Table</em>).</li>
+<li>Cuando un equipo interno inicia una sesión TCP hacia el exterior, el cortafuegos registra los parámetros del flujo (IPs, puertos, números de secuencia) y clasifica los paquetes en cuatro estados fundamentales:<ul>
+<li><strong><code>NEW</code>:</strong> El paquete solicita abrir una nueva conexión (ej. bandera TCP <code>SYN</code>).</li>
+<li><strong><code>ESTABLISHED</code>:</strong> El paquete pertenece a una conexión ya validada y bidireccional.</li>
+<li><strong><code>RELATED</code>:</strong> El paquete abre una conexión complementaria asociada a una ya establecida (imprescindible para protocolos complejos como FTP pasivo o señalización SIP/VoIP).</li>
+<li><strong><code>INVALID</code>:</strong> El paquete no se asocia con ninguna conexión conocida o presenta banderas corruptas (debe ser descartado de inmediato).</li>
+</ul>
+</li>
+<li><strong>Ventaja:</strong> Permite aplicar la regla dorada perimetral: <strong>permitir la salida de tráfico nuevo desde la LAN y aceptar únicamente paquetes <code>ESTABLISHED</code> y <code>RELATED</code> procedentes de Internet</strong>, bloqueando de raíz cualquier intento de apertura de sesión desde el exterior.</li>
+</ul>
+<h4 id="3a-generacion-cortafuegos-a-nivel-de-aplicacion-y-ngfw">3ª Generación: Cortafuegos a Nivel de Aplicación y NGFW</h4>
+<ul>
+<li>Trabajan en la <strong>Capa de Aplicación (Capa 7)</strong>.</li>
+<li>Reensamblan el flujo de datos completo para realizar <strong>inspección profunda de paquetes (DPI - <em>Deep Packet Inspection</em>)</strong>:<ul>
+<li>Verificación de la sintaxis HTTP/HTTPS, filtrado de URLs y bloqueo de palabras clave.</li>
+<li>Cortafuegos de Aplicaciones Web (<strong>WAF</strong>): Prevención contra inyecciones SQL, Cross-Site Scripting (XSS) y ataques al Top 10 de OWASP.</li>
+<li>Detección de aplicaciones encubiertas (identifican tráfico BitTorrent o Tor aunque viaje a través del puerto TCP 443).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="24-cadenas-de-procesamiento-y-acciones-de-filtrado">2.4. Cadenas de Procesamiento y Acciones de Filtrado</h3>
+<p>En los sistemas basados en Linux y en el sistema operativo <strong>RouterOS de MikroTik</strong>, el motor de filtrado organiza las reglas en <strong>cadenas (<em>chains</em>)</strong> según el recorrido que siguen los paquetes:</p>
+<div class="mermaid">graph TD
+    In([Paquete llega a la interfaz del Router]) --&gt; Dest{¿La IP destino es la&lt;br&gt;del propio Router?}
+
+    Dest -- Sí --&gt; Input["Cadena INPUT&lt;br&gt;Procesos locales del router:&lt;br&gt;WebFig, WinBox, SSH, DNS cache"]
+    Input --&gt; LocalProc([Procesado localmente])
+
+    Dest -- No --&gt; Forward["Cadena FORWARD&lt;br&gt;Tráfico en tránsito entre interfaces:&lt;br&gt;LAN, WAN y DMZ"]
+    Forward --&gt; OutInt([Encaminado hacia interfaz de salida])
+
+    RouterGen([El Router genera un paquete local]) --&gt; Output["Cadena OUTPUT&lt;br&gt;Pings del router, NTP, actualizaciones"]
+    Output --&gt; OutInt
+
+    style In fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Dest fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Input fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Forward fill:#f3e5f5,stroke:#8e24aa,stroke-width:2px
+    style Output fill:#fff9c4,stroke:#fbc02d,stroke-width:2px</div>
+<ol>
+<li><strong>Cadena <code>INPUT</code>:</strong> Procesa los paquetes dirigidos a las direcciones IP del propio cortafuegos (por ejemplo, cuando un administrador se conecta a la interfaz WebFig del router o mediante SSH).</li>
+<li><strong>Cadena <code>FORWARD</code>:</strong> Procesa los paquetes que entran por una interfaz y salen por otra diferente atravesando el equipo (tráfico de los usuarios de la LAN hacia Internet, o tráfico externo hacia la DMZ).</li>
+<li><strong>Cadena <code>OUTPUT</code>:</strong> Procesa los paquetes emitidos directamente por el sistema operativo del cortafuegos hacia la red (peticiones NTP, resoluciones DNS del router o mensajes de alerta).</li>
+</ol>
+<h4 id="decisiones-y-acciones-de-filtrado">Decisiones y Acciones de Filtrado</h4>
+<p>Cuando un paquete coincide con las condiciones de una regla (o con la política por defecto), el cortafuegos ejecuta una de las siguientes acciones:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Acción</th>
+<th style="text-align: left;">Comportamiento</th>
+<th style="text-align: left;">Impacto en la Red</th>
+<th style="text-align: left;">Caso de Uso Recomendado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>ACCEPT</code></strong></td>
+<td style="text-align: left;">El paquete es autorizado y continúa su curso hacia la siguiente etapa de encaminamiento.</td>
+<td style="text-align: left;">Ninguno.</td>
+<td style="text-align: left;">Tráfico corporativo legítimo autorizado.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>DROP</code></strong></td>
+<td style="text-align: left;">El paquete es <strong>descartado silenciosamente</strong> sin enviar ninguna notificación al remitente.</td>
+<td style="text-align: left;">El emisor agota su tiempo de espera (<em>timeout</em>), ignorando si la IP existe o si hay un cortafuegos activo.</td>
+<td style="text-align: left;"><strong>Recomendado para la interfaz WAN (Internet).</strong> Oculta información sobre la arquitectura perimetral y ralentiza los escaneos de atacantes.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>REJECT</code></strong></td>
+<td style="text-align: left;">El paquete es descartado, pero el cortafuegos <strong>responde activamente al emisor</strong> mediante un mensaje de error ICMP (<em>Port Unreachable</em>) o un paquete TCP <code>RST</code>.</td>
+<td style="text-align: left;">La conexión se cierra al instante sin pausas ni esperas de timeout.</td>
+<td style="text-align: left;"><strong>Recomendado para la red interna (LAN).</strong> Facilita el diagnóstico de red y evita que las aplicaciones de los usuarios queden bloqueadas esperando respuesta.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-traduccion-de-direcciones-de-red-nat-y-publicacion-de-servicios">3. Traducción de Direcciones de Red (NAT) y Publicación de Servicios</h2>
+<p>En las redes IPv4, los equipos de la red corporativa utilizan bloques de direccionamiento privado definidos por la norma <strong>RFC 1918</strong> (<code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>, <code>192.168.0.0/16</code>), los cuales no son enrutables directamente a través de Internet.</p>
+<p>Para comunicar la infraestructura local con el exterior se emplea la <strong>Traducción de Direcciones de Red (NAT - <em>Network Address Translation</em>)</strong>.</p>
+<hr>
+<h3 id="31-snat-y-masquerade-salida-a-internet">3.1. SNAT y Masquerade (Salida a Internet)</h3>
+<ul>
+<li><strong>Source NAT (SNAT):</strong> Modifica la dirección IP de origen de los paquetes emitidos desde la LAN antes de enviarlos a Internet, sustituyéndola por la dirección IP pública del router.</li>
+<li><strong>Enmascaramiento (<em>Masquerade</em>):</strong> Variante de SNAT utilizada cuando la IP pública de la WAN se asigna dinámicamente mediante DHCP o PPPoE. El router actualiza dinámicamente la traducción si la IP externa cambia.</li>
+<li><strong>Mantenimiento de sesión:</strong> El cortafuegos asigna un puerto efímero externo único a cada flujo, permitiendo que cientos de equipos compartan una única dirección IP pública para navegar (<strong>PAT - <em>Port Address Translation</em></strong>).</li>
+</ul>
+<hr>
+<h3 id="32-dnat-redireccionamiento-de-puertos-port-forwarding">3.2. DNAT / Redireccionamiento de Puertos (<em>Port Forwarding</em>)</h3>
+<p>Cuando la empresa dispone de un servidor web, FTP o correo electrónico alojado en su red interna o DMZ, los usuarios de Internet no pueden alcanzarlo utilizando su IP privada (<code>192.168.101.11</code>).</p>
+<p>Se implementa entonces <strong>Destination NAT (DNAT)</strong>:</p>
+<div class="mermaid">flowchart TD
+    Cli["Cliente en Internet&lt;br&gt;Petición HTTP: IP_PÚBLICA:80"] --&gt;|ether1 WAN| Mkt["Router MikroTik RouterOS&lt;br&gt;Regla DNAT: dst-port=80 action=dst-nat&lt;br&gt;to-addresses=192.168.101.11"]
+    Mkt --&gt;|ether3 DMZ| Srv["Servidor Web DMZ&lt;br&gt;192.168.101.11:80"]
+
+    style Cli fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style Mkt fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Srv fill:#c8e6c9,stroke:#388e3c,stroke-width:2px</div>
+<ol>
+<li>El router perimetral recibe una petición dirigida a su propia interfaz externa (<code>dst-address=IP_WAN</code>) en un puerto específico (ej. TCP 80).</li>
+<li>El motor de NAT altera la cabecera del paquete, reemplazando la IP de destino por la IP privada interna del servidor (<code>to-addresses=192.168.101.11</code>).</li>
+<li>El paquete atraviesa a continuación la cadena <code>FORWARD</code> del cortafuegos, donde una regla de filtrado debe permitir explícitamente el paso hacia dicha IP y puerto.</li>
+</ol>
+<hr>
+<h3 id="33-practica-de-laboratorio">3.3. Práctica de Laboratorio</h3>
+<p>El diseño y puesta en marcha del filtrado con estado, la protección de acceso al router y la publicación de servicios se aborda en la práctica inicial del bloque:</p>
+<div class="admonition note">
+<p class="admonition-title">Práctica de Laboratorio</p>
+<p><strong><a href="../P7_1_cortafuegos_mikrotik_basico/">Práctica 7.1: Configuración de Cortafuegos de Red y Filtrado con Estado en MikroTik RouterOS</a></strong></p>
+<p><em>En esta práctica aprenderás a securizar un router MikroTik RouterOS desde cero, configurando reglas stateful en la cadena forward, protegiendo los servicios administrativos en la cadena input mediante listas de control de acceso y publicando servicios internos mediante redireccionamiento de puertos (DNAT).</em></p>
+</div>
+<hr>
+<h2 id="4-zonas-desmilitarizadas-dmz-arquitectura-y-politicas-de-aislamiento">4. Zonas Desmilitarizadas (DMZ): Arquitectura y Políticas de Aislamiento</h2>
+<h3 id="41-concepto-y-objetivos-de-la-dmz">4.1. Concepto y Objetivos de la DMZ</h3>
+<p>Si un servidor web con acceso público se sitúa directamente dentro de la red local de la empresa, cualquier vulnerabilidad en el software de la aplicación (un fallo en WordPress, una inyección SQL o una ejecución remota de código) permitiría a un atacante tomar el control del servidor y utilizarlo como pivote (<em>pivot</em>) para comprometer de inmediato el resto de estaciones y bases de datos corporativas de la LAN.</p>
+<p>Para mitigar este riesgo surge la <strong>Zona Desmilitarizada (DMZ - <em>Demilitarized Zone</em>)</strong>: una subred intermedia aislada física y lógicamente de la LAN, destinada exclusivamente a albergar servidores accesibles desde redes públicas.</p>
+<hr>
+<h3 id="42-matriz-de-politicas-de-trafico-entre-zonas">4.2. Matriz de Políticas de Tráfico entre Zonas</h3>
+<p>El principio rector de la DMZ es la <strong>contención perimetral</strong>: los servidores de la DMZ pueden recibir conexiones desde Internet y desde la LAN, pero <strong>bajo ningún concepto pueden iniciar conexiones hacia la red local</strong>.</p>
+<p><img alt="Matriz de políticas de tráfico en una DMZ" src="../img/politicasdmz.png">
+<small><em>Ilustración: Flujos de tráfico autorizados y denegados entre zonas.</em></small></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Origen</th>
+<th style="text-align: left;">Destino</th>
+<th style="text-align: left;">Acción</th>
+<th style="text-align: left;">Justificación Técnica y Operativa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Internet (WAN)</strong></td>
+<td style="text-align: left;"><strong>DMZ</strong></td>
+<td style="text-align: left;"><strong>Permitido condicional</strong></td>
+<td style="text-align: left;">Solo a los puertos y protocolos estrictamente publicados (ej. HTTP 80, HTTPS 443).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Internet (WAN)</strong></td>
+<td style="text-align: left;"><strong>LAN</strong></td>
+<td style="text-align: left;"><strong>Denegado absoluto</strong></td>
+<td style="text-align: left;">Ningún dispositivo externo puede alcanzar los puestos o servidores internos.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>LAN</strong></td>
+<td style="text-align: left;"><strong>Internet (WAN)</strong></td>
+<td style="text-align: left;"><strong>Permitido</strong></td>
+<td style="text-align: left;">Navegación y servicios salientes de los empleados mediante SNAT/Masquerade.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>LAN</strong></td>
+<td style="text-align: left;"><strong>DMZ</strong></td>
+<td style="text-align: left;"><strong>Permitido</strong></td>
+<td style="text-align: left;">Permite a los usuarios consultar los servicios y al personal de IT administrar los servidores (SSH, RDP, Web).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>DMZ</strong></td>
+<td style="text-align: left;"><strong>LAN</strong></td>
+<td style="text-align: left;"><strong>DENEGADO ESTRICTO</strong></td>
+<td style="text-align: left;"><strong>Regla de oro de la DMZ:</strong> Si un atacante compromete el servidor web, el cortafuegos le impide escanear o saltar a la red local.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>DMZ</strong></td>
+<td style="text-align: left;"><strong>Internet (WAN)</strong></td>
+<td style="text-align: left;"><strong>Restringido</strong></td>
+<td style="text-align: left;">Generalmente denegado por defecto, permitiendo únicamente salidas puntuales (actualizaciones de paquetes <code>apt</code>, peticiones DNS a servidores específicos).</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="43-topologias-de-despliegue-de-dmz">4.3. Topologías de Despliegue de DMZ</h3>
+<h4 id="topologia-1-dmz-con-un-cortafuegos-de-tres-interfaces-three-legged-firewall">Topología 1: DMZ con un Cortafuegos de Tres Interfaces (<em>Three-Legged Firewall</em>)</h4>
+<p>Utiliza un único dispositivo de encaminamiento dotado de al menos tres interfaces de red físicas: una para la WAN, otra para la LAN corporativa y una tercera para la DMZ.</p>
+<div class="mermaid">graph TD
+    subgraph WANZone ["Zona Externa (No Confiable)"]
+        WAN["INTERNET / WAN&lt;br&gt;(Red Externa)"]
+    end
+
+    subgraph FWZone ["Cortafuegos Perimetral"]
+        MKT["Router MikroTik RouterOS&lt;br&gt;Three-Legged Firewall"]
+    end
+
+    subgraph DMZZone ["Zona DMZ (Semi-Confiable)"]
+        Web["Servidor Web Apache (HTTP :80)&lt;br&gt;Servidor FTP (:21)&lt;br&gt;Subred: 192.168.101.0/24"]
+    end
+
+    subgraph LANZone ["Zona Corporativa LAN (Confiable)"]
+        LAN["PC Administrador y Estaciones&lt;br&gt;Subred: 192.168.100.0/24"]
+    end
+
+    WAN --&gt;|ether1 WAN| MKT
+    MKT --&gt;|ether3 DMZ: Publicación controlada| DMZZone
+    MKT --&gt;|ether2 LAN: Protegida de WAN y DMZ| LANZone
+    LANZone -.-&gt;|Tráfico saliente autorizado| WAN
+    LANZone -.-&gt;|Gestión autorizada| DMZZone
+    DMZZone -.-x|PROHIBIDO: Conexión entrante DMZ hacia LAN| LANZone
+
+    style WANZone fill:#ffebee,stroke:#e53935,stroke-width:1px
+    style FWZone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style DMZZone fill:#fff8e1,stroke:#ffa000,stroke-width:1px
+    style LANZone fill:#e8f5e9,stroke:#43a047,stroke-width:1px</div>
+<ul>
+<li><strong>Ventajas:</strong> Menor coste de equipamiento y configuración centralizada en un único equipo.</li>
+<li><strong>Inconvenientes:</strong> Si el router se ve comprometido a nivel de sistema operativo o firmware, el atacante obtiene control simultáneo sobre todas las zonas.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Práctica de Laboratorio</p>
+<p><strong><a href="../P7_2_dmz_un_router/">Práctica 7.2: Despliegue de una DMZ con un Cortafuegos de Tres Interfaces</a></strong></p>
+<p><em>En esta práctica implementarás en GNS3 un escenario de cortafuegos de tres interfaces sobre MikroTik RouterOS, aplicando la matriz completa de reglas de filtrado entre WAN, LAN y DMZ y validando las restricciones mediante pruebas de penetración controladas.</em></p>
+</div>
+<hr>
+<h4 id="topologia-2-dmz-con-dos-cortafuegos-en-cascada-dual-firewall-back-to-back">Topología 2: DMZ con Dos Cortafuegos en Cascada (<em>Dual Firewall / Back-to-Back</em>)</h4>
+<p>Representa el estándar de alta seguridad para infraestructuras críticas. La DMZ queda emparedada físicamente entre dos cortafuegos diferenciados:</p>
+<div class="mermaid">graph TD
+    subgraph WANZone ["Zona Externa / Internet"]
+        WAN["INTERNET / WAN"]
+    end
+
+    subgraph FrontZone ["Primer Nivel de Defensa"]
+        FW1["Cortafuegos Externo (Frontal)&lt;br&gt;Filtro estricto WAN ↔ DMZ"]
+    end
+
+    subgraph DMZZone ["Zona Desmilitarizada (DMZ)"]
+        DMZ["Servidores Públicos&lt;br&gt;• Servidor Web Apache&lt;br&gt;• Servidor de Correo"]
+    end
+
+    subgraph BackZone ["Segundo Nivel de Defensa"]
+        FW2["Cortafuegos Interno (Trasero)&lt;br&gt;Filtro estricto DMZ ↔ LAN"]
+    end
+
+    subgraph LANZone ["Zona Corporativa Interna (LAN)"]
+        LAN["Red Corporativa LAN&lt;br&gt;• Base de Datos confidencial&lt;br&gt;• Estaciones de trabajo"]
+    end
+
+    WAN --&gt; FW1
+    FW1 --&gt; DMZ
+    DMZ --&gt; FW2
+    FW2 --&gt; LAN
+
+    style WANZone fill:#ffebee,stroke:#e53935,stroke-width:1px
+    style FrontZone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style DMZZone fill:#fff8e1,stroke:#ffa000,stroke-width:1px
+    style BackZone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style LANZone fill:#e8f5e9,stroke:#43a047,stroke-width:1px</div>
+<ul>
+<li><strong>Cortafuegos Frontal (<em>Frontend</em>):</strong> Conectado directamente a Internet. Filtra el tráfico hacia la DMZ y bloquea cualquier paquete anómalo.</li>
+<li><strong>Cortafuegos Interno (<em>Backend</em>):</strong> Separa la DMZ de la red interna. Controla rigurosamente el acceso de gestión desde la LAN hacia la DMZ y bloquea con contundencia cualquier flujo iniciado en la DMZ.</li>
+<li><strong>Defensa de Doble Fabricante:</strong> La mejor práctica recomienda emplear dispositivos de distintos fabricantes o sistemas operativos para el <em>front</em> y el <em>back</em>. Si un exploit de día cero compromete el cortafuegos externo, el cortafuegos interno resistirá el ataque al no compartir la misma vulnerabilidad.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Práctica de Laboratorio</p>
+<p><strong><a href="../P7_3_dmz_dos_routers/">Práctica 7.3: Arquitectura Avanzada de DMZ con Doble Cortafuegos en Cascada</a></strong></p>
+<p><em>En esta práctica desplegarás un escenario perimetral avanzado en GNS3 con dos routers MikroTik en cascada, configurando la segmentación en doble barrera y analizando las ventajas de la defensa en profundidad perimetral.</em></p>
+</div>
+<hr>
+<h3 id="44-recursos-oficiales-y-lecturas-recomendadas">4.4. Recursos Oficiales y Lecturas Recomendadas</h3>
+<p>Para ampliar la visión sobre diseño seguro de perímetros y normativas aplicables:</p>
+<ul>
+<li><a href="https://www.incibe.es/protege-tu-empresa/blog/dmz-y-te-puede-ayudar-proteger-tu-empresa" target="_blank">INCIBE: Qué es una DMZ y cómo te puede ayudar a proteger tu empresa</a>.</li>
+<li><a href="https://youtu.be/OsaOKS7Q-cE" target="_blank">Vídeo URJCx: Seguridad perimetral - Firewalls y DMZ</a>.</li>
+<li><a href="https://computerhoy.com/reportajes/tecnologia/que-es-firewall-541885" target="_blank">ComputerHoy: ¿Qué es Firewall y en qué consiste?</a>.</li>
+</ul>
+<hr>
+<h2 id="5-resumen-de-la-unidad-y-buenas-practicas">5. Resumen de la Unidad y Buenas Prácticas</h2>
+<ol>
+<li><strong>Denegación por Defecto como Regla de Oro:</strong> Todo cortafuegos corporativo debe estructurarse bajo una política restrictiva (<em>Default Deny</em>), autorizando únicamente el tráfico necesario.</li>
+<li><strong>Inspección con Estado:</strong> Descartar en la interfaz WAN cualquier paquete en estado <code>NEW</code> no asociado a un servicio publicado mediante DNAT, aceptando únicamente retornos <code>ESTABLISHED,RELATED</code>.</li>
+<li><strong>Aislamiento Innegociable de la DMZ:</strong> Ningún servidor ubicado en la DMZ debe disponer de permiso para iniciar comunicaciones hacia la red LAN interna.</li>
+<li><strong>Protección de la Gestión Administrativa:</strong> Limitar el acceso a los puertos de administración del cortafuegos (SSH, HTTPS/WebFig, WinBox) a IPs nominales de confianza ubicadas en la LAN de administración, deshabilitando el acceso web desde interfaces públicas.</li>
+<li><strong>Auditoría Sistemática:</strong> Registrar en ficheros de eventos (<em>logs</em>) todos los paquetes descartados por la regla final de contención para alimentar sistemas de correlación SIEM y prevenir intrusiones.</li>
+</ol></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "toc.integrate", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

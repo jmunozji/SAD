@@ -1,0 +1,2319 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jmunozji.github.io/SAD/Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_1_copias_deja_dup/">
+      
+      
+        <link rel="prev" href="../Ud6_copias_de_seguridad_y_recuperacion/">
+      
+      
+        <link rel="next" href="../P6_2_recuperacion_testdisk_photorec/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Práctica 6.1: Copias de Seguridad en GNU/Linux con Déjà Dup - Seguridad y alta disponibilidad</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-3NX5MD5C8H"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-3NX5MD5C8H",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-3NX5MD5C8H",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#practica-61-copias-de-seguridad-en-gnulinux-con-deja-dup" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-header__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Seguridad y alta disponibilidad
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Práctica 6.1: Copias de Seguridad en GNU/Linux con Déjà Dup
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-orange"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-nav__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    Seguridad y alta disponibilidad
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Introduccion/Ud1_introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1. Fundamentos de Seguridad Informática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Normativa%20y%20SGSI/Ud2_normativa_y_sgsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2. Normativa y sistemas de gestión de la seguridad de la información
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud3 Criptografia
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud3 Criptografia
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/Ud3_criptografia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3. Criptografía y Mecanismos de Certificación Digital
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.1: Cifrado Simétrico con GnuPG (GPG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.2: Criptografía Asimétrica y Gestión de Claves con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.3: Funciones Hash y Verificación de Integridad de Datos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.4: Firma Digital y Verificación de la Integridad con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.5: PKI - Gestión de Claves con Easy-RSA en Servidores Separados
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud4 Control de Acceso
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud4 Control de Acceso
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/Ud4_control_de_acceso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4. Control de accesos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.1: Protección del Gestor de Arranque GRUB2 con Contraseña
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.2: Listas de Control de Acceso (ACLs POSIX) en GNU/Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.3: Monitorización de Accesos y Defensa Activa con Fail2ban en SSH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud5 Seguridad Activa y Auditorias
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud5 Seguridad Activa y Auditorias
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/Ud5_seguridad_activa_auditorias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD5: Seguridad Activa y Auditorías en Redes Corporativas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_1_diagnostico_sockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.1: Diagnóstico Local de Sockets y Conexiones de Red con ss y netstat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_2_auditoria_nmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.2: Auditoría e Inventariado de Redes con Nmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_3_mitm_arp_spoofing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.3: Intercepción Man-In-The-Middle (MITM) y ARP Spoofing con Ettercap y Wireshark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_5_ids_snort_suricata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.5: Despliegue y Análisis de Reglas en IDS/IPS Snort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_6_servidor_radius/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.6: Despliegue de un Servidor de Autenticación RADIUS con FreeRADIUS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_7_hotspot_mikrotik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.7: Configuración de un Hotspot con Portal Cautivo en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_8_monitorizacion_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.8: Monitorización Activa y Análisis de Registros de Auditoría en Linux y Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/PO5_1_escaner_vulnerabilidades/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica Opcional 5.1: Auditoría Automatizada de Vulnerabilidades con OpenVAS / Greenbone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud6 Copias de Seguridad y Recuperacion
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud6 Copias de Seguridad y Recuperacion
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Ud6_copias_de_seguridad_y_recuperacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD6: Copias de Seguridad, Recuperación ante Desastres y Borrado Seguro
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.1: Copias de Seguridad en GNU/Linux con Déjà Dup
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.1: Copias de Seguridad en GNU/Linux con Déjà Dup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-objetivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Objetivos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-escenario-y-fundamentos-tecnicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Escenario y Fundamentos Técnicos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Escenario y Fundamentos Técnicos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#el-motor-duplicity-y-deja-dup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        El Motor Duplicity y Déjà Dup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elementos-del-laboratorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Elementos del Laboratorio
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-desarrollo-paso-a-paso-de-la-practica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Desarrollo Paso a Paso de la Práctica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Desarrollo Paso a Paso de la Práctica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fase-1-configuracion-del-repositorio-en-el-servidor-remoto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 1: Configuración del Repositorio en el Servidor Remoto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-2-preparacion-del-cliente-y-validacion-de-conectividad-ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 2: Preparación del Cliente y Validación de Conectividad SSH
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-3-configuracion-de-la-politica-de-respaldo-en-deja-dup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 3: Configuración de la Política de Respaldo en Déjà Dup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-4-ejecucion-del-primer-respaldo-y-cifrado-simetrico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 4: Ejecución del Primer Respaldo y Cifrado Simétrico
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-5-modificacion-de-datos-y-generacion-de-respaldo-incremental" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 5: Modificación de Datos y Generación de Respaldo Incremental
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-6-simulacion-de-desastre-y-restauracion-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 6: Simulación de Desastre y Restauración de Datos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fase 6: Simulación de Desastre y Restauración de Datos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metodo-a-restauracion-selectiva-desde-el-explorador-de-archivos-menu-contextual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Método A: Restauración Selectiva desde el Explorador de Archivos (Menú Contextual)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metodo-b-restauracion-completa-desde-la-interfaz-de-deja-dup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Método B: Restauración Completa desde la Interfaz de Déjà Dup
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-cuestiones-y-analisis-tecnico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Cuestiones y Análisis Técnico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-entregables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Entregables
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P6_2_recuperacion_testdisk_photorec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.2: Recuperación de Archivos y Particiones con TestDisk y PhotoRec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P6_3_borrado_seguro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.3: Borrado Seguro de Datos y Sanitización de Soportes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud7 Seguridad Perimetral Cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud7 Seguridad Perimetral Cortafuegos y DMZ
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/Ud7_seguridad_perimetral_cortafuegos_y_dmz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD7. Seguridad perimetral: cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_1_cortafuegos_mikrotik_basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.1: Configuración de Cortafuegos de Red y Filtrado con Estado en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_2_dmz_un_router/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.2: Despliegue de una DMZ con un Cortafuegos de Tres Interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_3_dmz_dos_routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.3: Arquitectura Avanzada de DMZ con Doble Cortafuegos en Cascada
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud8 Seguridad Perimetral Acceso Remoto y VPN
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud8 Seguridad Perimetral Acceso Remoto y VPN
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/Ud8_seguridad_perimetral_acceso_remoto_y_vpn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD8. Seguridad perimetral: Acceso remoto y Redes Privadas Virtuales (VPN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/P8_1_vpn_ipsec_site_to_site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 8.1: VPN Sitio a Sitio (Site-to-Site) con IPsec en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud9 Proteccion Perimetral Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud9 Proteccion Perimetral Servidores Proxy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/Ud9_proteccion_perimetral_servidores_proxy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD9. Protección perimetral mediante Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/P9_1_proxy_squid_filtrado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 9.1: Servidor Proxy-Caché, Control de Acceso y Filtrado Web con Squid en Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud10 Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud10 Soluciones de Alta Disponibilidad
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud10%20Soluciones%20de%20Alta%20Disponibilidad/Ud10_soluciones_de_alta_disponibilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD10. Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud10%20Soluciones%20de%20Alta%20Disponibilidad/P10_1_alta_disponibilidad_vrrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 10.1: Redundancia y Tolerancia a Fallos de Pasarelas y Servicios Web con VRRP en MikroTik y Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="practica-61-copias-de-seguridad-en-gnulinux-con-deja-dup">Práctica 6.1: Copias de Seguridad en GNU/Linux con Déjà Dup</h1>
+<div class="admonition note">
+<p class="admonition-title">Datos de la Práctica</p>
+<ul>
+<li><strong>Módulo:</strong> Seguridad y Alta Disponibilidad (SAD - 0378)</li>
+<li><strong>Unidad Didáctica:</strong> UD6 - Copias de Seguridad y Recuperación de la Información</li>
+<li><strong>Requisitos:</strong> Dos máquinas virtuales en VirtualBox configuradas en modo red adaptador puente (o red interna común):<ol>
+<li><strong>Servidor Linux:</strong> Ubuntu Server o Debian sin entorno gráfico, con servidor SSH (<code>openssh-server</code>) activo.</li>
+<li><strong>Cliente Linux:</strong> Ubuntu Desktop o Ubuntu MATE con entorno gráfico y la utilidad Déjà Dup instalada.</li>
+</ol>
+</li>
+<li><strong>Permisos:</strong> Privilegios de superusuario (<code>sudo</code>) en ambas máquinas.</li>
+</ul>
+</div>
+<hr>
+<h2 id="1-objetivos">1. Objetivos</h2>
+<ul>
+<li>Diseñar e implementar una directiva de respaldos periódicos en red sobre sistemas GNU/Linux.</li>
+<li>Comprender la arquitectura de <strong>Déjà Dup</strong> y su funcionamiento sobre el motor subyacente <strong>Duplicity</strong>.</li>
+<li>Configurar la transmisión segura de respaldos hacia un repositorio remoto empleando el protocolo <strong>SSH/SFTP</strong>.</li>
+<li>Establecer políticas de inclusión selectiva de directorios críticos y filtros de exclusión (descargas, música, papelera).</li>
+<li>Implementar el <strong>cifrado simétrico en reposo</strong> de los respaldos mediante contraseñas robustas antes de su salida por red.</li>
+<li>Analizar la estructura interna de los volúmenes generados (<code>duplicity-full</code> e <code>duplicity-inc</code>) para distinguir de forma justificada entre copias completas e incrementales.</li>
+<li>Realizar simulaciones de recuperación ante desastres tanto desde la aplicación Déjà Dup como a través del menú contextual del gestor de archivos ("Volver a la versión anterior").</li>
+</ul>
+<hr>
+<h2 id="2-escenario-y-fundamentos-tecnicos">2. Escenario y Fundamentos Técnicos</h2>
+<h3 id="el-motor-duplicity-y-deja-dup">El Motor Duplicity y Déjà Dup</h3>
+<p>En los entornos GNU/Linux de escritorio (GNOME, MATE), la herramienta estándar para copias de seguridad personales y departamentales es <strong>Déjà Dup</strong> (identificada en los menús de sistema como <em>"Copias de seguridad"</em> o <em>"Respaldos"</em>).</p>
+<p>Déjà Dup actúa como una interfaz gráfica intuitiva construida sobre <strong>Duplicity</strong>:</p>
+<ol>
+<li><strong>Uso del algoritmo librsync:</strong> Duplicity genera archivos comprimidos (<em>tarballs</em>) y calcula firmas digitales de bloques para transferir únicamente los cambios producidos respecto a la copia anterior (<strong>copias incrementales continuas</strong>).</li>
+<li><strong>Cifrado criptográfico con GnuPG:</strong> Antes de abandonar la máquina cliente, todos los volúmenes de respaldo se cifran de extremo a extremo con el algoritmo AES simétrico mediante una frase de paso definida por el usuario. Aunque un atacante intercepte el canal o comprometa el servidor de destino, no podrá leer la información.</li>
+<li><strong>Transporte seguro en red:</strong> Admite el envío a través de protocolos seguros como SSH/SFTP, WebDAV o proveedores de almacenamiento en la nube.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a> [ Cliente: Ubuntu Desktop / MATE ]
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>   Carpeta local: ~/Documentos
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>          │
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>          ▼
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>   [ Déjà Dup / Duplicity ]
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>   - Filtra carpetas excluidas
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>   - Comprime (tar.gz)
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>   - Cifra simétricamente (GPG)
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>          │
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>          ▼ Conexión SSH (SFTP / TCP 22)
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  ══════════════════════════════════════════════════════════
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>          │
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>          ▼
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a> [ Servidor: Ubuntu Server LTS ]
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>   Repositorio remoto: /home/admin01/backups/
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>   Archivos resultantes:
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>   - duplicity-full.*.vol1.difftar.gpg  (Copia Completa)
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>   - duplicity-inc.*.vol1.difftar.gpg   (Copia Incremental)
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>   - duplicity-*.manifest.gpg           (Metadatos y firmas)
+</code></pre></div>
+<h3 id="elementos-del-laboratorio">Elementos del Laboratorio</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Máquina Virtual</th>
+<th style="text-align: left;">Sistema Operativo</th>
+<th style="text-align: left;">Rol en el Laboratorio</th>
+<th style="text-align: left;">Configuración de Red</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Servidor Backup</strong></td>
+<td style="text-align: left;">Ubuntu Server LTS / Debian</td>
+<td style="text-align: left;">Destino remoto de almacenamiento SSH</td>
+<td style="text-align: left;">Adaptador Puente (IP ej. <code>192.168.1.100</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Cliente Desktop</strong></td>
+<td style="text-align: left;">Ubuntu Desktop / MATE</td>
+<td style="text-align: left;">Origen de datos y ejecución de Déjà Dup</td>
+<td style="text-align: left;">Adaptador Puente (IP ej. <code>192.168.1.101</code>)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Vídeos Explicativos de Apoyo</p>
+<p>Para familiarizarse con el flujo visual de la herramienta:</p>
+<ul>
+<li><a href="https://youtu.be/tgMoqx0o2xQ" target="_blank">Vídeo: Hacer copias de seguridad (backups) en Ubuntu</a></li>
+<li><a href="https://youtu.be/KCGBSRsjKRo" target="_blank">Vídeo: Copias de Seguridad y Restauración en Ubuntu con Déjà Dup</a></li>
+</ul>
+</div>
+<hr>
+<h2 id="3-desarrollo-paso-a-paso-de-la-practica">3. Desarrollo Paso a Paso de la Práctica</h2>
+<hr>
+<h3 id="fase-1-configuracion-del-repositorio-en-el-servidor-remoto">Fase 1: Configuración del Repositorio en el Servidor Remoto</h3>
+<ol>
+<li>
+<p>Inicia sesión en la máquina <strong>Ubuntu Server LTS</strong>.</p>
+</li>
+<li>
+<p>Comprueba que el servicio SSH está en ejecución escuchando en el puerto TCP 22:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ss<span class="w"> </span>-ltn<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">22</span>
+</code></pre></div>
+<p><em>Si no estuviera instalado, ejecútalo mediante <code>sudo apt update &amp;&amp; sudo apt install openssh-server -y</code>.</em></p>
+</li>
+<li>
+<p>Identifica la dirección IP del servidor mediante <code>ip a</code> o <code>hostname -I</code>.</p>
+</li>
+<li>
+<p>Asegúrate de disponer de un usuario estándar para gestionar los respaldos (por ejemplo, <code>admin01</code>). Si no existe, puedes crearlo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>adduser<span class="w"> </span>admin01
+</code></pre></div>
+</li>
+<li>
+<p>Inicia sesión como <code>admin01</code> (o mediante <code>su - admin01</code>) y crea el directorio que actuará como repositorio de copias:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>/home/admin01/backups
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>chmod<span class="w"> </span><span class="m">700</span><span class="w"> </span>/home/admin01/backups
+</code></pre></div>
+</li>
+</ol>
+<hr>
+<h3 id="fase-2-preparacion-del-cliente-y-validacion-de-conectividad-ssh">Fase 2: Preparación del Cliente y Validación de Conectividad SSH</h3>
+<ol>
+<li>
+<p>Inicia sesión en la estación de trabajo <strong>Ubuntu Desktop / MATE</strong>.</p>
+</li>
+<li>
+<p>Abre una terminal e instala Déjà Dup y las extensiones necesarias si no vinieran preinstaladas:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>deja-dup<span class="w"> </span>duplicity<span class="w"> </span>-y
+</code></pre></div>
+</li>
+<li>
+<p><strong>Paso crítico de verificación SSH:</strong> Antes de configurar la herramienta gráfica, establece una conexión SSH manual por terminal hacia el servidor:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ssh<span class="w"> </span>admin01@&lt;IP_DEL_SERVIDOR&gt;
+</code></pre></div>
+<ul>
+<li>Acepta la huella digital del servidor tecleando <code>yes</code> cuando pregunte <code>Are you sure you want to continue connecting (yes/no/[fingerprint])?</code>.</li>
+<li>Esto registrará el servidor en el fichero <code>~/.ssh/known_hosts</code> del cliente, evitando bloqueos silenciosos o fallos de conexión en la interfaz gráfica de Déjà Dup.</li>
+<li>Cierra la sesión SSH tecleando <code>exit</code>.</li>
+</ul>
+</li>
+<li>
+<p>Prepara el entorno de datos de prueba en la carpeta personal del cliente. Crea dentro de <code>~/Documentos</code> varios ficheros de texto con contenido representativo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">cd</span><span class="w"> </span>~/Documentos
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"Directiva de Seguridad V1 - Confidencial"</span><span class="w"> </span>&gt;<span class="w"> </span>directiva_seguridad.txt
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"Contabilidad Ejercicio 2026 - Datos de balance"</span><span class="w"> </span>&gt;<span class="w"> </span>balance_2026.txt
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"Matriz de Riesgos y Activos TIC"</span><span class="w"> </span>&gt;<span class="w"> </span>matriz_riesgos.txt
+</code></pre></div>
+</li>
+</ol>
+<hr>
+<h3 id="fase-3-configuracion-de-la-politica-de-respaldo-en-deja-dup">Fase 3: Configuración de la Política de Respaldo en Déjà Dup</h3>
+<ol>
+<li>
+<p>Abre el menú de aplicaciones del cliente y busca <strong>"Copias de seguridad"</strong> (o <strong>"Respaldos"</strong> en Ubuntu MATE / GNOME).</p>
+</li>
+<li>
+<p>En la ventana principal, accede a la sección de configuración y define las siguientes directivas:</p>
+<ul>
+<li><strong>Carpetas para guardar (Inclusión):</strong><ul>
+<li>Añade la carpeta personal o específicamente <code>~/Documentos</code>.</li>
+</ul>
+</li>
+<li><strong>Carpetas que ignorar (Exclusión):</strong><ul>
+<li>Añade a la lista de exclusión:<ul>
+<li><code>Papelera</code></li>
+<li><code>~/Descargas</code></li>
+<li><code>~/Música</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Ubicación del almacenamiento:</strong><ul>
+<li>Tipo de almacenamiento: <strong>Ubicación de red / Servidor de red</strong>.</li>
+<li>Protocolo: <strong>SSH</strong>.</li>
+<li>Servidor: Introduce la dirección IP de tu máquina servidor (<code>&lt;IP_DEL_SERVIDOR&gt;</code>).</li>
+<li>Puerto: <code>22</code>.</li>
+<li>Carpeta / Directorio: <code>/home/admin01/backups</code> (o simplemente <code>backups</code> relativo a la home de <code>admin01</code>).</li>
+<li>Nombre de usuario: <code>admin01</code>.</li>
+</ul>
+</li>
+<li><strong>Programación y Retención:</strong><ul>
+<li>Frecuencia: <strong>Diaria</strong>.</li>
+<li>Conservación: <strong>Al menos un año</strong> (o <em>"Hasta que se quede sin espacio"</em>).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Realiza capturas de pantalla de cada una de las pestañas de configuración configuradas.</p>
+</li>
+</ol>
+<hr>
+<h3 id="fase-4-ejecucion-del-primer-respaldo-y-cifrado-simetrico">Fase 4: Ejecución del Primer Respaldo y Cifrado Simétrico</h3>
+<ol>
+<li>
+<p>En la pantalla principal de Déjà Dup, pulsa el botón <strong>"Respaldar ahora"</strong> (<em>Back Up Now</em>).</p>
+</li>
+<li>
+<p>El asistente solicitará proteger el respaldo con contraseña:</p>
+<ul>
+<li>Marca la opción de <strong>proteger la copia de seguridad con contraseña</strong>.</li>
+<li>Introduce una contraseña robusta y anótala (si se pierde la clave, los datos serán irrecuperables).</li>
+</ul>
+</li>
+<li>
+<p>El sistema solicitará la contraseña del usuario <code>admin01</code> del servidor SSH para autorizar la transferencia por red.</p>
+</li>
+<li>
+<p>Espera a que finalice la copia de seguridad hasta recibir la confirmación de <em>"Copia de seguridad finalizada"</em>.</p>
+</li>
+<li>
+<p><strong>Auditoría en el Servidor:</strong> Vuelve a la máquina <strong>Ubuntu Server</strong> y consulta el contenido del directorio de almacenamiento:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ls<span class="w"> </span>-lh<span class="w"> </span>/home/admin01/backups/
+</code></pre></div>
+<p><em>Comprobarás la aparición de una serie de volúmenes con el prefijo <code>duplicity-full.*.difftar.gpg</code>, ficheros de firmas <code>.sigtar.gpg</code> y archivos <code>.manifest.gpg</code>.</em></p>
+</li>
+<li>
+<p>Toma una captura de pantalla del listado del directorio en el servidor donde se aprecie claramente el prefijo <code>full</code>.</p>
+</li>
+</ol>
+<hr>
+<h3 id="fase-5-modificacion-de-datos-y-generacion-de-respaldo-incremental">Fase 5: Modificación de Datos y Generación de Respaldo Incremental</h3>
+<ol>
+<li>
+<p>En la máquina <strong>Cliente</strong>, simula la jornada laboral cotidiana modificando los datos del directorio <code>~/Documentos</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">cd</span><span class="w"> </span>~/Documentos
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># Modificar un archivo existente</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"Actualización con nuevas incidencias de seguridad"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>directiva_seguridad.txt
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="c1"># Crear un nuevo archivo departamental</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"Nuevo procedimiento de auditoría interna"</span><span class="w"> </span>&gt;<span class="w"> </span>auditoria.txt
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="c1"># Eliminar uno de los archivos originales</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>rm<span class="w"> </span>balance_2026.txt
+</code></pre></div>
+</li>
+<li>
+<p>Vuelve a Déjà Dup y ejecuta manualmente una nueva copia de seguridad pulsando <strong>"Respaldar ahora"</strong>.</p>
+</li>
+<li>
+<p>Introduce la contraseña de cifrado establecida cuando el asistente la requiera.</p>
+</li>
+<li>
+<p><strong>Auditoría de Cambios en el Servidor:</strong> Una vez completada, lista nuevamente el contenido de <code>/home/admin01/backups/</code> en el servidor:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>ls<span class="w"> </span>-lh<span class="w"> </span>/home/admin01/backups/
+</code></pre></div>
+<p><em>Observa los nuevos ficheros creados con el prefijo <code>duplicity-inc.*.difftar.gpg</code> junto a los volúmenes completos anteriores.</em></p>
+</li>
+<li>
+<p>Realiza una captura de pantalla del listado completo de <code>/home/admin01/backups/</code>.</p>
+</li>
+</ol>
+<hr>
+<h3 id="fase-6-simulacion-de-desastre-y-restauracion-de-datos">Fase 6: Simulación de Desastre y Restauración de Datos</h3>
+<p>Vamos a verificar los dos métodos de restauración que ofrece la plataforma:</p>
+<h4 id="metodo-a-restauracion-selectiva-desde-el-explorador-de-archivos-menu-contextual">Método A: Restauración Selectiva desde el Explorador de Archivos (Menú Contextual)</h4>
+<ol>
+<li>En el cliente, abre el gestor de archivos (Caja / Nautilus / Archivos) y navega hasta tu carpeta personal.</li>
+<li>Localiza la carpeta <code>Documentos</code>.</li>
+<li>Haz clic con el botón secundario del ratón (botón derecho) sobre <code>Documentos</code> y selecciona en el menú contextual la opción <strong>"Volver a la versión anterior..."</strong> (o <em>"Restaurar versión previa"</em>).</li>
+<li>El asistente de Déjà Dup se abrirá automáticamente consultando el catálogo de fechas del repositorio remoto:<ul>
+<li>Selecciona la fecha y hora correspondiente al <strong>primer respaldo</strong> realizado.</li>
+<li>Solicitará la contraseña de descifrado del backup y la contraseña SSH de <code>admin01</code>.</li>
+</ul>
+</li>
+<li>Comprueba cómo se restablece el archivo eliminado (<code>balance_2026.txt</code>).</li>
+</ol>
+<h4 id="metodo-b-restauracion-completa-desde-la-interfaz-de-deja-dup">Método B: Restauración Completa desde la Interfaz de Déjà Dup</h4>
+<ol>
+<li>
+<p>Simula una catástrofe total eliminando por completo la carpeta <code>Documentos</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>rm<span class="w"> </span>-rf<span class="w"> </span>~/Documentos
+</code></pre></div>
+</li>
+<li>
+<p>Abre la aplicación <strong>Déjà Dup</strong> y pulsa en la pestaña o botón <strong>"Restaurar"</strong> (<em>Restore</em>).</p>
+</li>
+<li>Sigue el asistente:<ul>
+<li>Indica que los respaldos se encuentran en la ubicación de red SSH del servidor.</li>
+<li>Selecciona la fecha más reciente disponible.</li>
+<li>Elige restaurar los ficheros en su <strong>ubicación original</strong>.</li>
+</ul>
+</li>
+<li>Verifica que la carpeta <code>~/Documentos</code> y todos sus archivos se han recuperado con éxito.</li>
+</ol>
+<hr>
+<h2 id="4-cuestiones-y-analisis-tecnico">4. Cuestiones y Análisis Técnico</h2>
+<p>Responde de forma justificada y detallada a las siguientes preguntas en tu memoria de prácticas:</p>
+<ol>
+<li><strong>Análisis de Volúmenes en el Servidor:</strong><ul>
+<li>Examina la nomenclatura de los archivos almacenados en <code>/home/admin01/backups/</code>.</li>
+<li>¿Qué diferencia existe entre los ficheros con prefijo <code>duplicity-full</code> y los de prefijo <code>duplicity-inc</code>?</li>
+<li>¿Por qué el tamaño de los ficheros <code>duplicity-inc</code> es notablemente inferior al de los <code>duplicity-full</code>? Justifícalo según los tipos de copia estudiados en la teoría.</li>
+</ul>
+</li>
+<li><strong>Seguridad y Confidencialidad en Tránsito y Reposo:</strong><ul>
+<li>El canal de red empleado utiliza SSH (cifrado en tránsito). ¿Por qué sigue siendo fundamental activar además la contraseña de cifrado propia de Déjà Dup (cifrado en reposo)?</li>
+<li>Si el administrador del servidor <code>Ubuntu Server</code> intentase abrir o descomprimir con <code>tar</code> uno de los volúmenes <code>.gpg</code> ubicados en <code>/home/admin01/backups/</code>, ¿podría leer su contenido? ¿Por qué?</li>
+</ul>
+</li>
+<li><strong>Estrategia 3-2-1:</strong><ul>
+<li>¿En qué medida la práctica realizada cumple con la regla de oro 3-2-1 del almacenamiento de copias de seguridad? ¿Qué componente faltaría para un cumplimiento estricto?</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="5-entregables">5. Entregables</h2>
+<p>Elabora un único documento en formato <strong>PDF</strong> que incluya:</p>
+<ol>
+<li><strong>Datos de cabecera:</strong> Nombre y apellidos del alumno, fecha y módulo.</li>
+<li><strong>Configuración de red:</strong> Capturas de pantalla de la salida de <code>ip a</code> en el servidor y en el cliente demostrando conectividad.</li>
+<li><strong>Configuración de Déjà Dup:</strong> Capturas de pantalla de:<ul>
+<li>Carpetas incluidas y excluidas.</li>
+<li>Parámetros de conexión SSH al servidor remoto.</li>
+<li>Diálogo de protección con contraseña durante el primer respaldo.</li>
+</ul>
+</li>
+<li><strong>Evidencias en el Servidor:</strong> Capturas de pantalla legibles de la terminal del servidor con el comando <code>ls -lh /home/admin01/backups/</code>:<ul>
+<li>Tras finalizar el primer respaldo (evidenciando la copia completa).</li>
+<li>Tras finalizar el segundo respaldo (evidenciando la copia incremental generada tras los cambios).</li>
+</ul>
+</li>
+<li><strong>Evidencias de Restauración:</strong> Captura del menú contextual <em>"Volver a la versión anterior"</em> y del resultado final en la carpeta restaurada.</li>
+<li><strong>Respuestas argumentadas:</strong> Respuestas redactadas a las cuestiones del apartado 4.</li>
+</ol></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "toc.integrate", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

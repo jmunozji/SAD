@@ -1,0 +1,2410 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jmunozji.github.io/SAD/Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/Ud6_copias_de_seguridad_y_recuperacion/">
+      
+      
+        <link rel="prev" href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/PO5_1_escaner_vulnerabilidades/">
+      
+      
+        <link rel="next" href="../P6_1_copias_deja_dup/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>UD6: Copias de Seguridad, Recuperación ante Desastres y Borrado Seguro - Seguridad y alta disponibilidad</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-3NX5MD5C8H"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-3NX5MD5C8H",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-3NX5MD5C8H",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ud6-copias-de-seguridad-recuperacion-ante-desastres-y-borrado-seguro" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-header__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Seguridad y alta disponibilidad
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              UD6: Copias de Seguridad, Recuperación ante Desastres y Borrado Seguro
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-orange"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-nav__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    Seguridad y alta disponibilidad
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Introduccion/Ud1_introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1. Fundamentos de Seguridad Informática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Normativa%20y%20SGSI/Ud2_normativa_y_sgsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2. Normativa y sistemas de gestión de la seguridad de la información
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud3 Criptografia
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud3 Criptografia
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/Ud3_criptografia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3. Criptografía y Mecanismos de Certificación Digital
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.1: Cifrado Simétrico con GnuPG (GPG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.2: Criptografía Asimétrica y Gestión de Claves con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.3: Funciones Hash y Verificación de Integridad de Datos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.4: Firma Digital y Verificación de la Integridad con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.5: PKI - Gestión de Claves con Easy-RSA en Servidores Separados
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud4 Control de Acceso
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud4 Control de Acceso
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/Ud4_control_de_acceso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4. Control de accesos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.1: Protección del Gestor de Arranque GRUB2 con Contraseña
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.2: Listas de Control de Acceso (ACLs POSIX) en GNU/Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.3: Monitorización de Accesos y Defensa Activa con Fail2ban en SSH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud5 Seguridad Activa y Auditorias
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud5 Seguridad Activa y Auditorias
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/Ud5_seguridad_activa_auditorias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD5: Seguridad Activa y Auditorías en Redes Corporativas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_1_diagnostico_sockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.1: Diagnóstico Local de Sockets y Conexiones de Red con ss y netstat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_2_auditoria_nmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.2: Auditoría e Inventariado de Redes con Nmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_3_mitm_arp_spoofing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.3: Intercepción Man-In-The-Middle (MITM) y ARP Spoofing con Ettercap y Wireshark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_5_ids_snort_suricata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.5: Despliegue y Análisis de Reglas en IDS/IPS Snort
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_6_servidor_radius/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.6: Despliegue de un Servidor de Autenticación RADIUS con FreeRADIUS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_7_hotspot_mikrotik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.7: Configuración de un Hotspot con Portal Cautivo en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_8_monitorizacion_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.8: Monitorización Activa y Análisis de Registros de Auditoría en Linux y Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/PO5_1_escaner_vulnerabilidades/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica Opcional 5.1: Auditoría Automatizada de Vulnerabilidades con OpenVAS / Greenbone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud6 Copias de Seguridad y Recuperacion
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud6 Copias de Seguridad y Recuperacion
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD6: Copias de Seguridad, Recuperación ante Desastres y Borrado Seguro
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD6: Copias de Seguridad, Recuperación ante Desastres y Borrado Seguro
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduccion-a-la-seguridad-pasiva-y-continuidad-de-negocio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introducción a la Seguridad Pasiva y Continuidad de Negocio
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Introducción a la Seguridad Pasiva y Continuidad de Negocio">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metricas-criticas-en-la-recuperacion-rpo-y-rto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Métricas Críticas en la Recuperación: RPO y RTO
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-estrategias-y-politicas-de-copias-de-seguridad-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Estrategias y Políticas de Copias de Seguridad (Backup)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Estrategias y Políticas de Copias de Seguridad (Backup)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-regla-nemotecnica-3-2-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La Regla Nemotécnica 3-2-1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tipos-de-copias-de-seguridad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tipos de Copias de Seguridad
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tipos de Copias de Seguridad">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-copia-de-seguridad-completa-full-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Copia de Seguridad Completa (Full Backup)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-copia-de-seguridad-incremental-incremental-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Copia de Seguridad Incremental (Incremental Backup)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-copia-de-seguridad-diferencial-differential-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Copia de Seguridad Diferencial (Differential Backup)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tabla-comparativa-de-estrategias-de-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabla Comparativa de Estrategias de Backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#soportes-y-medios-de-almacenamiento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Soportes y Medios de Almacenamiento
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-recuperacion-de-archivos-y-funcionamiento-del-almacenamiento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Recuperación de Archivos y Funcionamiento del Almacenamiento
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Recuperación de Archivos y Funcionamiento del Almacenamiento">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mecanica-del-borrado-en-sistemas-de-archivos-magneticos-hdd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mecánica del Borrado en Sistemas de Archivos Magnéticos (HDD)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-gran-diferencia-discos-hdd-vs-unidades-ssd-y-el-comando-trim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La Gran Diferencia: Discos HDD vs. Unidades SSD y el Comando TRIM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tecnicas-de-recuperacion-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Técnicas de Recuperación de Datos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Técnicas de Recuperación de Datos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-reconstruccion-de-estructuras-del-sistema-de-archivos-testdisk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Reconstrucción de Estructuras del Sistema de Archivos (TestDisk)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-tallado-de-archivos-file-carving-con-photorec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Tallado de Archivos (File Carving con PhotoRec)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-destruccion-segura-de-la-informacion-sanitizacion-y-borrado-permanente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Destrucción Segura de la Información (Sanitización y Borrado Permanente)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Destrucción Segura de la Información (Sanitización y Borrado Permanente)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#procedimientos-ineficaces-de-borrado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Procedimientos Ineficaces de Borrado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tecnicas-de-sobreescritura-logica-sanitizacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Técnicas de Sobreescritura Lógica (Sanitización)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#herramientas-de-borrado-seguro-en-gnulinux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Herramientas de Borrado Seguro en GNU/Linux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sanitizacion-en-discos-ssd-ata-secure-erase-y-criptoborrado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sanitización en Discos SSD: ATA Secure Erase y Criptoborrado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#destruccion-fisica-de-soportes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Destrucción Física de Soportes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-resumen-de-la-unidad-y-buenas-practicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Resumen de la Unidad y Buenas Prácticas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P6_1_copias_deja_dup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.1: Copias de Seguridad en GNU/Linux con Déjà Dup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P6_2_recuperacion_testdisk_photorec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.2: Recuperación de Archivos y Particiones con TestDisk y PhotoRec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P6_3_borrado_seguro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.3: Borrado Seguro de Datos y Sanitización de Soportes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud7 Seguridad Perimetral Cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud7 Seguridad Perimetral Cortafuegos y DMZ
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/Ud7_seguridad_perimetral_cortafuegos_y_dmz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD7. Seguridad perimetral: cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_1_cortafuegos_mikrotik_basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.1: Configuración de Cortafuegos de Red y Filtrado con Estado en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_2_dmz_un_router/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.2: Despliegue de una DMZ con un Cortafuegos de Tres Interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_3_dmz_dos_routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.3: Arquitectura Avanzada de DMZ con Doble Cortafuegos en Cascada
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud8 Seguridad Perimetral Acceso Remoto y VPN
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud8 Seguridad Perimetral Acceso Remoto y VPN
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/Ud8_seguridad_perimetral_acceso_remoto_y_vpn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD8. Seguridad perimetral: Acceso remoto y Redes Privadas Virtuales (VPN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/P8_1_vpn_ipsec_site_to_site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 8.1: VPN Sitio a Sitio (Site-to-Site) con IPsec en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud9 Proteccion Perimetral Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud9 Proteccion Perimetral Servidores Proxy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/Ud9_proteccion_perimetral_servidores_proxy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD9. Protección perimetral mediante Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/P9_1_proxy_squid_filtrado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 9.1: Servidor Proxy-Caché, Control de Acceso y Filtrado Web con Squid en Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud10 Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud10 Soluciones de Alta Disponibilidad
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud10%20Soluciones%20de%20Alta%20Disponibilidad/Ud10_soluciones_de_alta_disponibilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD10. Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud10%20Soluciones%20de%20Alta%20Disponibilidad/P10_1_alta_disponibilidad_vrrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 10.1: Redundancia y Tolerancia a Fallos de Pasarelas y Servicios Web con VRRP en MikroTik y Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="ud6-copias-de-seguridad-recuperacion-ante-desastres-y-borrado-seguro">UD6: Copias de Seguridad, Recuperación ante Desastres y Borrado Seguro</h1>
+<div class="admonition note">
+<p class="admonition-title">Datos de la Unidad Didáctica</p>
+<ul>
+<li><strong>Módulo:</strong> Seguridad y Alta Disponibilidad (SAD - 0378)</li>
+<li><strong>Ciclo:</strong> Técnico Superior en Administración de Sistemas Informáticos en Red (ASIR)</li>
+<li><strong>Duración Asignada:</strong> 8 horas lectivas (Ponderación del 10% en el módulo, aportando el 40% del Resultado de Aprendizaje RA1).</li>
+</ul>
+</div>
+<hr>
+<h2 id="1-introduccion-a-la-seguridad-pasiva-y-continuidad-de-negocio">1. Introducción a la Seguridad Pasiva y Continuidad de Negocio</h2>
+<p>La información es el activo más valioso de cualquier organización o usuario particular. Mientras que la <strong>seguridad activa</strong> comprende todas las barreras y defensas preventivas orientadas a evitar que ocurra un incidente (cortafuegos, contraseñas robustas, detección de intrusos o parches de seguridad), la <strong>seguridad pasiva</strong> entra en acción cuando el incidente o desastre ya se ha producido, con el objetivo de <strong>minimizar el impacto de los daños y restaurar la operatividad en el menor tiempo posible</strong>.</p>
+<p>Las pérdidas de información no solo tienen su origen en ciberataques maliciosos (como infecciones por ransomware o sabotajes internos), sino frecuentemente en:
+* Averías físicas del hardware (fallos mecánicos de cabezales en discos HDD o degradación de celdas flash en SSD).
+* Errores humanos involuntarios (borrado accidental de carpetas, sobreescritura de bases de datos o formateos erróneos).
+* Desastres ambientales o de infraestructura (incendios, inundaciones, picos de tensión o cortes eléctricos prolongados).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a> ┌──────────────────────────────────────┐     ┌──────────────────────────────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a> │           SEGURIDAD ACTIVA           │     │          SEGURIDAD PASIVA            │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a> ├──────────────────────────────────────┤     ├──────────────────────────────────────┤
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a> │ * Prevención y detección en vivo.    │     │ * Recuperación y respuesta al daño.  │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a> │ * Control de acceso y cifrado.       │     │ * Copias de seguridad (Backups).     │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a> │ * Cortafuegos, IDS/IPS y antivirus.  │     │ * Herramientas de recuperación.      │
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a> │ * Evita que el desastre ocurra.      │     │ * Permite volver a operar tras fallo.│
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a> └──────────────────────────────────────┘     └──────────────────────────────────────┘
+</code></pre></div>
+<hr>
+<h3 id="metricas-criticas-en-la-recuperacion-rpo-y-rto">Métricas Críticas en la Recuperación: RPO y RTO</h3>
+<p>A la hora de diseñar un plan de continuidad de negocio (<em>Business Continuity Plan</em> - BCP) y de recuperación ante desastres (<em>Disaster Recovery Plan</em> - DRP), todo administrador de sistemas debe definir dos parámetros fundamentales acordados con la dirección:</p>
+<div class="mermaid">flowchart LR
+    B["Último Backup Válido&lt;br&gt;(Datos a salvo)"] &lt;--&gt;|RPO: Pérdida máxima tolerada| D["INCIDENTE / DESASTRE&lt;br&gt;(Caída del sistema)"]
+    D &lt;--&gt;|RTO: Tiempo máximo tolerado| R["Sistema Restaurado&lt;br&gt;(Servicio operativo)"]
+
+    style B fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style D fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style R fill:#e1f5fe,stroke:#0288d1,stroke-width:2px</div>
+<ol>
+<li><strong>RPO (<em>Recovery Point Objective</em> - Objetivo de Punto de Recuperación):</strong></li>
+<li>Representa el <strong>volumen máximo de datos que la organización puede permitirse perder</strong>, medido en unidades de tiempo transcurrido entre la última copia válida y el instante del desastre.</li>
+<li>
+<p><em>Ejemplo:</em> Si una empresa realiza copias de seguridad una vez al día a las 23:00 y sufre un desastre a las 18:00, ha perdido 19 horas de transacciones. Si su RPO máximo exigido era de 4 horas, la política de copias ha fracasado.</p>
+</li>
+<li>
+<p><strong>RTO (<em>Recovery Time Objective</em> - Objetivo de Tiempo de Recuperación):</strong></p>
+</li>
+<li>Representa el <strong>tiempo máximo admisible que un sistema o servicio puede permanecer inactivo</strong> antes de que la interrupción cause pérdidas inasumibles para la empresa.</li>
+<li>
+<p><em>Ejemplo:</em> Si un servidor de base de datos de comercio electrónico cae a las 10:00 y no vuelve a estar operativo hasta las 18:00 (8 horas de caída), cuando el RTO fijado era de 2 horas, se ha sobrepasado el límite operativo.</p>
+</li>
+<li>
+<p><strong>Ventana de Copia (<em>Backup Window</em>):</strong></p>
+</li>
+<li>Es el intervalo de tiempo disponible durante el cual se puede ejecutar el proceso de copia sin penalizar el rendimiento del sistema en horario laboral (habitualmente de madrugada).</li>
+</ol>
+<hr>
+<h2 id="2-estrategias-y-politicas-de-copias-de-seguridad-backup">2. Estrategias y Políticas de Copias de Seguridad (Backup)</h2>
+<p>Una copia de seguridad o <em>backup</em> es un duplicado íntegro o selectivo de la información almacenada en un sistema informático, depositado en un soporte o ubicación independiente para posibilitar su restauración si la fuente original resulta dañada, corrompida o inaccesible.</p>
+<hr>
+<h3 id="la-regla-nemotecnica-3-2-1">La Regla Nemotécnica 3-2-1</h3>
+<p>Es el estándar de oro universalmente aceptado por los organismos de ciberseguridad (INCIBE, CISA, NIST) para el diseño de políticas de respaldo resistentes:</p>
+<div class="mermaid">graph TD
+    Rule["La Regla Nemotécnica 3 - 2 - 1"]
+
+    C3["3 COPIAS DE SEGURIDAD&lt;br&gt;• 1 Copia de Producción&lt;br&gt;• 2 Copias de Respaldo&lt;br&gt;• Evita punto único de fallo"]
+    C2["2 SOPORTES DIFERENTES&lt;br&gt;• Tecnologías independientes&lt;br&gt;• ej. Disco local + NAS o Cinta&lt;br&gt;• Evita fallos de un mismo medio"]
+    C1["1 COPIA FUERA DE LA SEDE (OFFSITE)&lt;br&gt;• Almacenamiento en la nube o centro remoto&lt;br&gt;• Protección frente a incendios o desastres físicos"]
+
+    Rule --&gt; C3
+    Rule --&gt; C2
+    Rule --&gt; C1
+
+    style Rule fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style C3 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style C2 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style C1 fill:#fce4ec,stroke:#c2185b,stroke-width:2px</div>
+<ul>
+<li><strong>3 Copias de los datos:</strong> Debe existir el dato original de producción y al menos dos copias de respaldo adicionales.</li>
+<li><strong>2 Medios o soportes diferentes:</strong> Almacenar los respaldos en dispositivos con tecnologías distintas (por ejemplo, disco magnético local y almacenamiento en red NAS, o disco y cinta magnética). Esto protege frente a fallos sistémicos de una tecnología concreta.</li>
+<li><strong>1 Copia fuera de las instalaciones (<em>Offsite</em>):</strong> Al menos una de las copias debe guardarse en una ubicación geográfica separada (otra sede, delegación o almacenamiento en la nube). Protege los datos ante robos en la oficina, incendios, inundaciones o cortes de suministro físico.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">La Regla Moderna 3-2-1-1-0</p>
+<p>Con la proliferación del ransomware (que cifra tanto los equipos locales como los recursos compartidos en red a los que tiene acceso el administrador), la regla se ha ampliado modernamente:</p>
+<ul>
+<li><strong>+1 Copia Inmutable o Aislada (<em>Air-Gapped</em> / WORM):</strong> Al menos una copia no puede ser modificada, borrada ni sobrescrita durante un periodo de tiempo prefijado, incluso con credenciales de administrador (modo <em>Object Lock</em> en almacenamiento S3 o discos desconectados físicamente).</li>
+<li><strong>+0 Errores en la Restauración:</strong> Verificación y pruebas periódicas obligatorias de restauración para garantizar que la copia no está corrupta.</li>
+</ul>
+</div>
+<hr>
+<h3 id="tipos-de-copias-de-seguridad">Tipos de Copias de Seguridad</h3>
+<p>En función de cómo gestionan los ficheros modificados a lo largo del tiempo, se distinguen tres modalidades principales:</p>
+<p><img alt="Esquema general de tipos de copias de seguridad" src="../img/esquema_copias.png"></p>
+<h4 id="1-copia-de-seguridad-completa-full-backup">1. Copia de Seguridad Completa (<em>Full Backup</em>)</h4>
+<ul>
+<li><strong>Mecánica:</strong> Respalda absolutamente todos los ficheros, carpetas y estructuras de datos seleccionados, independientemente de si han cambiado o no desde la última copia.</li>
+<li><strong>Ventajas:</strong> Máxima sencillez y rapidez de restauración (todo lo necesario para restaurar el sistema se encuentra en un único contenedor o soporte).</li>
+<li><strong>Inconvenientes:</strong> Es la que mayor tiempo de ejecución consume, mayor sobrecarga genera en la red y mayor espacio de almacenamiento requiere.</li>
+</ul>
+<h4 id="2-copia-de-seguridad-incremental-incremental-backup">2. Copia de Seguridad Incremental (<em>Incremental Backup</em>)</h4>
+<ul>
+<li><strong>Mecánica:</strong> Respalda únicamente los ficheros y datos que han sido creados o modificados <strong>desde la última copia de seguridad efectuada (sea esta una copia completa o una copia incremental previa)</strong>.</li>
+</ul>
+<p><img alt="Mecánica de la copia incremental" src="../img/copia_incremental.png"></p>
+<ul>
+<li><strong>Ventajas:</strong> Es la más rápida de realizar en el día a día y la que menor espacio de almacenamiento consume, ideal para ventanas de copia reducidas.</li>
+<li><strong>Inconvenientes:</strong> La restauración es la más lenta y compleja: para restaurar el sistema a su estado del viernes, se debe restaurar primero la copia completa del domingo anterior y, sucesivamente, cada una de las copias incrementales del lunes, martes, miércoles, jueves y viernes en riguroso orden cronológico. Si una de las piezas intermedias se corrompe, se pierde la consistencia del resto.</li>
+</ul>
+<h4 id="3-copia-de-seguridad-diferencial-differential-backup">3. Copia de Seguridad Diferencial (<em>Differential Backup</em>)</h4>
+<ul>
+<li><strong>Mecánica:</strong> Respalda todos los ficheros y datos que han sido modificados <strong>desde la última copia de seguridad completa</strong>. Cada copia diferencial subsiguiente acumula todos los cambios producidos desde el último respaldo completo.</li>
+</ul>
+<p><img alt="Mecánica de la copia diferencial" src="../img/copia_diferencial.png"></p>
+<ul>
+<li><strong>Ventajas:</strong> Restauración muy rápida y sencilla: únicamente se requiere la última copia completa y la última copia diferencial.</li>
+<li><strong>Inconvenientes:</strong> A medida que pasan los días tras la copia completa, el tamaño de la copia diferencial crece progresivamente, aumentando el tiempo necesario para completarla.</li>
+</ul>
+<hr>
+<h3 id="tabla-comparativa-de-estrategias-de-backup">Tabla Comparativa de Estrategias de Backup</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Característica</th>
+<th style="text-align: left;">Copia Completa (<em>Full</em>)</th>
+<th style="text-align: left;">Copia Incremental</th>
+<th style="text-align: left;">Copia Diferencial</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Criterio de respaldo</strong></td>
+<td style="text-align: left;">Todo lo seleccionado</td>
+<td style="text-align: left;">Cambios desde el <strong>último backup</strong> (cualquiera)</td>
+<td style="text-align: left;">Cambios desde el <strong>último backup completo</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Tiempo de realización</strong></td>
+<td style="text-align: left;">Muy elevado</td>
+<td style="text-align: left;">Mínimo</td>
+<td style="text-align: left;">Moderado (crece día a día)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Espacio requerido</strong></td>
+<td style="text-align: left;">Muy grande</td>
+<td style="text-align: left;">Mínimo</td>
+<td style="text-align: left;">Moderado</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Archivos para restaurar</strong></td>
+<td style="text-align: left;">Solo el último backup completo</td>
+<td style="text-align: left;">Copia completa + <strong>todas</strong> las incrementales</td>
+<td style="text-align: left;">Copia completa + <strong>última</strong> diferencial</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Velocidad de recuperación</strong></td>
+<td style="text-align: left;">Muy rápida</td>
+<td style="text-align: left;">Lenta (proceso secuencial)</td>
+<td style="text-align: left;">Rápida</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Riesgo ante corrupción</strong></td>
+<td style="text-align: left;">Mínimo</td>
+<td style="text-align: left;">Alto (si falla una incremental intermedia)</td>
+<td style="text-align: left;">Bajo</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="soportes-y-medios-de-almacenamiento">Soportes y Medios de Almacenamiento</h3>
+<p>La elección del soporte físico o lógico depende del volumen, la velocidad de transferencia requerida y el periodo de retención legal (RGPD, LOPDGDD):</p>
+<ol>
+<li><strong>Almacenamiento Conectado Directamente (DAS - <em>Direct Attached Storage</em>):</strong> Discos duros externos USB o matrices RAID conectadas al propio servidor. Rápido y económico, pero vulnerable a desastres físicos en la misma sala.</li>
+<li><strong>Almacenamiento en Red (NAS / SAN):</strong> Dispositivos dedicados accesibles mediante protocolos de red (NFS, SMB/CIFS, iSCSI). Permiten centralizar los respaldos de múltiples servidores y gestionar instantáneas (<em>snapshots</em>).</li>
+<li><strong>Cintas Magnéticas (LTO - <em>Linear Tape-Open</em>):</strong> Tecnología vigente para archivado histórico masivo a largo plazo (retención de 15 a 30 años). Coste por terabyte extremadamente bajo y capacidad nativa de desconexión física (<em>Air-Gap</em> inmune al malware).</li>
+<li><strong>Almacenamiento en la Nube (<em>Cloud Storage</em>):</strong> Servicios tipo Amazon S3, Google Cloud Storage, Azure Blob o proveedores de backup gestionado. Proporcionan escalabilidad inmediata, georredundancia automática y cifrado extremo a extremo.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Práctica de Laboratorio</p>
+<p><strong><a href="../P6_1_copias_deja_dup/">Práctica 6.1: Copias de Seguridad en GNU/Linux con Déjà Dup</a></strong></p>
+<p><em>En esta práctica aprenderás a planificar y ejecutar copias de seguridad locales y en red sobre entornos Linux, configurarás políticas de inclusión y exclusión de datos, habilitarás el cifrado simétrico del respaldo y realizarás simulaciones reales de restauración de archivos.</em></p>
+</div>
+<hr>
+<h2 id="3-recuperacion-de-archivos-y-funcionamiento-del-almacenamiento">3. Recuperación de Archivos y Funcionamiento del Almacenamiento</h2>
+<p>Cuando falla la estrategia de copias de seguridad (por ejemplo, ante archivos creados y borrados entre dos ejecuciones del backup), entran en juego las herramientas forenses y utilidades de <strong>recuperación de datos</strong>.</p>
+<hr>
+<h3 id="mecanica-del-borrado-en-sistemas-de-archivos-magneticos-hdd">Mecánica del Borrado en Sistemas de Archivos Magnéticos (HDD)</h3>
+<p>Para comprender cómo es posible recuperar un archivo borrado, es imprescindible entender cómo organizan los datos los sistemas de archivos modernos (como <code>ext4</code> en Linux o <code>NTFS</code> en Windows):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>                        SISTEMA DE ARCHIVOS (EJEMPLO)
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a> ┌──────────────────────────────────────┬──────────────────────────────────────┐
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a> │    TABLA DE METADATOS / ÍNDICE       │          BLOQUES DE DATOS            │
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a> │  (Inodos en ext4 / MFT en NTFS)      │       (Contenido real del archivo)   │
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a> ├──────────────────────────────────────┼──────────────────────────────────────┤
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a> │ Archivo: balance.pdf                 │ [ Bloque 1024 ]  "Contenido binario  │
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a> │ Puntero -&gt; Bloques 1024, 1025, 1026  │ [ Bloque 1025 ]   del documento PDF  │
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a> │ Estado: ACTIVO                       │ [ Bloque 1026 ]   sin alterar..."    │
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a> └──────────────────────────────────────┴──────────────────────────────────────┘
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>                                  │
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>                  EL USUARIO PULSA "ELIMINAR"
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>                                  ▼
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a> ┌──────────────────────────────────────┬──────────────────────────────────────┐
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a> │    TABLA DE METADATOS / ÍNDICE       │          BLOQUES DE DATOS            │
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a> ├──────────────────────────────────────┼──────────────────────────────────────┤
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a> │ Archivo: balance.pdf                 │ [ Bloque 1024 ]  "Contenido binario  │
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a> │ Puntero -&gt; ELIMINADO                 │ [ Bloque 1025 ]   del documento PDF  │
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a> │ Estado: LIBRE / DISPONIBLE           │ [ Bloque 1026 ]   SIGUE INTACTO"     │
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a> └──────────────────────────────────────┴──────────────────────────────────────┘
+</code></pre></div>
+<ol>
+<li><strong>Estructura en dos capas:</strong> El sistema de archivos separa los <strong>metadatos</strong> (nombre del archivo, permisos, fechas de modificación y punteros a los bloques físicos) de los <strong>bloques de datos</strong> donde residen los bytes de la información.</li>
+<li><strong>El borrado convencional es lógico, no físico:</strong> Cuando el usuario vacía la papelera o ejecuta <code>rm archivo</code>, el sistema operativo <strong>no borra los datos del disco</strong>. Únicamente marca la entrada del inodo o de la tabla MFT como "libre" y añade esos bloques a la lista de espacio disponible para futuras escrituras.</li>
+<li><strong>Ventana de recuperación:</strong> Mientras el sistema operativo no asigne esos bloques a un nuevo archivo y escriba encima (<em>sobreescritura</em>), <strong>la totalidad de la información original continúa grabada en los sectores del disco</strong>, siendo recuperable mediante software especializado.</li>
+</ol>
+<hr>
+<h3 id="la-gran-diferencia-discos-hdd-vs-unidades-ssd-y-el-comando-trim">La Gran Diferencia: Discos HDD vs. Unidades SSD y el Comando TRIM</h3>
+<p>El comportamiento descrito anteriormente es válido para discos duros magnéticos tradicionales (HDD), pero cambia radicalmente con las unidades de estado sólido modernas (<strong>SSD SATA y NVMe</strong>):</p>
+<ul>
+<li><strong>La limitación física de la memoria Flash NAND:</strong> En una memoria flash NAND, no se puede sobrescribir directamente una celda que contiene datos; es necesario <strong>borrar previamente un bloque entero</strong> antes de poder volver a escribir páginas en él (<em>Erase-Before-Write</em>).</li>
+<li><strong>El comando TRIM:</strong> Para evitar que la unidad SSD se vuelva lenta con el tiempo, los sistemas operativos modernos envían el comando <code>TRIM</code> al controlador del disco en cuanto se borra un archivo.</li>
+<li><strong>Impacto en la recuperación:</strong> El controlador del SSD utiliza procesos internos en segundo plano (<em>Garbage Collection</em> y algoritmos de nivelación de desgaste o <em>Wear Leveling</em>) para poner a cero físicamente las celdas marcadas por TRIM. Como consecuencia, <strong>en unidades SSD con TRIM activo, los archivos borrados suelen ser irrecuperables a los pocos segundos o minutos de su eliminación</strong>, incluso si el equipo no ha escrito nuevos datos.</li>
+</ul>
+<hr>
+<h3 id="tecnicas-de-recuperacion-de-datos">Técnicas de Recuperación de Datos</h3>
+<p>Existen dos aproximaciones técnicas principales a la hora de rescatar información de un soporte dañado:</p>
+<h4 id="1-reconstruccion-de-estructuras-del-sistema-de-archivos-testdisk">1. Reconstrucción de Estructuras del Sistema de Archivos (<code>TestDisk</code>)</h4>
+<ul>
+<li>Actúa a nivel lógico de particiones y metadatos.</li>
+<li>Analiza el disco buscando copias de seguridad de las cabeceras MBR/GPT, sectores de arranque (<em>boot sectors</em>) y superbloques dañados.</li>
+<li>Permite <strong>recuperar particiones borradas por error</strong>, reparar tablas de partición dañadas y volver a montar sistemas de archivos sin perder sus nombres originales ni su jerarquía de carpetas.</li>
+</ul>
+<h4 id="2-tallado-de-archivos-file-carving-con-photorec">2. Tallado de Archivos (<em>File Carving</em> con <code>PhotoRec</code>)</h4>
+<ul>
+<li>Se utiliza cuando el sistema de archivos está totalmente corrupto o formateado y no existen metadatos válidos.</li>
+<li>Ignora el sistema de archivos e inspecciona el disco sector por sector a bajo nivel, identificando archivos mediante sus <strong>firmas binarias o números mágicos (<em>Magic Numbers</em>)</strong> de inicio y fin:</li>
+<li>Archivos JPEG: Comienzan con los bytes en hexadecimal <code>FF D8 FF</code>.</li>
+<li>Archivos PDF: Comienzan con <code>%PDF</code> (<code>25 50 44 46</code>).</li>
+<li>Archivos comprimidos ZIP: Comienzan con <code>PK</code> (<code>50 4B 03 04</code>).</li>
+<li><em>Limitación:</em> Al no haber metadatos, los archivos se recuperan con nombres genéricos (ej. <code>f0123456.jpg</code>) y sin la estructura de carpetas original.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Práctica de Laboratorio</p>
+<p><strong><a href="../P6_2_recuperacion_testdisk_photorec/">Práctica 6.2: Recuperación de Archivos y Particiones con TestDisk y PhotoRec</a></strong></p>
+<p><em>En esta práctica analizarás una unidad de almacenamiento virtualizada con particiones eliminadas y datos borrados, utilizando TestDisk para reparar la tabla de particiones y PhotoRec para rescatar archivos mediante técnicas de tallado binario (file carving).</em></p>
+</div>
+<hr>
+<h2 id="4-destruccion-segura-de-la-informacion-sanitizacion-y-borrado-permanente">4. Destrucción Segura de la Información (Sanitización y Borrado Permanente)</h2>
+<p>El reverso de la recuperación de datos es la necesidad de <strong>impedir que terceros puedan recuperar información confidencial</strong> cuando un equipo, disco duro o memoria USB va a ser reutilizado, transferido a otro departamento o retirado para reciclaje (principio de responsabilidad proactiva y cumplimiento del RGPD).</p>
+<hr>
+<h3 id="procedimientos-ineficaces-de-borrado">Procedimientos Ineficaces de Borrado</h3>
+<ul>
+<li><strong>Vaciar la Papelera de Reciclaje o usar <code>rm</code>:</strong> Deja el 100% del archivo intacto en los sectores de disco.</li>
+<li><strong>Formateo Rápido (<em>Quick Format</em>):</strong> Simplemente recrea las tablas de asignación vacías, pero no sobreescribe un solo bloque de datos.</li>
+<li><strong>Formateo Normal del Sistema Operativo:</strong> En muchas versiones solo realiza una comprobación de sectores defectuosos sin garantizar la limpieza de los datos subyacentes.</li>
+</ul>
+<hr>
+<h3 id="tecnicas-de-sobreescritura-logica-sanitizacion">Técnicas de Sobreescritura Lógica (Sanitización)</h3>
+<p>La sanitización lógica consiste en <strong>escribir nuevos patrones de datos (ceros, unos o secuencias pseudoaleatorias) encima de los sectores</strong> donde se encontraban los datos originales:</p>
+<ol>
+<li><strong>Llenado con Ceros (<em>Zero-Fill</em>):</strong></li>
+<li>Se escriben ceros binarios (<code>0x00</code>) en toda la superficie o archivo.</li>
+<li>En Linux se ejecuta comúnmente con la utilidad <code>dd</code>:
+     <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>/dev/zero<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/dev/sdX<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>4M<span class="w"> </span><span class="nv">status</span><span class="o">=</span>progress
+</code></pre></div></li>
+<li><strong>Llenado con Datos Aleatorios (<em>Random Fill</em>):</strong></li>
+<li>Sobreescribe con patrones criptográficos aleatorios generados por el kernel:
+     <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>/dev/urandom<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/dev/sdX<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>4M<span class="w"> </span><span class="nv">status</span><span class="o">=</span>progress
+</code></pre></div></li>
+<li><strong>El Estándar DoD 5220.22-M (Departamento de Defensa de EE.UU.):</strong></li>
+<li>Protocolo de 3 pasadas: Primera pasada con ceros, segunda con unos y tercera con un valor pseudoaleatorio, seguido de una verificación de lectura.</li>
+<li><strong>El Método Gutmann:</strong></li>
+<li>Algoritmo diseñado en 1996 por Peter Gutmann y Colin Plumb que realiza <strong>35 pasadas de sobreescritura</strong> con patrones diseñados específicamente para desmagnetizar discos magnéticos antiguos que empleaban codificación MFM/RLL.</li>
+<li><em>Realidad técnica actual:</em> En discos magnéticos modernos de alta densidad (PRMR/SMR), múltiples pasadas son innecesarias; organismos como el NIST (publicación especial NIST SP 800-88 Rev. 1) certifican que <strong>una única pasada de sobreescritura con ceros o valores aleatorios hace que la recuperación sea imposible</strong>, incluso en laboratorios forenses avanzados con microscopía magnética.</li>
+</ol>
+<hr>
+<h3 id="herramientas-de-borrado-seguro-en-gnulinux">Herramientas de Borrado Seguro en GNU/Linux</h3>
+<ul>
+<li><strong><code>shred</code> (Parte de GNU coreutils):</strong></li>
+<li>Sobreescribe archivos o particiones completas múltiples veces con datos aleatorios y permite truncar y eliminar el fichero al finalizar:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>shred<span class="w"> </span>-u<span class="w"> </span>-z<span class="w"> </span>-n<span class="w"> </span><span class="m">3</span><span class="w"> </span>archivo_confidencial.pdf
+</code></pre></div>
+    <em>(Parámetros: <code>-n 3</code> realiza 3 pasadas aleatorias, <code>-z</code> añade una pasada final de ceros para ocultar el borrado, <code>-u</code> elimina el archivo tras sobreescribirlo).</em></li>
+<li><strong>Paquete <code>secure-delete</code>:</strong></li>
+<li>Colección de utilidades especializadas basadas en el estándar de sanitización:<ul>
+<li><code>srm</code> (<em>secure remove</em>): Borrado seguro de ficheros y directorios individuales.</li>
+<li><code>sfill</code>: Sobreescribe todo el espacio libre de un disco para asegurar que ningún archivo borrado anteriormente pueda ser recuperado.</li>
+<li><code>sdmem</code>: Limpia los residuos de memoria RAM del equipo antes del apagado.</li>
+<li><code>sswap</code>: Sobreescribe la partición o archivo de intercambio (<em>swap</em>).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="sanitizacion-en-discos-ssd-ata-secure-erase-y-criptoborrado">Sanitización en Discos SSD: ATA Secure Erase y Criptoborrado</h3>
+<p>En discos de estado sólido (SSD / NVMe), el software de sobreescritura tradicional (<code>dd</code>, <code>shred</code>) no garantiza la destrucción total de los datos debido al controlador interno de nivelación de desgaste (<em>Wear Leveling</em>), que reasigna los bloques lógicos de forma transparente a celdas físicas de reserva fuera del alcance del sistema operativo.</p>
+<p>Para sanitizar un SSD se emplean métodos específicos de firmware y criptografía:
+* <strong>ATA Secure Erase / NVMe Sanitize:</strong> Comandos enviados directamente al controlador del disco para aplicar una descarga de voltaje a todas las celdas de memoria, devolviéndolas a su estado de fábrica.
+* <strong>Criptoborrado (<em>Crypto-Erase</em>):</strong> En unidades con cifrado de hardware nativo (unidades SED - <em>Self-Encrypting Drives</em> o volúmenes LUKS/BitLocker), la destrucción instantánea de la <strong>clave maestra de cifrado</strong> convierte la totalidad de los datos del disco en ruido criptográfico indescifrable de forma inmediata.</p>
+<hr>
+<h3 id="destruccion-fisica-de-soportes">Destrucción Física de Soportes</h3>
+<p>Cuando los discos alcanzan el fin de su ciclo de vida y han contenido información de nivel de confidencialidad crítico, la normativa exige la destrucción material del soporte:
+* <strong>Desmagnetización (<em>Degaussing</em>):</strong> Exposición de discos magnéticos a potentes campos electromagnéticos que destruyen los dominios magnéticos de los platos y los chips de control.
+* <strong>Triturado Mecánico (<em>Shredding</em> físico):</strong> Máquinas trituradoras industriales que reducen los discos a fragmentos metálicos de pocos milímetros, haciendo físicamente imposible su ensamblaje.</p>
+<div class="admonition note">
+<p class="admonition-title">Práctica de Laboratorio</p>
+<p><strong><a href="../P6_3_borrado_seguro/">Práctica 6.3: Borrado Seguro de Datos y Sanitización de Soportes</a></strong></p>
+<p><em>En esta práctica verificarás la eficacia de las herramientas de borrado seguro (shred, srm, sfill), comprobarás cómo el software de recuperación es incapaz de rescatar información tras una sanitización adecuada y analizarás los comandos de borrado seguro en unidades SSD.</em></p>
+</div>
+<hr>
+<h2 id="5-resumen-de-la-unidad-y-buenas-practicas">5. Resumen de la Unidad y Buenas Prácticas</h2>
+<ol>
+<li><strong>La copia de seguridad es la última línea de defensa:</strong> Frente a un ataque de ransomware con extorsión doble, disponer de copias inmutables fuera de línea (<em>Air-Gapped</em>) es la única garantía de no pagar rescates ni perder la operatividad.</li>
+<li><strong>Una copia de seguridad no verificada no existe:</strong> Las empresas deben realizar simulacros periódicos de recuperación completa para validar que los medios funcionan y que el personal conoce el procedimiento.</li>
+<li><strong>El borrado estándar no destruye la información:</strong> Todo dispositivo de almacenamiento que vaya a cambiar de manos o ser desechado debe someterse a procesos formales de sanitización lógica o destrucción física certificada.</li>
+</ol></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "toc.integrate", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>
