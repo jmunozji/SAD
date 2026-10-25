@@ -1,4 +1,4 @@
-# Práctica 5.6: Despliegue de un Servidor de Autenticación RADIUS con FreeRADIUS
+# Práctica 5.5: Despliegue de un Servidor de Autenticación RADIUS con FreeRADIUS
 
 !!! note "Datos de la Práctica"
     * **Módulo:** Seguridad y Alta Disponibilidad (SAD - 0378)
@@ -72,7 +72,7 @@ En este montaje se emplea un router Wi-Fi doméstico o de laboratorio configurad
 2. Comprueba que el servicio se encuentra activo y escuchando en los puertos UDP **1812** (Autenticación) y **1813** (Anotación/Accounting):
    ```bash
    sudo systemctl status freeradius
-   sudo ss -tulpn | grep 1812
+   sudo ss -tulpn | grep freeradius
    ```
 
 ---
@@ -107,7 +107,13 @@ Antes de conectar el punto de acceso inalámbrico, probaremos localmente que la 
    ```bash
    radtest roman ClaveSegura2026! 127.0.0.1 1812 testing123
    ```
-   *(Sustituye `testing123` por el secret por defecto de localhost que viene en FreeRADIUS).*
+   Los parámetros del comando son:
+
+    * Usuario que has dado de alta en users: roman
+    * Su contraseña: ClaveSegura2026!
+    * Nombre del cliente, en este caso, localhost o 127.0.0.1
+    * Un número de puerto. Vale cualquiera.
+    * Contraseña que usa localhost para validase frente al servidor freeradius ( directiva secret de clients.conf).
 
 2. **Resultado esperado:**
    ```text
@@ -129,9 +135,9 @@ Para que el punto de acceso Wi-Fi o router pueda enviar peticiones al servidor R
 2. Añade un nuevo bloque para registrar tu Punto de Acceso / Router Wi-Fi (ejemplo con IP `192.168.1.254`):
    ```text
    client router_wifi_ap {
-       ipaddr = 192.168.1.254
-       secret = ClaveSecretaRADIUS2026
-       shortname = AP-Planta1
+       ipaddr = 192.168.122.99
+       secret = ElCaminas             
+       shortname = MikroTik 
    }
    ```
    *(Si trabajas con un rango entero de red local, puedes usar la máscara CIDR: `ipaddr = 192.168.1.0/24`).*

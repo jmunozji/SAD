@@ -338,14 +338,14 @@ graph TD
 Los motores de detección emplean dos métodos principales para identificar patrones sospechosos:
 
 1. **Detección Basada en Firmas o Patrones (*Signature-based*):**
-   * Compara el tráfico y los paquetes contra una base de datos actualizada de reglas o firmas de ataques conocidos (secuencias de bytes específicas, patrones de URL o hashes).
-   * **Ventaja:** Muy precisa y rápida frente a ataques conocidos; genera muy pocos falsos positivos.
-   * **Inconveniente:** Inoperante ante ataques de día cero (*Zero-Day*) o malware polimórfico cuya firma no ha sido publicada todavía.
+     * Compara el tráfico y los paquetes contra una base de datos actualizada de reglas o firmas de ataques conocidos (secuencias de bytes específicas, patrones de URL o hashes).
+    * **Ventaja:** Muy precisa y rápida frente a ataques conocidos; genera muy pocos falsos positivos.
+    * **Inconveniente:** Inoperante ante ataques de día cero (*Zero-Day*) o malware polimórfico cuya firma no ha sido publicada todavía.
 
 2. **Detección Basada en Anomalías / Comportamiento (*Anomaly-based*):**
-   * Establece un perfil de **comportamiento normal** del tráfico o del sistema (*baseline*). Cualquier desviación significativa sobre la línea base se clasifica como una potencial intrusión.
-   * **Ventaja:** Capaz de identificar nuevos ataques desconocidos y desviaciones anómalas de tráfico.
-   * **Inconveniente:** Tasa elevada de falsos positivos si el comportamiento legítimo de los usuarios cambia puntualmente.
+     * Establece un perfil de **comportamiento normal** del tráfico o del sistema (*baseline*). Cualquier desviación significativa sobre la línea base se clasifica como una potencial intrusión.
+     * **Ventaja:** Capaz de identificar nuevos ataques desconocidos y desviaciones anómalas de tráfico.
+     * **Inconveniente:** Tasa elevada de falsos positivos si el comportamiento legítimo de los usuarios cambia puntualmente.
 
 ---
 
@@ -387,11 +387,6 @@ flowchart TD
 * **Encabezado de la Regla (*Header*):** Define la acción a tomar (`alert`, `drop`, `pass`), el protocolo (`ip`, `icmp`, `tcp`, `udp`), el flujo de direcciones IP y los puertos involucrados.
 * **Opciones de la Regla (*Options*):** Parámetros delimitados entre paréntesis que contienen el mensaje descriptivo (`msg`), las cadenas numéricas o de texto a buscar en el cuerpo del paquete (`content`), el identificador único de la regla (`sid` - *Signature ID*) y la revisión (`rev`).
 
-!!! note "Práctica de Laboratorio"
-    !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.5: Despliegue y Análisis de Reglas en IDS Snort/Suricata](P5_5_ids_snort_suricata.md)**
-        *En esta práctica desplegarás un motor NIDS/NIPS en un entorno Linux, crearás reglas de inspección personalizadas para detectar escaneos de red, tráfico ICMP anómalo y peticiones HTTP sospechosas, y analizarás la generación de eventos de alerta en tiempo real.*
-
 ---
 
 ## 5. Seguridad en Redes Inalámbricas Corporativas (WLAN)
@@ -399,6 +394,7 @@ flowchart TD
 ### 5.1. Peculiaridades y Exposición del Medio Inalámbrico
 
 Las redes inalámbricas (WLAN - IEEE 802.11) ofrecen movilidad y reducción de costes de cableado, pero introducen desafíos de seguridad críticos:
+
 * **Ausencia de Perímetro Físico:** Las ondas de radiofrecuencia atraviesan paredes y fachadas. Cualquier usuario ubicado en el exterior de la instalación puede capturar o inyectar tráfico.
 * **Facilidad de Interceptación Pasiva:** Todo dispositivo en cobertura configurado en **modo monitor** puede capturar y guardar las tramas de datos transmitidas por el aire.
 
@@ -467,7 +463,7 @@ flowchart LR
 
 !!! note "Práctica de Laboratorio"
     !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.6: Despliegue de Servidor de Autenticación RADIUS (Wi-Fi Enterprise)](P5_6_servidor_radius.md)**
+        **[Práctica 5.5: Despliegue de Servidor de Autenticación RADIUS (Wi-Fi Enterprise)](P5_5_servidor_radius.md)**
         *En esta práctica desplegarás y configurarás un servidor de autenticación FreeRADIUS integrado con un directorio de usuarios corporativos para validar el acceso individualizado a una red Wi-Fi Enterprise mediante el protocolo IEEE 802.1X y EAP-PEAP.*
 
 ---
