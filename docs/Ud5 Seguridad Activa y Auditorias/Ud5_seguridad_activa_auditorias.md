@@ -131,9 +131,9 @@ Socket = Protocolo, IP Origen, Puerto Origen, IP Destino, Puerto Destino
 La inspección periódica de sockets permite identificar servicios innecesarios activos, detectar puertas traseras (*backdoors*) y verificar el cumplimiento de la política de mínimo servicio.
 
 !!! note "Práctica de Laboratorio"
-    !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.1: Diagnóstico Local de Servicios y Sockets](P5_1_diagnostico_sockets.md)**
-        *En esta práctica aprenderás a inspeccionar y auditar los puertos y servicios activos localmente en un sistema Linux y Windows utilizando comandos nativos (`ss`, `netstat`, `lsof`), identificando procesos asociados, sockets a la escucha y conexiones sospechosas sin necesidad de herramientas externas.*
+    **[Práctica 5.1: Diagnóstico Local de Servicios y Sockets](P5_1_diagnostico_sockets.md)**
+    
+    *En esta práctica aprenderás a inspeccionar y auditar los puertos y servicios activos localmente en un sistema Linux y Windows utilizando comandos nativos (`ss`, `netstat`, `lsof`), identificando procesos asociados, sockets a la escucha y conexiones sospechosas sin necesidad de herramientas externas.*
 
 ---
 
@@ -153,9 +153,9 @@ En sistemas linux la identificación de puertos y versiones de servicios expuest
 
 
 !!! note "Práctica de Laboratorio"
-    !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.2: Auditoría de Red e Inventariado con Nmap](P5_2_auditoria_nmap.md)**
-        *En esta práctica realizarás el descubrimiento de equipos activos en la red local, la identificación de puertos y versiones de servicios expuestos, la detección remota de sistemas operativos y la auditoría automatizada de vulnerabilidades conocidas mediante scripts de Nmap Engine (NSE).*
+    **[Práctica 5.2: Auditoría de Red e Inventariado con Nmap](P5_2_auditoria_nmap.md)**
+    
+    *En esta práctica realizarás el descubrimiento de equipos activos en la red local, la identificación de puertos y versiones de servicios expuestos, la detección remota de sistemas operativos y la auditoría automatizada de vulnerabilidades conocidas mediante scripts de Nmap Engine (NSE).*
 
 ---
 
@@ -170,9 +170,9 @@ Un **escáner de vulnerabilidades corporativo** es una solución software que au
 4. **Informe y Plan de Remediación:** Recomendaciones de parcheado, actualización o mitigación temporal.
 
 !!! note "Práctica de Laboratorio Opcional"
-    !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica Opcional 5.1: Análisis de Vulnerabilidades con OpenVAS / Nessus](PO5_1_escaner_vulnerabilidades.md)**
-        *En esta práctica opcional desplegarás un motor corporativo de evaluación de vulnerabilidades (OpenVAS / Greenbone), configurarás tareas de escaneo sobre una red simulada, analizarás la severidad de las vulnerabilidades detectadas (CVSS) y generarás informes de auditoría técnica y ejecutiva.*
+    **[Práctica Opcional 5.1: Análisis de Vulnerabilidades con OpenVAS / Nessus](PO5_1_escaner_vulnerabilidades.md)**
+    
+    *En esta práctica opcional desplegarás un motor corporativo de evaluación de vulnerabilidades (OpenVAS / Greenbone), configurarás tareas de escaneo sobre una red simulada, analizarás la severidad de las vulnerabilidades detectadas (CVSS) y generarás informes de auditoría técnica y ejecutiva.*
 
 
 ---
@@ -262,9 +262,9 @@ sequenceDiagram
 * **Seguridad MACsec (IEEE 802.1AE):** Estándar que proporciona cifrado e integridad criptográfica directamente en las tramas Ethernet de Capa 2.
 
 !!! note "Práctica de Laboratorio"
-    !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.3: Intercepción MITM y Envenenamiento ARP](P5_3_mitm_arp_spoofing.md)**
-        *En esta práctica simularás un escenario de ataque Man-In-The-Middle mediante envenenamiento de caché ARP en una red local virtualizada, analizarás la interceptación de tráfico no cifrado en Wireshark y verificarás la efectividad de las contramedidas de red.*
+    **[Práctica 5.3: Intercepción MITM y Envenenamiento ARP](P5_3_mitm_arp_spoofing.md)**
+    
+    *En esta práctica simularás un escenario de ataque Man-In-The-Middle mediante envenenamiento de caché ARP en una red local virtualizada, analizarás la interceptación de tráfico no cifrado en Wireshark y verificarás la efectividad de las contramedidas de red.*
 
 ---
 
@@ -338,14 +338,14 @@ graph TD
 Los motores de detección emplean dos métodos principales para identificar patrones sospechosos:
 
 1. **Detección Basada en Firmas o Patrones (*Signature-based*):**
-     * Compara el tráfico y los paquetes contra una base de datos actualizada de reglas o firmas de ataques conocidos (secuencias de bytes específicas, patrones de URL o hashes).
+    * Compara el tráfico y los paquetes contra una base de datos actualizada de reglas o firmas de ataques conocidos (secuencias de bytes específicas, patrones de URL o hashes).
     * **Ventaja:** Muy precisa y rápida frente a ataques conocidos; genera muy pocos falsos positivos.
     * **Inconveniente:** Inoperante ante ataques de día cero (*Zero-Day*) o malware polimórfico cuya firma no ha sido publicada todavía.
 
 2. **Detección Basada en Anomalías / Comportamiento (*Anomaly-based*):**
-     * Establece un perfil de **comportamiento normal** del tráfico o del sistema (*baseline*). Cualquier desviación significativa sobre la línea base se clasifica como una potencial intrusión.
-     * **Ventaja:** Capaz de identificar nuevos ataques desconocidos y desviaciones anómalas de tráfico.
-     * **Inconveniente:** Tasa elevada de falsos positivos si el comportamiento legítimo de los usuarios cambia puntualmente.
+    * Establece un perfil de **comportamiento normal** del tráfico o del sistema (*baseline*). Cualquier desviación significativa sobre la línea base se clasifica como una potencial intrusión.
+    * **Ventaja:** Capaz de identificar nuevos ataques desconocidos y desviaciones anómalas de tráfico.
+    * **Inconveniente:** Tasa elevada de falsos positivos si el comportamiento legítimo de los usuarios cambia puntualmente.
 
 ---
 
@@ -462,9 +462,9 @@ flowchart LR
 3. **Servidor de Autenticación (*Authentication Server* - RADIUS):** Servidor centralizado (ej. **FreeRADIUS**) que valida las credenciales contra la base de datos corporativa (LDAP / Active Directory) utilizando protocolos como **EAP-PEAP** o **EAP-TLS**.
 
 !!! note "Práctica de Laboratorio"
-    !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.5: Despliegue de Servidor de Autenticación RADIUS (Wi-Fi Enterprise)](P5_5_servidor_radius.md)**
-        *En esta práctica desplegarás y configurarás un servidor de autenticación FreeRADIUS integrado con un directorio de usuarios corporativos para validar el acceso individualizado a una red Wi-Fi Enterprise mediante el protocolo IEEE 802.1X y EAP-PEAP.*
+    **[Práctica 5.5: Despliegue de Servidor de Autenticación RADIUS (Wi-Fi Enterprise)](P5_5_servidor_radius.md)**
+    
+    *En esta práctica desplegarás y configurarás un servidor de autenticación FreeRADIUS integrado con un directorio de usuarios corporativos para validar el acceso individualizado a una red Wi-Fi Enterprise mediante el protocolo IEEE 802.1X y EAP-PEAP.*
 
 ---
 
@@ -482,9 +482,9 @@ flowchart LR
 ![Arquitectura y Funcionamiento de un Portal Cautivo / HotSpot](img/mikrotik_escenario_hotspot.svg)
 
 !!! note "Práctica de Laboratorio"
-    !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.7: Seguridad y Análisis de Accesos Wi-Fi Hotspot / Portal Cautivo](P5_7_hotspot_mikrotik.md)**
-        *En esta práctica analizarás el funcionamiento de un portal cautivo tipo Hotspot, identificarás sus vulnerabilidades lógicas de elusión y configurarás contramedidas de red para asegurar el acceso inalámbrico de invitados.*
+    **[Práctica 5.7: Seguridad y Análisis de Accesos Wi-Fi Hotspot / Portal Cautivo](P5_7_hotspot_mikrotik.md)**
+    
+    *En esta práctica analizarás el funcionamiento de un portal cautivo tipo Hotspot, identificarás sus vulnerabilidades lógicas de elusión y configurarás contramedidas de red para asegurar el acceso inalámbrico de invitados.*
 
 ---
 
@@ -557,6 +557,6 @@ Para evitar la manipulación de pruebas, las organizaciones despliegan un servid
 * El SIEM correlaciona eventos de múltiples fuentes en tiempo real, identificando patrones de ataque complejos y garantizando la integridad inalterable de los registros forenses.
 
 !!! note "Práctica de Laboratorio"
-    !!! info "Puesta en práctica en el laboratorio de seguridad"
-        **[Práctica 5.8: Monitorización Activa y Análisis de Logs del Sistema Operativo](P5_8_monitorizacion_logs.md)**
-        *En esta práctica aprenderás a auditar y analizar registros de eventos de seguridad en Linux y Windows, identificarás intentos de intrusión y errores de autenticación, y configurarás reglas de rotación e inspección de logs.*
+    **[Práctica 5.8: Monitorización Activa y Análisis de Logs del Sistema Operativo](P5_8_monitorizacion_logs.md)**
+    
+    *En esta práctica aprenderás a auditar y analizar registros de eventos de seguridad en Linux y Windows, identificarás intentos de intrusión y errores de autenticación, y configurarás reglas de rotación e inspección de logs.*

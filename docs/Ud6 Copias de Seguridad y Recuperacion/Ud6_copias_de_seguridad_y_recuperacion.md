@@ -44,15 +44,15 @@ flowchart LR
 ```
 
 1. **RPO (*Recovery Point Objective* - Objetivo de Punto de Recuperación):**
-   * Representa el **volumen máximo de datos que la organización puede permitirse perder**, medido en unidades de tiempo transcurrido entre la última copia válida y el instante del desastre.
-   * *Ejemplo:* Si una empresa realiza copias de seguridad una vez al día a las 23:00 y sufre un desastre a las 18:00, ha perdido 19 horas de transacciones. Si su RPO máximo exigido era de 4 horas, la política de copias ha fracasado.
+    * Representa el **volumen máximo de datos que la organización puede permitirse perder**, medido en unidades de tiempo transcurrido entre la última copia válida y el instante del desastre.
+    * *Ejemplo:* Si una empresa realiza copias de seguridad una vez al día a las 23:00 y sufre un desastre a las 18:00, ha perdido 19 horas de transacciones. Si su RPO máximo exigido era de 4 horas, la política de copias ha fracasado.
 
 2. **RTO (*Recovery Time Objective* - Objetivo de Tiempo de Recuperación):**
-   * Representa el **tiempo máximo admisible que un sistema o servicio puede permanecer inactivo** antes de que la interrupción cause pérdidas inasumibles para la empresa.
-   * *Ejemplo:* Si un servidor de base de datos de comercio electrónico cae a las 10:00 y no vuelve a estar operativo hasta las 18:00 (8 horas de caída), cuando el RTO fijado era de 2 horas, se ha sobrepasado el límite operativo.
+    * Representa el **tiempo máximo admisible que un sistema o servicio puede permanecer inactivo** antes de que la interrupción cause pérdidas inasumibles para la empresa.
+    * *Ejemplo:* Si un servidor de base de datos de comercio electrónico cae a las 10:00 y no vuelve a estar operativo hasta las 18:00 (8 horas de caída), cuando el RTO fijado era de 2 horas, se ha sobrepasado el límite operativo.
 
 3. **Ventana de Copia (*Backup Window*):**
-   * Es el intervalo de tiempo disponible durante el cual se puede ejecutar el proceso de copia sin penalizar el rendimiento del sistema en horario laboral (habitualmente de madrugada).
+    * Es el intervalo de tiempo disponible durante el cual se puede ejecutar el proceso de copia sin penalizar el rendimiento del sistema en horario laboral (habitualmente de madrugada).
 
 ---
 
@@ -214,9 +214,9 @@ Existen dos aproximaciones técnicas principales a la hora de rescatar informaci
 #### 2. Tallado de Archivos (*File Carving* con `PhotoRec`)
 * Se utiliza cuando el sistema de archivos está totalmente corrupto o formateado y no existen metadatos válidos.
 * Ignora el sistema de archivos e inspecciona el disco sector por sector a bajo nivel, identificando archivos mediante sus **firmas binarias o números mágicos (*Magic Numbers*)** de inicio y fin:
-  * Archivos JPEG: Comienzan con los bytes en hexadecimal `FF D8 FF`.
-  * Archivos PDF: Comienzan con `%PDF` (`25 50 44 46`).
-  * Archivos comprimidos ZIP: Comienzan con `PK` (`50 4B 03 04`).
+    * Archivos JPEG: Comienzan con los bytes en hexadecimal `FF D8 FF`.
+    * Archivos PDF: Comienzan con `%PDF` (`25 50 44 46`).
+    * Archivos comprimidos ZIP: Comienzan con `PK` (`50 4B 03 04`).
 * *Limitación:* Al no haber metadatos, los archivos se recuperan con nombres genéricos (ej. `f0123456.jpg`) y sin la estructura de carpetas original.
 
 !!! note "Práctica de Laboratorio"
@@ -245,38 +245,38 @@ El reverso de la recuperación de datos es la necesidad de **impedir que tercero
 La sanitización lógica consiste en **escribir nuevos patrones de datos (ceros, unos o secuencias pseudoaleatorias) encima de los sectores** donde se encontraban los datos originales:
 
 1. **Llenado con Ceros (*Zero-Fill*):**
-   * Se escriben ceros binarios (`0x00`) en toda la superficie o archivo.
-   * En Linux se ejecuta comúnmente con la utilidad `dd`:
-     ```bash
-     sudo dd if=/dev/zero of=/dev/sdX bs=4M status=progress
-     ```
+    * Se escriben ceros binarios (`0x00`) en toda la superficie o archivo.
+    * En Linux se ejecuta comúnmente con la utilidad `dd`:
+      ```bash
+      sudo dd if=/dev/zero of=/dev/sdX bs=4M status=progress
+      ```
 2. **Llenado con Datos Aleatorios (*Random Fill*):**
-   * Sobreescribe con patrones criptográficos aleatorios generados por el kernel:
-     ```bash
-     sudo dd if=/dev/urandom of=/dev/sdX bs=4M status=progress
-     ```
+    * Sobreescribe con patrones criptográficos aleatorios generados por el kernel:
+      ```bash
+      sudo dd if=/dev/urandom of=/dev/sdX bs=4M status=progress
+      ```
 3. **El Estándar DoD 5220.22-M (Departamento de Defensa de EE.UU.):**
-   * Protocolo de 3 pasadas: Primera pasada con ceros, segunda con unos y tercera con un valor pseudoaleatorio, seguido de una verificación de lectura.
+    * Protocolo de 3 pasadas: Primera pasada con ceros, segunda con unos y tercera con un valor pseudoaleatorio, seguido de una verificación de lectura.
 4. **El Método Gutmann:**
-   * Algoritmo diseñado en 1996 por Peter Gutmann y Colin Plumb que realiza **35 pasadas de sobreescritura** con patrones diseñados específicamente para desmagnetizar discos magnéticos antiguos que empleaban codificación MFM/RLL.
-   * *Realidad técnica actual:* En discos magnéticos modernos de alta densidad (PRMR/SMR), múltiples pasadas son innecesarias; organismos como el NIST (publicación especial NIST SP 800-88 Rev. 1) certifican que **una única pasada de sobreescritura con ceros o valores aleatorios hace que la recuperación sea imposible**, incluso en laboratorios forenses avanzados con microscopía magnética.
+    * Algoritmo diseñado en 1996 por Peter Gutmann y Colin Plumb que realiza **35 pasadas de sobreescritura** con patrones diseñados específicamente para desmagnetizar discos magnéticos antiguos que empleaban codificación MFM/RLL.
+    * *Realidad técnica actual:* En discos magnéticos modernos de alta densidad (PRMR/SMR), múltiples pasadas son innecesarias; organismos como el NIST (publicación especial NIST SP 800-88 Rev. 1) certifican que **una única pasada de sobreescritura con ceros o valores aleatorios hace que la recuperación sea imposible**, incluso en laboratorios forenses avanzados con microscopía magnética.
 
 ---
 
 ### Herramientas de Borrado Seguro en GNU/Linux
 
 * **`shred` (Parte de GNU coreutils):**
-  * Sobreescribe archivos o particiones completas múltiples veces con datos aleatorios y permite truncar y eliminar el fichero al finalizar:
-    ```bash
-    shred -u -z -n 3 archivo_confidencial.pdf
-    ```
-    *(Parámetros: `-n 3` realiza 3 pasadas aleatorias, `-z` añade una pasada final de ceros para ocultar el borrado, `-u` elimina el archivo tras sobreescribirlo).*
+    * Sobreescribe archivos o particiones completas múltiples veces con datos aleatorios y permite truncar y eliminar el fichero al finalizar:
+      ```bash
+      shred -u -z -n 3 archivo_confidencial.pdf
+      ```
+      *(Parámetros: `-n 3` realiza 3 pasadas aleatorias, `-z` añade una pasada final de ceros para ocultar el borrado, `-u` elimina el archivo tras sobreescribirlo).*
 * **Paquete `secure-delete`:**
-  * Colección de utilidades especializadas basadas en el estándar de sanitización:
-    * `srm` (*secure remove*): Borrado seguro de ficheros y directorios individuales.
-    * `sfill`: Sobreescribe todo el espacio libre de un disco para asegurar que ningún archivo borrado anteriormente pueda ser recuperado.
-    * `sdmem`: Limpia los residuos de memoria RAM del equipo antes del apagado.
-    * `sswap`: Sobreescribe la partición o archivo de intercambio (*swap*).
+    * Colección de utilidades especializadas basadas en el estándar de sanitización:
+        * `srm` (*secure remove*): Borrado seguro de ficheros y directorios individuales.
+        * `sfill`: Sobreescribe todo el espacio libre de un disco para asegurar que ningún archivo borrado anteriormente pueda ser recuperado.
+        * `sdmem`: Limpia los residuos de memoria RAM del equipo antes del apagado.
+        * `sswap`: Sobreescribe la partición o archivo de intercambio (*swap*).
 
 ---
 

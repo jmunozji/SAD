@@ -24,13 +24,13 @@ Un **SGSI (Sistema de Gestión de la Seguridad de la Información)** es un conju
 
 En la página web de la norma ISO/IEC 27001 puedes encontrar respuestas a las siguientes preguntas que te ayudarán a comprender mejor la norma:
 
-   * ¿Qué es la norma ISO/IEC 27001?
-   * ¿Por qué es importante la norma ISO/IEC 27001?
-   * ¿Quién necesita la norma ISO/IEC 27001?
-   * ¿Cómo beneficiará la norma ISO/IEC 27001 a mi organización?
-   * ¿Cuáles son los tres principios de seguridad de la información de la norma ISO/IEC 27001, también conocidos como la tríada de la CIA (por sus siglas en inglés)?
-   * ¿La norma ISO 27001 es la misma que la ISO/IEC 27001?
-   * ¿Qué es la certificación ISO/IEC 27001 y qué significa estar certificado según la norma ISO 27001?
+* ¿Qué es la norma ISO/IEC 27001?
+* ¿Por qué es importante la norma ISO/IEC 27001?
+* ¿Quién necesita la norma ISO/IEC 27001?
+* ¿Cómo beneficiará la norma ISO/IEC 27001 a mi organización?
+* ¿Cuáles son los tres principios de seguridad de la información de la norma ISO/IEC 27001, también conocidos como la tríada de la CIA (por sus siglas en inglés)?
+* ¿La norma ISO 27001 es la misma que la ISO/IEC 27001?
+* ¿Qué es la certificación ISO/IEC 27001 y qué significa estar certificado según la norma ISO 27001?
 
 
 !!! info "La tríada CIA"
@@ -303,12 +303,12 @@ La evaluación del proyecto de investigación se articulará a través de las si
 
 !!! info "Rúbrica de Calificación de la Presentación Oral (RA7 / CE7.a, b, c, d, e, f, g)"
 
-    Para la evaluación del trabajo de investigación se tendrá en cuenta
+    Para la evaluación del trabajo de investigación se tendrá en cuenta:
       
-      * **Dominio y precisión del Marco Legal (35%):** Correcta identificación y citación de los artículos de la LSSI, LOPDGDD y RGPD que se infringen en el caso práctico [CE7.a, CE7.e].
-      * **Calidad de la Propuesta del SGSI y Ciclo PDCA (25%):** Coherencia y rigor técnico de las salvaguardas y medidas correctoras propuestas para la empresa [CE7.f, CE7.g].
-      * **Claridad en la Exposición y Argumentación Técnica (25%):** Capacidad de síntesis, expresión oral profesional, respuesta precisa a las preguntas del auditor/docente [CE7.b, CE7.c, CE7.d].
-      * **Soporte Visual y Formato de Diapositivas (15%):** Calidad visual, estructura clara, ausencia de exceso de texto e inclusión de esquemas explicativos.
+    * **Dominio y precisión del Marco Legal (35%):** Correcta identificación y citación de los artículos de la LSSI, LOPDGDD y RGPD que se infringen en el caso práctico [CE7.a, CE7.e].
+    * **Calidad de la Propuesta del SGSI y Ciclo PDCA (25%):** Coherencia y rigor técnico de las salvaguardas y medidas correctoras propuestas para la empresa [CE7.f, CE7.g].
+    * **Claridad en la Exposición y Argumentación Técnica (25%):** Capacidad de síntesis, expresión oral profesional, respuesta precisa a las preguntas del auditor/docente [CE7.b, CE7.c, CE7.d].
+    * **Soporte Visual y Formato de Diapositivas (15%):** Calidad visual, estructura clara, ausencia de exceso de texto e inclusión de esquemas explicativos.
 
     MUY IMPORTANTE: las preguntas que se realizarán durante la exposición permitirán comprobar el dominio de la materia y el grado en que cada alumno ha contribuido al resultado final. Cada miembro del grupo podrá ser calificado de forma distinta en función de su desempeño en la presentación. 
 
