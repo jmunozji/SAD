@@ -50,6 +50,9 @@ En este montaje el Punto de Acceso actúa como autenticador conectado directamen
 
 ![Escenario RADIUS con Punto de Acceso](img/radius_escenario_ap.svg)
 
+!!! tip "Emulador Web de Puntos de Acceso"
+    Para explorar las opciones de configuración web de un punto de acceso WPA-Enterprise sin hardware físico, también puedes consultar el [Emulador Web de Punto de Acceso D-Link](https://anweb.dlink.ru/){target="_blank"}.
+
 #### Opción B: Escenario con Router Inalámbrico
 En este montaje se emplea un router Wi-Fi doméstico o de laboratorio configurado para delegar la autenticación de su red inalámbrica en el servidor FreeRADIUS:
 
@@ -58,8 +61,8 @@ En este montaje se emplea un router Wi-Fi doméstico o de laboratorio configurad
 #### Opción C: Escenario Emulado con Router MikroTik (Dot1X Cableado)
 Si no dispones de un punto de acceso físico en casa o en el aula, puedes realizar la práctica mediante emulación en GNS3 o máquina virtual, configurando el servicio Dot1X sobre un puerto Ethernet de MikroTik RouterOS y utilizando un cliente Linux con `wpa_supplicant`.
 
-!!! tip "Emulador Web de Puntos de Acceso"
-    Para explorar las opciones de configuración web de un punto de acceso WPA-Enterprise sin hardware físico, también puedes consultar el [Emulador Web de Punto de Acceso D-Link](https://anweb.dlink.ru/){target="_blank"}.
+![escenario_C](img/P5_5escenario.png)
+
 
 ---
 
@@ -260,13 +263,18 @@ A continuación se detalla la configuración paso a paso a través de la interfa
    Activa el servidor Dot1X en la interfaz cableada `ether2` que da servicio al equipo cliente:
     1. En el menú lateral, accede a **Dot1X**.
     2. En la pestaña **Server**, haz clic en **+ (Add)**.
-    3. Selecciona la interfaz `ether2` y los métodos de autenticación correspondientes.
+    3. Selecciona la interfaz `ether2` y el Ath. Types: dot1x.
     4. Haz clic en **OK** para activar el filtrado de puerto.
+         ![Activación del Servidor Dot1X en interfaz ether2](img/dot1xserver.png)
+    5. En la pestaña **Client** haz clic en "Add new"
+    6. Configura según la imagen
+         ![Dot1x Client](img/dot1xClient.png)
 
-   ![Activación del Servidor Dot1X en interfaz ether2](img/dot1x.png)
 
-   !!! note "Comportamiento del tráfico en el puerto 802.1X"
-       Mientras el puerto no esté autenticado, `ether2` permanecerá bloqueado a nivel de Capa 2 para cualquier tráfico ordinario (IP, ARP, DHCP). Únicamente se permite el paso de tramas **EAPOL** (*EAP over LAN*). En cuanto el suplicante se valida satisfactoriamente frente a FreeRADIUS, el estado del puerto cambia automáticamente a `authorized`, permitiendo el paso completo del tráfico de red.
+
+
+!!! note "Comportamiento del tráfico en el puerto 802.1X"
+    Mientras el puerto no esté autenticado, `ether2` permanecerá bloqueado a nivel de Capa 2 para cualquier tráfico ordinario (IP, ARP, DHCP). Únicamente se permite el paso de tramas **EAPOL** (*EAP over LAN*). En cuanto el suplicante se valida satisfactoriamente frente a FreeRADIUS, el estado del puerto cambia automáticamente a `authorized`, permitiendo el paso completo del tráfico de red.
 
 #### Fase 3: Configuración del Suplicante en Linux (`wpa_supplicant`) y Validación
 

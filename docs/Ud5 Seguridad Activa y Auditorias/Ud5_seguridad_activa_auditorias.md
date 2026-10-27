@@ -482,7 +482,7 @@ flowchart LR
 ![Arquitectura y Funcionamiento de un Portal Cautivo / HotSpot](img/mikrotik_escenario_hotspot.svg)
 
 !!! note "Práctica de Laboratorio"
-    **[Práctica 5.7: Seguridad y Análisis de Accesos Wi-Fi Hotspot / Portal Cautivo](P5_7_hotspot_mikrotik.md)**
+    **[Práctica 5.6: Configuración de un Hotspot con Portal Cautivo en MikroTik RouterOS](P5_6_hotspot_mikrotik.md)**
     
     *En esta práctica analizarás el funcionamiento de un portal cautivo tipo Hotspot, identificarás sus vulnerabilidades lógicas de elusión y configurarás contramedidas de red para asegurar el acceso inalámbrico de invitados.*
 
