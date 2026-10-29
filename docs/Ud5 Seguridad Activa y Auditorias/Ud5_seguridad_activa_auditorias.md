@@ -557,6 +557,6 @@ Para evitar la manipulación de pruebas, las organizaciones despliegan un servid
 * El SIEM correlaciona eventos de múltiples fuentes en tiempo real, identificando patrones de ataque complejos y garantizando la integridad inalterable de los registros forenses.
 
 !!! note "Práctica de Laboratorio"
-    **[Práctica 5.8: Monitorización Activa y Análisis de Logs del Sistema Operativo](P5_8_monitorizacion_logs.md)**
+    **[Práctica 5.7: Monitorización Activa y Análisis de Logs del Sistema Operativo](P5_7_monitorizacion_logs.md)**
     
     *En esta práctica aprenderás a auditar y analizar registros de eventos de seguridad en Linux y Windows, identificarás intentos de intrusión y errores de autenticación, y configurarás reglas de rotación e inspección de logs.*

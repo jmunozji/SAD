@@ -1,4 +1,4 @@
-# Práctica 5.8: Monitorización Activa y Análisis de Registros de Auditoría en Linux y Windows
+# Práctica 5.7: Monitorización Activa y Análisis de Registros de Auditoría en Linux y Windows
 
 !!! note "Datos de la Práctica"
     * **Módulo:** Seguridad y Alta Disponibilidad (SAD - 0378)
@@ -21,8 +21,16 @@
 
 Los ficheros de log son la memoria histórica del sistema operativo. Registrar qué usuario ejecutó un comando, qué proceso falló o desde qué IP se intentó ingresar una contraseña resulta vital para mantener la trazabilidad y responder ante incidentes de ciberseguridad.
 
-```
-  [ EVENTO DE SISTEMA / LOGIN ] ───> [ DEMONIO LOG: rsyslog / journald ] ───> [ ARCHIVO LOG / SIEM ]
+```mermaid
+flowchart LR
+    Event["Evento de Seguridad / Sistema<br>(Login SSH, sudo, fallos auth)"] -->|"Captura y procesa"| Daemon["Demonios de Registro<br>systemd-journald / rsyslog"]
+    Daemon -->|"Almacenamiento local"| Local["Archivos de Log locales<br>(/var/log/auth.log, syslog)"]
+    Daemon -->|"Reenvío por red (TLS/UDP)"| Siem["Servidor Centralizado / SIEM<br>(Wazuh, ELK, Splunk)"]
+
+    style Event fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Daemon fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Local fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Siem fill:#f3e5f5,stroke:#8e24aa,stroke-width:2px
 ```
 
 ### La Arquitectura de Logs en Linux:
@@ -39,7 +47,8 @@ Los ficheros de log son la memoria histórica del sistema operativo. Registrar q
 
 #### Tarea 1: Consulta y Filtrado Avanzado con `journalctl`
 
-1. Abre una terminal en tu sistema Linux.
+1. Para hacer esta práctica optaremos por una máquina Debian conectada a una nube NAT en GNS3. También podría hacerse sobre una máquina física con permisos de administrador o una MV VirtualBox.
+1. Abre una terminal en tu sistema Linux y vamos a ejecutar los siguientes comandos. Consulta en `man jornalctl` el significado exacto y forma de usar cada opción.
 2. Consulta todos los registros del arranque actual:
    ```bash
    sudo journalctl -b
@@ -56,6 +65,7 @@ Los ficheros de log son la memoria histórica del sistema operativo. Registrar q
    ```bash
    sudo journalctl -f -u ssh
    ```
+   Lanza una conexión ssh desde el host y comprueba cómo se detecta la conexión.
 
 ---
 
@@ -97,9 +107,9 @@ Los ficheros de log son la memoria histórica del sistema operativo. Registrar q
 
 1. En la casilla de filtro por identificador de evento (*Event IDs*), introduce los siguientes valores clave:
 
-   * **Event ID `4625`:** Inicio de sesión fallido (*An account failed to log on*).
-   * **Event ID `4624`:** Inicio de sesión correcto (*An account was successfully logged on*).
-   * **Event ID `4672`:** Asignación de privilegios especiales / Administrador (*Special privileges assigned to new logon*).
+    * **Event ID `4625`:** Inicio de sesión fallido (*An account failed to log on*).
+    * **Event ID `4624`:** Inicio de sesión correcto (*An account was successfully logged on*).
+    * **Event ID `4672`:** Asignación de privilegios especiales / Administrador (*Special privileges assigned to new logon*).
 
 2. Simula un fallo de inicio de sesión en Windows (bloquea la sesión con `Win + L` e introduce una clave errónea).
 3. Regresa al Visor de Eventos, actualiza la vista (`F5`) y filtra por Event ID `4625`.
