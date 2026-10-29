@@ -1,9 +1,9 @@
-# Práctica 5.7: Monitorización Activa y Análisis de Registros de Auditoría en Linux y Windows
+# Práctica 5.7: Monitorización Activa y Análisis de Registros de Auditoría
 
 !!! note "Datos de la Práctica"
     * **Módulo:** Seguridad y Alta Disponibilidad (SAD - 0378)
     * **Unidad Didáctica:** UD5 - Seguridad Activa y Auditorías en Redes Corporativas
-    * **Requisitos:** Una máquina virtual Linux (Debian o Ubuntu) con `systemd-journald` y `rsyslog`, y una máquina Windows (Windows 10/11 o Windows Server) con acceso al Visor de Eventos (*Event Viewer*). Privilegios de administración (`sudo` / Administrador).
+    * **Requisitos:** Una máquina virtual Linux (Debian o Ubuntu) con `systemd-journald` y `rsyslog`. Privilegios de administración (`sudo` / Administrador).
 
 ---
 
@@ -71,6 +71,19 @@ flowchart LR
 
 #### Tarea 2: Inspección de Autenticación Fallida en `/var/log/auth.log`
 
+En las versiones recientes de Debian (a partir de Debian 12 "Bookworm"), el paquete rsyslog ya no viene instalado por defecto. Como consecuencia, el demonio tradicional de syslog no está corriendo y los registros estándar en texto plano como /var/log/auth.log o /var/log/syslog no se generan.
+
+Debian delega ahora la gestión de registros íntegramente en el journal binario de systemd-journald.
+
+Si necesitas que /var/log/auth.log exista físicamente (por ejemplo, para herramientas legacy, parsers o integraciones específicas de monitorización como ciertos agentes SIEM o Fail2ban configurados para leer ficheros planos), basta con instalar rsyslog:
+
+```Bash
+sudo apt update && sudo apt install rsyslog
+sudo systemctl enable --now rsyslog
+```
+
+Una vez iniciado el servicio, rsyslog leerá del socket de systemd-journald y volverá a poblar /var/log/auth.log en tiempo real.
+
 1. En una segunda terminal o desde otra máquina, intenta conectar por SSH a tu equipo escribiendo una contraseña errónea dos o tres veces:
    ```bash
    ssh usuario_falso@IP_DEL_SERVIDOR
@@ -91,33 +104,33 @@ flowchart LR
    ```
 2. Consulta las reglas específicas para los registros del sistema en `/etc/logrotate.d/rsyslog`.
 
+Directivas de configuración
+
+* **rotate 4**: Número de versiones archivadas que se conservan antes de eliminarlas. Al rotar por quinta vez, el archivo más antiguo (.4.gz) se descarta.
+* **weekly**: Frecuencia de corte. La rotación se ejecuta una vez por semana (habitualmente activada por el temporizador o cron diario de logrotate).
+* **missingok**: Evita que logrotate devuelva un error si alguno de los archivos especificados en la cabecera no existe en el sistema de ficheros; simplemente lo ignora y continúa con el resto.
+* **notifempty**: Condición de rotación: si el log tiene tamaño 0 bytes, no se rota ni cuenta para el ciclo semanal.
+* **compress**: Comprime con gzip los archivos ya rotados para optimizar el almacenamiento (generando sufijos .gz).
+* **delaycompress**: Pospone la compresión del log rotado al ciclo siguiente. El archivo recién rotado pasa a llamarse *.1 (en texto plano), mientras que *.2, *.3, etc., sí estarán comprimidos. Resulta útil para evitar conflictos con procesos que aún mantienen abierto el descriptor de archivo antiguo tras la rotación.
+* **sharedscripts**: Fuerza a que las órdenes del bloque postrotate se ejecuten una sola vez en total, tras procesar todos los ficheros que cumplieron el criterio de rotación, en lugar de invocar el script individualmente por cada archivo rotado.
+* **postrotate / endscript**: Delimita el script que se ejecuta inmediatamente después de rotar los archivos:
+    * /usr/lib/rsyslog/rsyslog-rotate: Script auxiliar de Debian que envía una señal SIGHUP (o ejecuta systemctl kill -s HUP rsyslog) a rsyslogd. Esto obliga al demonio a cerrar los descriptores de archivo antiguos y abrir los nuevos ficheros vacíos.
+
+Ejemplo práctico del ciclo de vida
+En un fichero como /var/log/auth.log, la evolución semanal del directorio /var/log/ sigue este esquema:
+
+| Semana	| Estado de archivos |
+| --- | --- | 
+| Actual	| auth.log (escritura activa) |
+| Semana 1	| auth.log (nuevo), auth.log.1 (plano, por delaycompress) |
+| Semana 2	| auth.log, auth.log.1, auth.log.2.gz (comprimido) |
+| Semana 4	| auth.log, auth.log.1, auth.log.2.gz, auth.log.3.gz, auth.log.4.gz |
+| Semana 5	| Se genera auth.log.1, los demás se desplazan y el antiguo auth.log.4.gz se borra. |
 ---
 
-### MÓDULO B: AUDITORÍA DE LOGS EN MICROSOFT WINDOWS
-
-#### Tarea 4: Análisis del Visor de Eventos (*Event Viewer*)
-
-1. En tu máquina Windows, pulsa `Win + R`, escribe `eventvwr.msc` y pulsa Enter.
-2. En el panel izquierdo, despliega **Registros de Windows** (*Windows Logs*) y selecciona **Seguridad** (*Security*).
-3. En el panel derecho, haz clic en **Filtrar registro actual...** (*Filter Current Log...*).
-
 ---
 
-#### Tarea 5: Identificación de Event IDs Críticos de Seguridad
-
-1. En la casilla de filtro por identificador de evento (*Event IDs*), introduce los siguientes valores clave:
-
-    * **Event ID `4625`:** Inicio de sesión fallido (*An account failed to log on*).
-    * **Event ID `4624`:** Inicio de sesión correcto (*An account was successfully logged on*).
-    * **Event ID `4672`:** Asignación de privilegios especiales / Administrador (*Special privileges assigned to new logon*).
-
-2. Simula un fallo de inicio de sesión en Windows (bloquea la sesión con `Win + L` e introduce una clave errónea).
-3. Regresa al Visor de Eventos, actualiza la vista (`F5`) y filtra por Event ID `4625`.
-4. Abre el evento registrado e identifica: el nombre de la cuenta intentada, el tipo de inicio de sesión (*Logon Type*) y la dirección IP o nombre del equipo de origen.
-
----
-
-## 4. Cheatsheet de Auditoría de Logs (Linux vs Windows)
+## 4. Cheatsheet de Auditoría de Logs
 
 | Sistema | Herramienta / Ubicación | Comando / Event ID | Propósito / Descripción |
 | :--- | :--- | :--- | :--- |
@@ -125,15 +138,11 @@ flowchart LR
 | **Linux** | `journalctl` | `journalctl -p err -f` | Muestra errores en tiempo real. |
 | **Linux** | Fichero `/var/log/auth.log` | `grep "Failed" /var/log/auth.log` | Muestra intentos de inicio de sesión fallidos. |
 | **Linux** | Configuración `logrotate` | `/etc/logrotate.d/` | Define periodicidad y compresión de logs. |
-| **Windows** | Visor de Eventos (`eventvwr`) | **Event ID 4625** | Registro de intento de inicio de sesión fallido. |
-| **Windows** | Visor de Eventos (`eventvwr`) | **Event ID 4624** | Registro de inicio de sesión exitoso. |
-| **Windows** | Visor de Eventos (`eventvwr`) | **Event ID 4672** | Registro de inicio de sesión con privilegios elevador/root. |
 
 ---
 
 ## 5. Cuestiones de Autoevaluación
 
 1. **Formato estructurado:** ¿Qué ventaja operativa aporta consultar logs con `journalctl` frente a hacer un simple `cat` de un archivo en texto plano dentro de `/var/log/`?
-2. **Event ID 4625:** En una auditoría forense de Windows, si observas cientos de Event IDs `4625` seguidos en un intervalo de pocos segundos, ¿qué fenómeno está sufriendo el equipo?
 3. **Riesgo de llenado de disco:** ¿Qué ocurriría en un servidor de producción si el servicio `logrotate` dejase de funcionar y un servicio comenzara a generar gigabytes de logs de error?
 4. **Centralización (SIEM):** ¿Por qué en un entorno corporativo es crítico reenviar los logs a un servidor remoto (ej. `rsyslog` central o un SIEM) en lugar de almacenarlos únicamente en el disco local del equipo auditado?
