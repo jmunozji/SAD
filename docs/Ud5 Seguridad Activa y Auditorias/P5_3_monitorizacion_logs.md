@@ -1,4 +1,4 @@
-# Práctica 5.7: Monitorización Activa y Análisis de Registros de Auditoría
+# Práctica 5.3: Monitorización Activa y Análisis de Registros de Auditoría en Linux y Windows
 
 !!! note "Datos de la Práctica"
     * **Módulo:** Seguridad y Alta Disponibilidad (SAD - 0378)

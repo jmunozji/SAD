@@ -174,12 +174,86 @@ Un **escáner de vulnerabilidades corporativo** es una solución software que au
     
     *En esta práctica opcional desplegarás un motor corporativo de evaluación de vulnerabilidades (OpenVAS / Greenbone), configurarás tareas de escaneo sobre una red simulada, analizarás la severidad de las vulnerabilidades detectadas (CVSS) y generarás informes de auditoría técnica y ejecutiva.*
 
+---
+
+## 3. Monitorización del Sistema Operativo y Auditoría de Registros (Logs)
+
+### 3.1. La Auditoría de Sucesos como Pilar de la Seguridad Activa
+
+El registro de eventos o **fichero de log** es la fuente primaria de información para la trazabilidad, la detección de intrusiones y el análisis forense tras un incidente informático.
+
+Una política de auditoría eficaz debe registrar:
+* Intentos de autenticación (correctos y fallidos).
+* Cambios de privilegios y ejecución de comandos administrativos (`sudo`).
+* Modificación o borrado de ficheros del sistema y políticas de seguridad.
+* Creación, modificación o eliminación de cuentas de usuario.
 
 ---
 
-## 3. Taxonomía del Malware y Vectores de Ataque en Redes Locales
+### 3.2. Auditoría y Análisis de Logs en Sistemas Linux
 
-### 3.1. Taxonomía del Malware Moderno y Ataques DoS/DDoS
+En los sistemas GNU/Linux, la gestión de eventos combina la arquitectura tradicional de ficheros de texto con el diario binario indexado de **systemd**.
+
+```mermaid
+flowchart LR
+    Evt["Evento del Sistema<br>(Kernel / Aplicación / Auth)"] --> Syslog["Demonio rsyslog<br>(/etc/rsyslog.conf)"]
+    Evt --> Journal["Demonio systemd-journald<br>(/run/log o /var/log/journal)"]
+
+    Syslog --> LogsTxt["Archivos de Texto Plano<br>• /var/log/auth.log (Autenticación)<br>• /var/log/syslog (General)<br>Legibles con cat, grep, tail"]
+    Journal --> LogsBin["Diario Binario Indexado<br>• Registro estructurado<br>• Consulta rápida con journalctl"]
+
+    style Evt fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Syslog fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Journal fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+```
+
+* **Arquitectura Syslog / rsyslog:** Los eventos se clasifican por **Facilidad** (*Facility*: `auth`, `cron`, `kern`, `daemon`) y **Prioridad/Severidad** (*Severity*: `emerg`, `alert`, `crit`, `err`, `warning`, `notice`, `info`, `debug`). Los ficheros habituales en `/var/log/` son `auth.log` (autenticación) y `syslog` (eventos generales).
+* **Sistema `systemd-journald`:** Recolecta y almacena registros en formato binario estructurado, permitiendo búsquedas ultrarrápidas indexadas por servicio, tiempo, PID o usuario mediante la herramienta de consulta del diario.
+
+---
+
+### 3.3. Auditoría de Sucesos en Sistemas Windows
+
+Los sistemas Microsoft Windows gestionan sus eventos de forma centralizada mediante el **Visor de Eventos** (*Event Viewer*), organizando los registros en tres diarios principales:
+
+1. **Seguridad (*Security Log*):** Registra eventos de auditoría de inicio de sesión, uso de privilegios y acceso a objetos.
+2. **Sistema (*System Log*):** Registra eventos generados por los controladores y servicios del propio sistema operativo.
+3. **Aplicación (*Application Log*):** Registra eventos generados por programas y aplicaciones instaladas.
+
+#### Identificadores de Eventos de Seguridad Clave (Event IDs):
+
+| Event ID | Evento Registrado | Relevancia en Seguridad |
+| :---: | :--- | :--- |
+| **4624** | Inicio de sesión con éxito | Confirmación de acceso autorizado. |
+| **4625** | Inicio de sesión fallido | Indicador primario de ataques de fuerza bruta o error de credencial. |
+| **4672** | Asignación de privilegios especiales | Asignación de derechos administrativos al iniciar sesión. |
+| **4720** | Creación de una cuenta de usuario | Auditoría de gestión de identidades. |
+| **4738** | Modificación de una cuenta de usuario | Detección de cambios de clave o asignación no autorizada de grupos. |
+
+---
+
+### 3.4. Ciclo de Vida y Centralización de Logs (SIEM)
+
+#### Rotación de Registros:
+Para evitar que los ficheros de log agoten el espacio en disco, se aplican mecanismos de rotación periódica (como `logrotate` en Linux), comprimiendo registros antiguos y eliminando los que superan el periodo de retención legal fijado.
+
+#### Centralización y Sistemas SIEM:
+Un atacante que consigue comprometer un servidor intentará como primer paso **borrar o alterar los ficheros de log locales** para eliminar las evidencias de su intrusión.
+
+Para evitar la manipulación de pruebas, las organizaciones despliegan un servidor **SIEM** (*Security Information and Event Management* - ej. *Wazuh*, *Elastic Stack / ELK*, *Splunk*):
+* Todos los servidores y dispositivos de red envían sus registros en tiempo real hacia un **servidor de logs centralizado**.
+* El SIEM correlaciona eventos de múltiples fuentes en tiempo real, identificando patrones de ataque complejos y garantizando la integridad inalterable de los registros forenses.
+
+!!! note "Práctica de Laboratorio"
+    **[Práctica 5.3: Monitorización Activa y Análisis de Logs del Sistema Operativo](P5_3_monitorizacion_logs.md)**
+    
+    *En esta práctica aprenderás a auditar y analizar registros de eventos de seguridad en Linux y Windows, identificarás intentos de intrusión y errores de autenticación, y configurarás reglas de rotación e inspección de logs.*
+
+---
+
+## 4. Taxonomía del Malware y Vectores de Ataque en Redes Locales
+
+### 4.1. Taxonomía del Malware Moderno y Ataques DoS/DDoS
 
 El **malware** (*software malicioso*) abarca cualquier programa diseñado con el propósito de infiltrarse, dañar, alterar o tomar el control no autorizado de un sistema informático.
 
@@ -224,7 +298,7 @@ Buscan agotar los recursos de procesamiento, memoria o ancho de banda de un serv
 
 ---
 
-### 3.2. Intercepción de Tráfico y Ataques Man-In-The-Middle (MITM) por ARP Spoofing
+### 4.2. Intercepción de Tráfico y Ataques Man-In-The-Middle (MITM) por ARP Spoofing
 
 Un ataque **Man-In-The-Middle (MITM)** ocurre cuando un atacante logra posicionarse en la trayectoria lógica de comunicación entre dos hosts legítimos, siendo capaz de interceptar, inspeccionar, alterar o destruir el tráfico transmitido.
 
@@ -262,13 +336,13 @@ sequenceDiagram
 * **Seguridad MACsec (IEEE 802.1AE):** Estándar que proporciona cifrado e integridad criptográfica directamente en las tramas Ethernet de Capa 2.
 
 !!! note "Práctica de Laboratorio"
-    **[Práctica 5.3: Intercepción MITM y Envenenamiento ARP](P5_3_mitm_arp_spoofing.md)**
+    **[Práctica 5.4: Intercepción MITM y Envenenamiento ARP](P5_4_mitm_arp_spoofing.md)**
     
     *En esta práctica simularás un escenario de ataque Man-In-The-Middle mediante envenenamiento de caché ARP en una red local virtualizada, analizarás la interceptación de tráfico no cifrado en Wireshark y verificarás la efectividad de las contramedidas de red.*
 
 ---
 
-### 3.3. Ataques a Servicios Esenciales de Red (DHCP y DNS)
+### 4.3. Ataques a Servicios Esenciales de Red (DHCP y DNS)
 
 #### Ataques al Protocolo DHCP:
 * **Agotamiento DHCP (*DHCP Starvation*):** Ataque de denegación de servicio donde un script genera miles de peticiones DHCP solicitando direcciones IP con direcciones MAC aleatorias falsificadas. El servidor DHCP agota todo el rango de direccionamiento (*pool*), impidiendo que nuevos clientes legítimos obtengan IP.
@@ -282,7 +356,7 @@ sequenceDiagram
 
 ---
 
-### 3.4. Vulnerabilidades y Ataques en Capa de Transporte / Aplicación (SSL/TLS)
+### 4.4. Vulnerabilidades y Ataques en Capa de Transporte / Aplicación (SSL/TLS)
 
 Los protocolos **SSL/TLS** proporcionan cifrado y autenticación sobre las conexiones de red (ej. HTTPS). Sin embargo, han sufrido vulnerabilidades históricas que los administradores deben conocer:
 
@@ -292,9 +366,9 @@ Los protocolos **SSL/TLS** proporcionan cifrado y autenticación sobre las conex
 
 ---
 
-## 4. Sistemas de Detección y Prevención de Intrusiones (IDS / IPS)
+## 5. Sistemas de Detección y Prevención de Intrusiones (IDS / IPS)
 
-### 4.1. Arquitectura y Clasificación de Sistemas IDS/IPS
+### 5.1. Arquitectura y Clasificación de Sistemas IDS/IPS
 
 Un **Sistema de Detección de Intrusiones (IDS)** es un mecanismo de seguridad que monitoriza eventos en una red o sistema informático para analizar e identificar patrones de actividad maliciosa o violaciones de las políticas de seguridad. Un **Sistema de Prevención de Intrusiones (IPS)** añade la capacidad de actuar en línea para **bloquear activamente** la amenaza detectada.
 
@@ -333,7 +407,7 @@ graph TD
 
 ---
 
-### 4.2. Métodos de Detección de Amenazas
+### 5.2. Métodos de Detección de Amenazas
 
 Los motores de detección emplean dos métodos principales para identificar patrones sospechosos:
 
@@ -349,7 +423,7 @@ Los motores de detección emplean dos métodos principales para identificar patr
 
 ---
 
-### 4.3. Principios de Funcionamiento y Reglas en Motores de Inspección
+### 5.3. Principios de Funcionamiento y Reglas en Motores de Inspección
 
 Los motores NIDS/NIPS estándar de la industria (como **Snort** y **Suricata**) analizan el encabezado y el contenido del paquete (*Deep Packet Inspection - DPI*) mediante un lenguaje formal de reglas.
 
@@ -389,9 +463,9 @@ flowchart TD
 
 ---
 
-## 5. Seguridad en Redes Inalámbricas Corporativas (WLAN)
+## 6. Seguridad en Redes Inalámbricas Corporativas (WLAN)
 
-### 5.1. Peculiaridades y Exposición del Medio Inalámbrico
+### 6.1. Peculiaridades y Exposición del Medio Inalámbrico
 
 Las redes inalámbricas (WLAN - IEEE 802.11) ofrecen movilidad y reducción de costes de cableado, pero introducen desafíos de seguridad críticos:
 
@@ -400,7 +474,7 @@ Las redes inalámbricas (WLAN - IEEE 802.11) ofrecen movilidad y reducción de c
 
 ---
 
-### 5.2. Evolución de los Mecanismos de Cifrado Wi-Fi
+### 6.2. Evolución de los Mecanismos de Cifrado Wi-Fi
 
 A lo largo de la historia de los estándares IEEE 802.11, los mecanismos de protección han evolucionado para subsanar graves fallos criptográficos:
 
@@ -435,7 +509,7 @@ flowchart LR
 
 ---
 
-### 5.3. Wi-Fi Personal (PSK) vs. Wi-Fi Enterprise (IEEE 802.1X + RADIUS)
+### 6.3. Wi-Fi Personal (PSK) vs. Wi-Fi Enterprise (IEEE 802.1X + RADIUS)
 
 #### Wi-Fi Personal (WPA-PSK):
 * Emplea una **Clave Precompartida única (*Pre-Shared Key*)** configurada en el punto de acceso y distribuida a todos los usuarios.
@@ -468,7 +542,7 @@ flowchart LR
 
 ---
 
-### 5.4. Falsas Medidas de Seguridad, Portales Cautivos y Ataques Inalámbricos
+### 6.4. Falsas Medidas de Seguridad, Portales Cautivos y Ataques Inalámbricos
 
 #### Falsas Medidas de Seguridad en Wi-Fi:
 * **Filtrado de Direcciones MAC:** Configurar el AP para permitir solo un listado de direcciones MAC. **Inútil:** Las MAC viajan en texto claro en todas las tramas inalámbricas y cualquier atacante puede clonar una MAC autorizada en segundos (`macchanger`).
@@ -485,78 +559,3 @@ flowchart LR
     **[Práctica 5.6: Configuración de un Hotspot con Portal Cautivo en MikroTik RouterOS](P5_6_hotspot_mikrotik.md)**
     
     *En esta práctica analizarás el funcionamiento de un portal cautivo tipo Hotspot, identificarás sus vulnerabilidades lógicas de elusión y configurarás contramedidas de red para asegurar el acceso inalámbrico de invitados.*
-
----
-
-## 6. Monitorización del Sistema Operativo y Auditoría de Registros (Logs)
-
-### 6.1. La Auditoría de Sucesos como Pilar de la Seguridad Activa
-
-El registro de eventos o **fichero de log** es la fuente primaria de información para la trazabilidad, la detección de intrusiones y el análisis forense tras un incidente informático.
-
-Una política de auditoría eficaz debe registrar:
-* Intentos de autenticación (correctos y fallidos).
-* Cambios de privilegios y ejecución de comandos administrativos (`sudo`).
-* Modificación o borrado de ficheros del sistema y políticas de seguridad.
-* Creación, modificación o eliminación de cuentas de usuario.
-
----
-
-### 6.2. Auditoría y Análisis de Logs en Sistemas Linux
-
-En los sistemas GNU/Linux, la gestión de eventos combina la arquitectura tradicional de ficheros de texto con el diario binario indexado de **systemd**.
-
-```mermaid
-flowchart LR
-    Evt["Evento del Sistema<br>(Kernel / Aplicación / Auth)"] --> Syslog["Demonio rsyslog<br>(/etc/rsyslog.conf)"]
-    Evt --> Journal["Demonio systemd-journald<br>(/run/log o /var/log/journal)"]
-
-    Syslog --> LogsTxt["Archivos de Texto Plano<br>• /var/log/auth.log (Autenticación)<br>• /var/log/syslog (General)<br>Legibles con cat, grep, tail"]
-    Journal --> LogsBin["Diario Binario Indexado<br>• Registro estructurado<br>• Consulta rápida con journalctl"]
-
-    style Evt fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style Syslog fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style Journal fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-```
-
-* **Arquitectura Syslog / rsyslog:** Los eventos se clasifican por **Facilidad** (*Facility*: `auth`, `cron`, `kern`, `daemon`) y **Prioridad/Severidad** (*Severity*: `emerg`, `alert`, `crit`, `err`, `warning`, `notice`, `info`, `debug`). Los ficheros habituales en `/var/log/` son `auth.log` (autenticación) y `syslog` (eventos generales).
-* **Sistema `systemd-journald`:** Recolecta y almacena registros en formato binario estructurado, permitiendo búsquedas ultrarrápidas indexadas por servicio, tiempo, PID o usuario mediante la herramienta de consulta del diario.
-
----
-
-### 6.3. Auditoría de Sucesos en Sistemas Windows
-
-Los sistemas Microsoft Windows gestionan sus eventos de forma centralizada mediante el **Visor de Eventos** (*Event Viewer*), organizando los registros en tres diarios principales:
-
-1. **Seguridad (*Security Log*):** Registra eventos de auditoría de inicio de sesión, uso de privilegios y acceso a objetos.
-2. **Sistema (*System Log*):** Registra eventos generados por los controladores y servicios del propio sistema operativo.
-3. **Aplicación (*Application Log*):** Registra eventos generados por programas y aplicaciones instaladas.
-
-#### Identificadores de Eventos de Seguridad Clave (Event IDs):
-
-| Event ID | Evento Registrado | Relevancia en Seguridad |
-| :---: | :--- | :--- |
-| **4624** | Inicio de sesión con éxito | Confirmación de acceso autorizado. |
-| **4625** | Inicio de sesión fallido | Indicador primario de ataques de fuerza bruta o error de credencial. |
-| **4672** | Asignación de privilegios especiales | Asignación de derechos administrativos al iniciar sesión. |
-| **4720** | Creación de una cuenta de usuario | Auditoría de gestión de identidades. |
-| **4738** | Modificación de una cuenta de usuario | Detección de cambios de clave o asignación no autorizada de grupos. |
-
----
-
-### 6.4. Ciclo de Vida y Centralización de Logs (SIEM)
-
-#### Rotación de Registros:
-Para evitar que los ficheros de log agoten el espacio en disco, se aplican mecanismos de rotación periódica (como `logrotate` en Linux), comprimiendo registros antiguos y eliminando los que superan el periodo de retención legal fijado.
-
-#### Centralización y Sistemas SIEM:
-Un atacante que consigue comprometer un servidor intentará como primer paso **borrar o alterar los ficheros de log locales** para eliminar las evidencias de su intrusión.
-
-Para evitar la manipulación de pruebas, las organizaciones despliegan un servidor **SIEM** (*Security Information and Event Management* - ej. *Wazuh*, *Elastic Stack / ELK*, *Splunk*):
-* Todos los servidores y dispositivos de red envían sus registros en tiempo real hacia un **servidor de logs centralizado**.
-* El SIEM correlaciona eventos de múltiples fuentes en tiempo real, identificando patrones de ataque complejos y garantizando la integridad inalterable de los registros forenses.
-
-!!! note "Práctica de Laboratorio"
-    **[Práctica 5.7: Monitorización Activa y Análisis de Logs del Sistema Operativo](P5_7_monitorizacion_logs.md)**
-    
-    *En esta práctica aprenderás a auditar y analizar registros de eventos de seguridad en Linux y Windows, identificarás intentos de intrusión y errores de autenticación, y configurarás reglas de rotación e inspección de logs.*
