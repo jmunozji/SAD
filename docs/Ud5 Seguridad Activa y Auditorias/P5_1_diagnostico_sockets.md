@@ -226,16 +226,6 @@ Utiliza esta tabla de referencia rápida para tus tareas de administración de s
 
 ---
 
-## 5. Entregable y Cuestiones de Autoevaluación
-
-### Requisitos de Entrega:
-Elabora un informe en formato **PDF** que incluya:
-
-1. La **captura de pantalla editada de la Tarea 5** (donde se aprecie claramente el escritorio con las dos terminales paralelas y las líneas SSH marcadas).
-
-
----
-
 ### Cuestiones de Autoevaluación:
 
 1. **Interpretación de Direcciones de Escucha:**
