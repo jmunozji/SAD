@@ -1,0 +1,2435 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jmunozji.github.io/SAD/Ud10%20Soluciones%20de%20Alta%20Disponibilidad/Ud10_soluciones_de_alta_disponibilidad/">
+      
+      
+        <link rel="prev" href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/P9_1_proxy_squid_filtrado/">
+      
+      
+        <link rel="next" href="../P10_1_alta_disponibilidad_vrrp/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>UD10. Soluciones de Alta Disponibilidad - Seguridad y alta disponibilidad</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-3NX5MD5C8H"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-3NX5MD5C8H",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-3NX5MD5C8H",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ud10-soluciones-de-alta-disponibilidad" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-header__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Seguridad y alta disponibilidad
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              UD10. Soluciones de Alta Disponibilidad
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-orange"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-nav__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    Seguridad y alta disponibilidad
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Introduccion/Ud1_introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1. Fundamentos de Seguridad Informática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Normativa%20y%20SGSI/Ud2_normativa_y_sgsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2. Normativa y sistemas de gestión de la seguridad de la información
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud3 Criptografia
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud3 Criptografia
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/Ud3_criptografia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3. Criptografía y Mecanismos de Certificación Digital
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.1: Cifrado Simétrico con GnuPG (GPG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.2: Criptografía Asimétrica y Gestión de Claves con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.3: Funciones Hash y Verificación de Integridad de Datos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.4: Firma Digital y Verificación de la Integridad con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.5: PKI - Gestión de Claves con Easy-RSA en Servidores Separados
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud4 Control de Acceso
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud4 Control de Acceso
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/Ud4_control_de_acceso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4. Control de accesos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.1: Protección del Gestor de Arranque GRUB2 con Contraseña
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.2: Listas de Control de Acceso (ACLs POSIX) en GNU/Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.3: Monitorización de Accesos y Defensa Activa con Fail2ban en SSH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud5 Seguridad Activa y Auditorias
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud5 Seguridad Activa y Auditorias
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/Ud5_seguridad_activa_auditorias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD5: Seguridad Activa y Auditorías en Redes Corporativas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_1_diagnostico_sockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.1: Diagnóstico Local de Sockets y Conexiones de Red con ss y netstat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_2_auditoria_nmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.2: Auditoría e Inventariado de Redes con Nmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_3_monitorizacion_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.3: Monitorización Activa y Análisis de Registros de Auditoría en Linux y Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_4_mitm_arp_spoofing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.4: Intercepción Man-In-The-Middle (MITM) y ARP Spoofing con Ettercap y Wireshark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_5_servidor_radius/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.5: Despliegue de un Servidor de Autenticación RADIUS con FreeRADIUS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_6_hotspot_mikrotik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.6: Configuración de un Hotspot con Portal Cautivo en MikroTik RouterOS mediante WebFig
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/PO5_1_escaner_vulnerabilidades/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica Opcional 5.1: Auditoría Automatizada de Vulnerabilidades con OpenVAS / Greenbone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud6 Copias de Seguridad y Recuperacion
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud6 Copias de Seguridad y Recuperacion
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/Ud6_copias_de_seguridad_y_recuperacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD6: Copias de Seguridad, Recuperación ante Desastres y Borrado Seguro
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_1_copias_deja_dup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.1: Copias de Seguridad en GNU/Linux con Déjà Dup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_2_recuperacion_testdisk_photorec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.2: Recuperación de Archivos y Particiones con TestDisk y PhotoRec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_3_borrado_seguro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.3: Borrado Seguro de Datos y Sanitización de Soportes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud7 Seguridad Perimetral Cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud7 Seguridad Perimetral Cortafuegos y DMZ
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/Ud7_seguridad_perimetral_cortafuegos_y_dmz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD7. Seguridad perimetral: cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_1_cortafuegos_mikrotik_basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.1: Configuración de Cortafuegos de Red y Filtrado con Estado en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_2_dmz_un_router/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.2: Despliegue de una DMZ con un Cortafuegos de Tres Interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_3_dmz_dos_routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.3: Arquitectura Avanzada de DMZ con Doble Cortafuegos en Cascada
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud8 Seguridad Perimetral Acceso Remoto y VPN
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud8 Seguridad Perimetral Acceso Remoto y VPN
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/Ud8_seguridad_perimetral_acceso_remoto_y_vpn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD8. Seguridad perimetral: Acceso remoto y Redes Privadas Virtuales (VPN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/P8_1_vpn_ipsec_site_to_site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 8.1: VPN Sitio a Sitio (Site-to-Site) con IPsec en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud9 Proteccion Perimetral Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud9 Proteccion Perimetral Servidores Proxy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/Ud9_proteccion_perimetral_servidores_proxy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD9. Protección perimetral mediante Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/P9_1_proxy_squid_filtrado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 9.1: Servidor Proxy-Caché, Control de Acceso y Filtrado Web con Squid en Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud10 Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud10 Soluciones de Alta Disponibilidad
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD10. Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD10. Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduccion-y-fundamentos-de-la-alta-disponibilidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introducción y Fundamentos de la Alta Disponibilidad
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Introducción y Fundamentos de la Alta Disponibilidad">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metricas-de-disponibilidad-mtbf-mttr-y-mttf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Métricas de Disponibilidad: MTBF, MTTR y MTTF
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Métricas de Disponibilidad: MTBF, MTTR y MTTF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#calculo-de-la-disponibilidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cálculo de la Disponibilidad
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-escala-de-los-nueves-de-disponibilidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La Escala de los «Nueves» de Disponibilidad
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-puntos-unicos-de-fallo-spof-y-redundancia-fisica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Puntos Únicos de Fallo (SPOF) y Redundancia Física
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Puntos Únicos de Fallo (SPOF) y Redundancia Física">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-redundancia-en-el-suministro-electrico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Redundancia en el Suministro Eléctrico
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-redundancia-en-el-almacenamiento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Redundancia en el Almacenamiento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-redundancia-en-conectividad-y-redes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Redundancia en Conectividad y Redes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-redundancia-en-servidores-y-virtualizacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Redundancia en Servidores y Virtualización
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-protocolos-de-redundancia-de-pasarela-por-defecto-fhrp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Protocolos de Redundancia de Pasarela por Defecto (FHRP)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Protocolos de Redundancia de Pasarela por Defecto (FHRP)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#el-estandar-vrrp-virtual-router-redundancy-protocol-rfc-5798" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        El Estándar VRRP (Virtual Router Redundancy Protocol - RFC 5798)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="El Estándar VRRP (Virtual Router Redundancy Protocol - RFC 5798)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#componentes-fundamentales-de-vrrp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Componentes Fundamentales de VRRP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parametros-de-eleccion-y-preempcion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parámetros de Elección y Preempción
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#otros-protocolos-de-redundancia-de-pasarela" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Otros Protocolos de Redundancia de Pasarela
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-balanceo-de-carga-y-granjas-web-server-load-balancing-slb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Balanceo de Carga y Granjas Web (Server Load Balancing - SLB)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Balanceo de Carga y Granjas Web (Server Load Balancing - SLB)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modos-de-operacion-y-topologias-de-balanceo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modos de Operación y Topologías de Balanceo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Modos de Operación y Topologías de Balanceo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-modo-router-nat-lvsnat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Modo Router / NAT (LVS/NAT)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-modo-direct-server-return-dsr-lvsdr-one-armed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Modo Direct Server Return (DSR / LVS/DR / One-Armed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#algoritmos-de-distribucion-de-carga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Algoritmos de Distribución de Carga
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitorizacion-de-salud-health-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monitorización de Salud (Health Checks)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-herramientas-software-de-alta-disponibilidad-en-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Herramientas Software de Alta Disponibilidad en Linux
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-cuestionario-de-autoevaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Cuestionario de Autoevaluación
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-practica-de-la-unidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Práctica de la Unidad
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P10_1_alta_disponibilidad_vrrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 10.1: Redundancia y Tolerancia a Fallos de Pasarelas y Servicios Web con VRRP en MikroTik y Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="ud10-soluciones-de-alta-disponibilidad">UD10. Soluciones de Alta Disponibilidad</h1>
+<div class="admonition note">
+<p class="admonition-title">Datos de la Unidad Didáctica</p>
+<ul>
+<li><strong>Módulo:</strong> Seguridad y Alta Disponibilidad (SAD - 0378)</li>
+<li><strong>Ciclo Formativo:</strong> Administración de Sistemas Informáticos en Red (ASIR) - 2º Curso</li>
+<li><strong>Duración estimada:</strong> 8 horas</li>
+<li><strong>Resultados de aprendizaje:</strong> Diseñar, implementar y verificar arquitecturas de alta disponibilidad y tolerancia a fallos tanto en el plano de enrutamiento perimetral como en servicios de red, eliminando puntos únicos de fallo (SPOF) mediante protocolos de redundancia (VRRP) y balanceadores de carga.</li>
+</ul>
+</div>
+<hr>
+<h2 id="1-introduccion-y-fundamentos-de-la-alta-disponibilidad">1. Introducción y Fundamentos de la Alta Disponibilidad</h2>
+<p>En el ámbito de la seguridad de la información (gobernado por la tríada clásica <strong>CIA</strong>: Confidencialidad, Integridad y Disponibilidad), la <strong>Disponibilidad</strong> garantiza que los servicios informáticos, aplicaciones y datos permanezcan accesibles y operativos para los usuarios autorizados en el momento exacto en que los requieran.</p>
+<p>A diferencia de las medidas de seguridad activa (que buscan evitar intrusiones mediante cortafuegos, autenticación o parches), las soluciones de <strong>Alta Disponibilidad (<em>High Availability - HA</em>)</strong> forman parte de la <strong>seguridad pasiva y de las medidas correctoras</strong>: asumen con realismo que los componentes de hardware fallarán tarde o temprano (discos duros rotos, cortes de suministro eléctrico, caídas de enlace de red, bloqueos del kernel o saturación de servidores) y estructuran la infraestructura para <strong>tolerar dichos fallos sin que se produzca una interrupción del servicio</strong> perceptible por el usuario final.</p>
+<div class="mermaid">flowchart TD
+    D1["1. Detección Temprana del Fallo&lt;br&gt;• Latidos de red (Heartbeat)&lt;br&gt;• Comprobaciones de salud (Health Checks)&lt;br&gt;• Umbrales de timeout estrictos"] --&gt; D2["2. Aislamiento y Quórum&lt;br&gt;• Evitar Split-Brain&lt;br&gt;• Expulsión del nodo degradado (Fencing / STONITH)"]
+    D2 --&gt; D3["3. Conmutación por Error (Failover)&lt;br&gt;• Migración inmediata de la IP Virtual (VIP)&lt;br&gt;• Promoción automática de Backup a Master"]
+    D3 --&gt; D4["4. Restauración del Servicio&lt;br&gt;• Sincronización de estado y datos&lt;br&gt;• Retorno controlado a la normalidad"]
+
+    style D1 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style D2 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style D3 fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style D4 fill:#c8e6c9,stroke:#388e3c,stroke-width:2px</div>
+<hr>
+<h3 id="metricas-de-disponibilidad-mtbf-mttr-y-mttf">Métricas de Disponibilidad: MTBF, MTTR y MTTF</h3>
+<p>Para cuantificar y evaluar formalmente la resiliencia de un sistema tecnológico se emplean tres métricas estándar de ingeniería:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>                       CICLO DE VIDA ANTE FALLOS
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  ├──────────────────────────── MTBF ────────────────────────────┤
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  ┌───────────────────────────┐           ┌──────────────────────┐
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  │   SISTEMA OPERATIVO       │   FALLO   │ REPARACIÓN Y ALTA    │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  │   (Tiempo en Servicio)    │           │ (Tiempo de Parada)   │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  └───────────────────────────┘           └──────────────────────┘
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  ├─────────── MTTF ──────────┤           ├──────── MTTR ────────┤
+</code></pre></div>
+<ol>
+<li><strong>MTTF (<em>Mean Time To Failure</em> - Tiempo Medio Hasta el Fallo):</strong><ul>
+<li>Es el tiempo medio que un dispositivo no reparable o un sistema funciona de manera continuada antes de sufrir su primera avería.</li>
+</ul>
+</li>
+<li><strong>MTTR (<em>Mean Time To Repair</em> - Tiempo Medio De Reparación):</strong><ul>
+<li>Es el tiempo medio necesario para detectar un incidente, intervenir el sistema, sustituir el componente averiado y devolver el servicio a su estado plenamente operativo. El objetivo primordial de la alta disponibilidad es <strong>reducir el MTTR al mínimo posible (idealmente a segundos o milisegundos mediante conmutación automática)</strong>.</li>
+</ul>
+</li>
+<li><strong>MTBF (<em>Mean Time Between Failures</em> - Tiempo Medio Entre Fallos):</strong><ul>
+<li>Es el tiempo transcurrido entre dos averías consecutivas en un sistema reparable:</li>
+<li><code>MTBF = MTTF + MTTR</code></li>
+</ul>
+</li>
+</ol>
+<h4 id="calculo-de-la-disponibilidad">Cálculo de la Disponibilidad</h4>
+<p>La disponibilidad matemática de un sistema se define como el porcentaje de tiempo durante el cual el sistema está operativo respecto al tiempo total:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>                             MTBF
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Disponibilidad (%) = ───────────────────── × 100
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>                         MTBF + MTTR
+</code></pre></div>
+<p>En entornos donde KaTeX no esté disponible, la relación se expresa como:
+<code>Disponibilidad (%) = [MTBF / (MTBF + MTTR)] * 100</code></p>
+<hr>
+<h3 id="la-escala-de-los-nueves-de-disponibilidad">La Escala de los «Nueves» de Disponibilidad</h3>
+<p>En los Acuerdos de Nivel de Servicio (<strong>SLA - Service Level Agreement</strong>) entre proveedores de infraestructura y clientes, la disponibilidad se pacta mediante la conocida escala de los «nueves»:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Nivel de Disponibilidad</th>
+<th style="text-align: center;">Denominación Común</th>
+<th style="text-align: center;">Tiempo Máximo de Parada Inesperada al Año</th>
+<th style="text-align: center;">Tiempo Máximo de Parada al Mes</th>
+<th style="text-align: left;">Tolerancia del Negocio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>99%</strong></td>
+<td style="text-align: center;">Dos nueves</td>
+<td style="text-align: center;"><strong>3,65 días</strong> (87,6 horas)</td>
+<td style="text-align: center;">7,2 horas</td>
+<td style="text-align: left;">Aceptable para servicios no críticos o entornos de prueba.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>99,9%</strong></td>
+<td style="text-align: center;">Tres nueves</td>
+<td style="text-align: center;"><strong>8,76 horas</strong></td>
+<td style="text-align: center;">43,8 minutos</td>
+<td style="text-align: left;">Estándar habitual en servicios de hosting y PYMEs.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>99,99%</strong></td>
+<td style="text-align: center;">Cuatro nueves</td>
+<td style="text-align: center;"><strong>52,6 minutos</strong></td>
+<td style="text-align: center;">4,38 minutos</td>
+<td style="text-align: left;">Requerido en comercio electrónico y servicios empresariales.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>99,999%</strong></td>
+<td style="text-align: center;"><strong>Cinco nueves (<em>Carrier Grade</em>)</strong></td>
+<td style="text-align: center;"><strong>5,26 minutos</strong></td>
+<td style="text-align: center;"><strong>26 segundos</strong></td>
+<td style="text-align: left;">Estándar de oro: telecomunicaciones, banca y hospitales.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>99,9999%</strong></td>
+<td style="text-align: center;">Seis nueves</td>
+<td style="text-align: center;"><strong>31,5 segundos</strong></td>
+<td style="text-align: center;">2,6 segundos</td>
+<td style="text-align: left;">Sistemas aeroespaciales, defensa y control de reactores nucleares.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2-puntos-unicos-de-fallo-spof-y-redundancia-fisica">2. Puntos Únicos de Fallo (SPOF) y Redundancia Física</h2>
+<p>Un <strong>Punto Único de Fallo (<em>Single Point of Failure - SPOF</em>)</strong> es cualquier elemento, componente o enlace de una arquitectura cuya avería individual provoca la interrupción completa de todo el sistema.</p>
+<p>El principio fundacional de la alta disponibilidad consiste en <strong>identificar todos los SPOFs de la infraestructura y eliminarlos mediante redundancia</strong>, duplicando o triplicando los elementos críticos en cada capa:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>                  ELIMINACIÓN DE SPOF EN CADA CAPA
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  ┌──────────────────────────────────────────────────────────────┐
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  │ 1. Suministro Eléctrico  → SAIs dobles + Generadores diésel  │
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  ├──────────────────────────────────────────────────────────────┤
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  │ 2. Almacenamiento        → Matrices RAID + Réplicas SAN/NAS  │
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  ├──────────────────────────────────────────────────────────────┤
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  │ 3. Conectividad de Red   → LACP / NIC Teaming + Doble ISP    │
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  ├──────────────────────────────────────────────────────────────┤
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  │ 4. Pasarela Perimetral   → VRRP (Routers Master / Backup)    │
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  ├──────────────────────────────────────────────────────────────┤
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  │ 5. Servicios Web         → Granjas de Servidores + Balanceo  │
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  └──────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<hr>
+<h3 id="a-redundancia-en-el-suministro-electrico">A. Redundancia en el Suministro Eléctrico</h3>
+<p>La energía es el recurso más sensible de un centro de datos. Una simple caída de tensión o un microcorte puede corromper bases de datos y provocar horas de indisponibilidad:</p>
+<p><img alt="Redundancia en el Suministro Eléctrico" src="../img/redundancia_suministro.png"></p>
+<ul>
+<li><strong>Fuentes de Alimentación Redundantes (<em>Hot-Plug Power Supplies</em>):</strong> Los servidores profesionales cuentan con dos (o cuatro) fuentes de alimentación conmutadas. Si una fuente falla internamente, la otra asume el 100% de la carga de forma instantánea sin reiniciar el equipo.</li>
+<li><strong>Líneas Eléctricas Independientes (A+B):</strong> Cada fuente de alimentación del servidor se conecta a una regleta de distribución PDU diferente alimentada por cuadros eléctricos y fases distintas.</li>
+<li><strong>Sistemas de Alimentación Ininterrumpida (SAI / UPS):</strong> Baterías industriales que filtran armónicos y suministran energía limpia inmediata ante apagones.</li>
+<li><strong>Grupos Electrógenos (Generadores Diésel):</strong> Motores de combustión con arranque automático que se activan si el corte eléctrico general se prolonga más de unos segundos, garantizando autonomía de días o semanas.</li>
+</ul>
+<hr>
+<h3 id="b-redundancia-en-el-almacenamiento">B. Redundancia en el Almacenamiento</h3>
+<p>Los discos duros mecánicos (HDD) y de estado sólido (SSD) poseen tasas de fallo inevitables debido al desgaste físico:</p>
+<ul>
+<li><strong>Matrices RAID Tolerantes a Fallos:</strong><ul>
+<li><strong>RAID 1 (Mirroring / Espejo):</strong> Duplica la información en dos discos. Tolera la pérdida de 1 disco.</li>
+<li><strong>RAID 5:</strong> Distribuye datos y bloques de paridad en un mínimo de 3 discos. Tolera la rotura de 1 disco.</li>
+<li><strong>RAID 6:</strong> Utiliza doble bloque de paridad en un mínimo de 4 discos. Tolera la rotura simultánea de 2 discos.</li>
+<li><strong>RAID 10 (1+0):</strong> Combina espejado y división (<em>striping</em>). Ofrece altísimo rendimiento y tolerancia a fallos múltiples.</li>
+<li><strong>Discos Hot-Spare:</strong> Discos de reserva conectados en caliente que entran en funcionamiento y reconstruyen la matriz de forma automática en cuanto un disco titular falla.</li>
+</ul>
+</li>
+<li><strong>Redundancia a Nivel de Cabina y Red:</strong><ul>
+<li>Redes de almacenamiento dedicadas (<strong>SAN - Storage Area Network</strong>) mediante Fibre Channel o iSCSI con doble controladora activa-activa.</li>
+<li>Replicación de bloques por red a nivel de kernel mediante <strong>DRBD (<em>Distributed Replicated Block Device</em>)</strong> o sistemas de archivos distribuidos como <strong>Ceph</strong> y GlusterFS.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c-redundancia-en-conectividad-y-redes">C. Redundancia en Conectividad y Redes</h3>
+<p>Una caída en una tarjeta de red, un cable cortado o un switch estropeado pueden aislar servidores en perfecto estado:</p>
+<p><img alt="Redundancia en la Red de Comunicaciones" src="../img/redundancia_en_la_red.png"></p>
+<ul>
+<li><strong>Agregación de Enlaces (LACP / NIC Teaming / Bonding):</strong><ul>
+<li>Se conectan dos o más interfaces de red físicas de un servidor a switches diferentes configuradas bajo el estándar IEEE 802.3ad (LACP).</li>
+<li>Si una tarjeta o cable falla, el tráfico conmuta a las interfaces supervivientes sin pérdida de paquetes (<em>Fault Tolerance</em>), aportando además agregación de ancho de banda.</li>
+</ul>
+</li>
+<li><strong>Protocolos de Nivel de Enlace (STP / RSTP):</strong><ul>
+<li><em>Rapid Spanning Tree Protocol (IEEE 802.1w)</em> permite interconectar switches con topologías en bucle redundantes, bloqueando enlaces secundarios y activándolos en menos de un segundo si el enlace principal cae.</li>
+</ul>
+</li>
+<li><strong>Multihoming con Varios Operadores (ISP):</strong><ul>
+<li>La organización contrata salida a Internet con dos proveedores de telecomunicaciones independientes mediante líneas que entran por acometidas físicas distintas.</li>
+<li>Mediante el protocolo <strong>BGP (<em>Border Gateway Protocol</em>)</strong> y un Sistema Autónomo propio (ASN), si uno de los ISPs sufre una avería general, todo el tráfico de la empresa conmuta automáticamente hacia el segundo operador.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="d-redundancia-en-servidores-y-virtualizacion">D. Redundancia en Servidores y Virtualización</h3>
+<p>Tener un único servidor ejecutando aplicaciones críticas es un riesgo inaceptable. Se despliegan arquitecturas en racimo o granja:</p>
+<p><img alt="Redundancia en Servidores y Clústeres" src="../img/redundancia_en_los_servidores.png"></p>
+<p><img alt="Granja de Servidores" src="../img/server_farm.png"></p>
+<ul>
+<li><strong>Clustering de Hipervisores (Proxmox VE, VMware ESXi, KVM):</strong><ul>
+<li>Si un nodo físico sufre una avería de placa base o CPU, el clúster detecta el fallo (<em>Heartbeat</em>) y reinicia automáticamente las máquinas virtuales afectadas en los nodos supervivientes (<em>HA VM Restart</em>).</li>
+<li><strong>Migración en Vivo (<em>Live Migration</em>):</strong> Permite mover máquinas virtuales de un servidor físico a otro en caliente (en milisegundos y sin interrumpir servicios) para realizar labores de mantenimiento y actualización de hardware.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-protocolos-de-redundancia-de-pasarela-por-defecto-fhrp">3. Protocolos de Redundancia de Pasarela por Defecto (FHRP)</h2>
+<p>En cualquier red de área local corporativa, todos los equipos cliente (ordenadores, terminales, impresoras) están configurados con una única dirección IP como <strong>Puerta de Enlace por Defecto (<em>Default Gateway</em>)</strong>.</p>
+<p>Si la red dispone de un único router y este se avería, todos los clientes pierden instantáneamente la conectividad con Internet y con el resto de subredes, convirtiendo al router en el <strong>SPOF más peligroso de la red de acceso</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>                  EL PROBLEMA DEL ROUTER COMO PUNTO ÚNICO DE FALLO
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  [ PC CLIENTE ] ── (GW: 192.168.100.1) ──&gt; [ ROUTER 1 ] ──X [ ¡AVERÍA! ]
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  (Incomunicado, aunque exista un Router 2 en la misma red)
+</code></pre></div>
+<p>Para solucionar este problema se crearon los protocolos <strong>FHRP (<em>First Hop Redundancy Protocols</em>)</strong>, de los cuales el estándar abierto indiscutible de la industria es <strong>VRRP</strong>.</p>
+<hr>
+<h3 id="el-estandar-vrrp-virtual-router-redundancy-protocol-rfc-5798">El Estándar VRRP (Virtual Router Redundancy Protocol - RFC 5798)</h3>
+<p><strong>VRRP</strong> permite agrupar dos o más routers físicos situados en el mismo segmento de red para que funcionen como un <strong>único Enrutador Virtual (<em>Virtual Router</em>)</strong> de alta disponibilidad:</p>
+<p><img alt="Arquitectura del Protocolo VRRP" src="../img/PracticaVRRP.png"></p>
+<h4 id="componentes-fundamentales-de-vrrp">Componentes Fundamentales de VRRP</h4>
+<ol>
+<li><strong>Identificador de Enrutador Virtual (VRID):</strong> Un número entre 1 y 255 que identifica de forma unívoca al grupo de routers que colaboran en el clúster.</li>
+<li><strong>Dirección IP Virtual (VIP - Virtual IP):</strong> Una dirección IP compartida (por ejemplo, <code>192.168.100.1</code>) que se asigna al Enrutador Virtual. <strong>Esta VIP es la dirección que los clientes configuran como su puerta de enlace por defecto</strong>.</li>
+<li><strong>Dirección MAC Virtual (VMAC):</strong> Para que los equipos cliente no tengan que purgar su tabla ARP tras una conmutación por fallo, el estándar VRRP genera una dirección MAC virtual estandarizada:<ul>
+<li>Formato para IPv4: <code>00:00:5E:00:01:{VRID en hexadecimal}</code></li>
+<li>Por ejemplo, si el VRID es 10 (en hex <code>0A</code>), la MAC virtual es: <code>00:00:5E:00:01:0A</code>.</li>
+</ul>
+</li>
+<li><strong>Rol MASTER (Maestro):</strong><ul>
+<li>Es el router físico que atiende activamente el tráfico enviado a la VIP y responde a las peticiones ARP con la VMAC.</li>
+<li>Envía periódicamente paquetes de latido (<em>Advertisement packets</em>) cada 1 segundo por multidifusión (<strong>Multicast a <code>224.0.0.18</code></strong>, protocolo IP 112).</li>
+</ul>
+</li>
+<li><strong>Rol BACKUP (Esclavo o Reserva):</strong><ul>
+<li>Permanecen a la escucha pasiva de los anuncios de latido del Master.</li>
+<li>Si dejan de recibir paquetes del Master durante un tiempo determinado (<em>Master Down Interval</em>, aproximadamente 3,6 segundos), asumen que el Master ha caído y el Backup de mayor prioridad se autoproclama nuevo Master, emitiendo un anuncio <strong>Gratuitous ARP (GARP)</strong> para que los switches actualicen sus tablas MAC.</li>
+</ul>
+</li>
+</ol>
+<div class="mermaid">flowchart TD
+    subgraph Normal ["ESTADO NORMAL: Master Operativo"]
+        R1N["Router 1 (MASTER)&lt;br&gt;• Posee la VIP: 192.168.100.1&lt;br&gt;• VMAC: 00:00:5E:00:01:0A&lt;br&gt;• Prioridad: 150"]
+        R2N["Router 2 (BACKUP)&lt;br&gt;• Prioridad: 100&lt;br&gt;• Escucha en multicast 224.0.0.18"]
+        CliN["Clientes LAN&lt;br&gt;Tráfico enrutado por Router 1"]
+
+        R1N == "Anuncios VRRP (1 por segundo)" ==&gt; R2N
+        CliN --&gt; R1N
+    end
+
+    subgraph Failover ["ESCENARIO DE FALLO: Caída y Promoción Automática"]
+        R1F["Router 1 (CAÍDO)&lt;br&gt;Avería física o corte de enlace"]
+        R2F["Router 2 (NUEVO MASTER)&lt;br&gt;• Asume la VIP 192.168.100.1&lt;br&gt;• Emite Gratuitous ARP&lt;br&gt;• Enruta todo el tráfico LAN"]
+        CliF["Clientes LAN&lt;br&gt;Tráfico redirigido sin cambiar de IP"]
+
+        R1F -.-&gt;|Pérdida de latidos &gt; 3.6s| R2F
+        CliF --&gt; R2F
+    end
+
+    style R1N fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style R2N fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style R1F fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style R2F fill:#c8e6c9,stroke:#388e3c,stroke-width:2px</div>
+<h4 id="parametros-de-eleccion-y-preempcion">Parámetros de Elección y Preempción</h4>
+<ul>
+<li><strong>Prioridad:</strong> Un valor entre 1 y 254 (el valor 255 se reserva para el router dueño de la IP real). El router con mayor prioridad se convierte en Master (por ejemplo, Prioridad 150 para Master y Prioridad 100 para Backup).</li>
+<li><strong>Preempción (<em>Preemption</em>):</strong> Directiva que determina si un router que tiene mayor prioridad recupera automáticamente el rol de Master cuando vuelve a encenderse tras una avería.</li>
+</ul>
+<hr>
+<h3 id="otros-protocolos-de-redundancia-de-pasarela">Otros Protocolos de Redundancia de Pasarela</h3>
+<ul>
+<li><strong>HSRP (<em>Hot Standby Router Protocol</em>):</strong> Protocolo propietario desarrollado por Cisco en 1998 (predecesor de VRRP). Utiliza el grupo multicast <code>224.0.0.2</code> (v1) o <code>224.0.0.102</code> (v2) y MAC virtual <code>00:00:0C:07:AC:XX</code>.</li>
+<li><strong>CARP (<em>Common Address Redundancy Protocol</em>):</strong> Alternativa libre desarrollada por el proyecto OpenBSD debido a problemas de patentes de Cisco sobre HSRP y VRRP. Muy extendido en cortafuegos pfSense y OPNsense.</li>
+<li><strong>GLBP (<em>Gateway Load Balancing Protocol</em>):</strong> Protocolo de Cisco que, a diferencia de VRRP/HSRP (activo-pasivo donde el backup no enruta nada), permite <strong>balancear el tráfico de forma activa entre hasta 4 routers simultáneamente</strong> asignando dinámicamente diferentes MACs virtuales a los clientes:</li>
+</ul>
+<p><img alt="Protocolo GLBP" src="../img/GLBP.png"></p>
+<hr>
+<h2 id="4-balanceo-de-carga-y-granjas-web-server-load-balancing-slb">4. Balanceo de Carga y Granjas Web (<em>Server Load Balancing - SLB</em>)</h2>
+<p>Cuando un servicio web o de base de datos recibe más peticiones de las que un único servidor puede procesar, o cuando se desea garantizar que la caída de un servidor no afecte a la disponibilidad de la aplicación, se despliega una <strong>Granja de Servidores (<em>Server Farm</em>)</strong> gobernada por un <strong>Balanceador de Carga (<em>Load Balancer</em>)</strong>:</p>
+<p><img alt="Mecanismo de Conmutación por Fallo y Balanceo" src="../img/failover_redundancia.jpg"></p>
+<h3 id="modos-de-operacion-y-topologias-de-balanceo">Modos de Operación y Topologías de Balanceo</h3>
+<p>Existen diferentes formas de integrar el balanceador en la topología de red:</p>
+<h4 id="1-modo-router-nat-lvsnat">1. Modo Router / NAT (LVS/NAT)</h4>
+<p>El balanceador actúa como router y puerta de enlace de los servidores reales (<em>Real Servers</em>). Aplica Destination NAT a las peticiones entrantes de Internet y Source NAT al tráfico de retorno:</p>
+<p><img alt="Modo Router / LVS-NAT" src="../img/SLB_router_mode.png"></p>
+<ul>
+<li><strong>Ventaja:</strong> Los servidores reales pueden utilizar direccionamiento privado aislado de Internet.</li>
+<li><strong>Inconveniente:</strong> El balanceador debe procesar tanto el tráfico de entrada como el de salida, convirtiéndose en un cuello de botella si las respuestas contienen archivos de gran tamaño.</li>
+</ul>
+<h4 id="2-modo-direct-server-return-dsr-lvsdr-one-armed">2. Modo Direct Server Return (DSR / LVS/DR / One-Armed)</h4>
+<p>En este modo avanzado, el balanceador recibe la petición del cliente y la entrega al servidor real alterando únicamente la dirección MAC de destino (Capa 2), sin modificar las IPs:</p>
+<p><img alt="Modo One-Armed / Direct Server Return" src="../img/SLB_one_armed_mode.png"></p>
+<ul>
+<li><strong>Ventaja espectacular:</strong> Los servidores reales <strong>responden directamente al cliente de Internet</strong> sin que los datos de retorno vuelvan a pasar por el balanceador. Dado que en la web el tráfico de respuesta (descarga de imágenes, vídeos, HTML) es de 10 a 100 veces superior al de petición (pequeñas solicitudes <code>GET</code>), el modo DSR permite balancear terabits de tráfico con un balanceador muy modesto.</li>
+</ul>
+<hr>
+<h3 id="algoritmos-de-distribucion-de-carga">Algoritmos de Distribución de Carga</h3>
+<p>El balanceador decide qué servidor atiende cada nueva conexión aplicando uno de los siguientes criterios:</p>
+<ul>
+<li><strong>Round Robin (Turno Rotatorio):</strong> Asigna las peticiones de forma secuencial y cíclica: Servidor 1 → Servidor 2 → Servidor 3 → Servidor 1. Idóneo si todos los servidores tienen especificaciones de hardware idénticas.</li>
+<li><strong>Weighted Round Robin (Ponderado):</strong> Asigna un peso numérico a cada servidor según su potencia de CPU y RAM. Un servidor con peso 3 recibirá tres veces más peticiones que uno con peso 1.</li>
+<li><strong>Least Connections (Menor Número de Conexiones):</strong> Envía la petición al servidor que en ese instante tiene el menor número de conexiones TCP activas. Es el más eficiente cuando las peticiones tienen tiempos de procesamiento muy dispares (ej. transacciones complejas vs páginas estáticas).</li>
+<li><strong>Source IP Hash (Persistencia de Sesión / Sticky Sessions):</strong> Aplica una función hash a la dirección IP del cliente para garantizar que todas las peticiones procedentes del mismo usuario vayan siempre al mismo servidor físico, preservando carritos de compra o sesiones en memoria sin almacenamiento compartido.</li>
+</ul>
+<hr>
+<h3 id="monitorizacion-de-salud-health-checks">Monitorización de Salud (<em>Health Checks</em>)</h3>
+<p>Un balanceador no puede limitarse a enviar peticiones a ciegas; debe supervisar de forma continua el estado de salud de cada servidor de backend:</p>
+<ol>
+<li><strong>Chequeo ICMP (Ping):</strong> Comprueba si el servidor físico responde a nivel de red. Es insuficiente: el servidor puede responder al ping pero tener el proceso de Apache o Nginx colgado.</li>
+<li><strong>Chequeo TCP (SYN/ACK):</strong> Intenta abrir una conexión al puerto de servicio (ej. puerto 80 u 8080).</li>
+<li><strong>Chequeo HTTP de Capa 7 (Recomendado):</strong> El balanceador solicita periódicamente una ruta específica (ej. <code>GET /health.php HTTP/1.1</code>) y verifica que el servidor devuelva un código <strong>HTTP 200 OK</strong> y un contenido esperado. Si la base de datos local del servidor falla, el script devuelve un error 500 y el balanceador retira automáticamente a ese servidor de la granja en cuestión de segundos, redirigiendo el tráfico a los nodos sanos.</li>
+</ol>
+<hr>
+<h2 id="5-herramientas-software-de-alta-disponibilidad-en-linux">5. Herramientas Software de Alta Disponibilidad en Linux</h2>
+<p>En el ecosistema GNU/Linux profesional destacan tres grandes herramientas:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>┌───────────────────────────┬───────────────────────────┬───────────────────────────┐
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>│        KEEPALIVED         │          HAPROXY          │    PACEMAKER / COROSYNC   │
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>├───────────────────────────┼───────────────────────────┼───────────────────────────┤
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>│ • Protocolo VRRP (VIPs).  │ • Balanceador L4 (TCP)    │ • Clúster de conmutación  │
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>│ • Integración con IPVS    │   y L7 (HTTP avanzado).   │   de recursos complejos.  │
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>│   (Linux Virtual Server). │ • Terminación SSL/TLS.    │ • Quórum y protección     │
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>│ • Sencillo, ligero y      │ • Comprobación de salud   │   contra Split-Brain      │
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>│   extremadamente robusto. │   y estadísticas web.     │   mediante STONITH/Fencing│
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>└───────────────────────────┴───────────────────────────┴───────────────────────────┘
+</code></pre></div>
+<ol>
+<li><strong>Keepalived:</strong> Es la herramienta de referencia para implementar VRRP en Linux. Permite configurar una o varias direcciones IP virtuales (VIPs) compartidas entre dos o más máquinas, monitorizando scripts personalizados mediante bloques <code>vrrp_script</code> para conmutar la VIP si un servicio (como Apache, Nginx o MySQL) deja de ejecutarse.</li>
+<li><strong>HAProxy:</strong> Es el estándar de la industria en balanceo de carga web de alto rendimiento. Capaz de gestionar millones de conexiones concurrentes con una latencia despreciable, filtrado de cabeceras, soporte HTTP/2 y HTTP/3, y terminación SSL avanzada.</li>
+<li><strong>Pacemaker y Corosync:</strong> Solución completa de clustering para servicios con estado (<em>Stateful Services</em> como servidores de archivos NFS o bases de datos PostgreSQL/MariaDB). Implementa mecanismos de quórum estricto y <strong>fencing (STONITH - Shoot The Other Node In The Head)</strong>: si un nodo deja de responder pero no se sabe si está vivo o muerto, el clúster le corta la alimentación eléctrica a través de la regleta PDU o IPMI para evitar que ambos nodos escriban simultáneamente en el almacenamiento compartido y corrompan los datos (<em>Split-Brain</em>).</li>
+</ol>
+<hr>
+<h2 id="6-cuestionario-de-autoevaluacion">6. Cuestionario de Autoevaluación</h2>
+<p>Comprueba tu dominio de los conceptos de alta disponibilidad respondiendo a las siguientes cuestiones:</p>
+<details class="question">
+<summary>1. ¿Qué diferencia fundamental existe entre una medida de seguridad activa y una solución de alta disponibilidad?</summary>
+<p><strong>Respuesta:</strong> La seguridad activa busca prevenir y evitar que ocurran incidentes o ataques (como un cortafuegos o un antivirus). La alta disponibilidad pertenece a la <strong>seguridad pasiva y a las medidas correctoras</strong>: asume que los fallos físicos o lógicos son inevitables y se diseña para que el sistema tolere dichos fallos y se recupere automáticamente sin interrupción de los servicios.</p>
+</details>
+<details class="question">
+<summary>2. En las métricas de fiabilidad, ¿qué representan las siglas MTBF y MTTR, y cuál de ellas busca minimizar la alta disponibilidad?</summary>
+<p><strong>Respuesta:</strong> <strong>MTBF</strong> (<em>Mean Time Between Failures</em>) es el tiempo medio entre averías consecutivas, mientras que <strong>MTTR</strong> (<em>Mean Time To Repair</em>) es el tiempo medio necesario para reparar el fallo y restablecer el servicio. La alta disponibilidad busca <strong>minimizar al máximo el MTTR</strong>, reduciéndolo a segundos o milisegundos mediante mecanismos de conmutación por error automática (<em>failover</em>).</p>
+</details>
+<details class="question">
+<summary>3. ¿Cuántas horas de parada inesperada al año tolera un servicio contratado con un nivel de disponibilidad del 99,9% ('tres nueves')?</summary>
+<p><strong>Respuesta:</strong> Tolera como máximo <strong>8,76 horas al año</strong> (o unos 43,8 minutos al mes). Para alcanzar menos de 5 minutos al año se requiere el nivel del 99,999% («cinco nueves»).</p>
+</details>
+<details class="question">
+<summary>4. ¿Qué es un Punto Único de Fallo (SPOF) y qué principio arquitectónico se utiliza para eliminarlo?</summary>
+<p><strong>Respuesta:</strong> Un SPOF (<em>Single Point of Failure</em>) es cualquier componente de hardware, software o enlace cuya rotura individual paraliza por completo todo el sistema. Se elimina mediante el principio de <strong>redundancia</strong>, duplicando los componentes críticos (fuentes eléctricas, discos RAID, tarjetas LACP, routers VRRP y servidores en clúster).</p>
+</details>
+<details class="question">
+<summary>5. ¿Qué dirección IP configuran los equipos clientes de una red local cuando se implementa redundancia de pasarelas con VRRP?</summary>
+<p><strong>Respuesta:</strong> Configuran la <strong>Dirección IP Virtual (VIP)</strong> del grupo VRRP (por ejemplo, <code>192.168.100.1</code>). Esta IP no pertenece rígidamente a ninguna tarjeta física, sino que es asumida de forma transparente por el router que en cada momento ostente el rol de Master.</p>
+</details>
+<details class="question">
+<summary>6. ¿Qué función cumple la dirección MAC Virtual (VMAC) en el protocolo VRRP?</summary>
+<p><strong>Respuesta:</strong> Permite que ante una caída del router Master, el router Backup asuma el control utilizando exactamente la misma dirección MAC virtual. De este modo, los ordenadores clientes no sufren cortes de red esperando a que expire su caché ARP local, ya que la dirección de Capa 2 de la puerta de enlace permanece idéntica.</p>
+</details>
+<details class="question">
+<summary>7. ¿Por qué el protocolo VRRP envía paquetes de anuncio periódicos cada 1 segundo a la dirección de multidifusión 224.0.0.18?</summary>
+<p><strong>Respuesta:</strong> Para actuar como señal de latido (<em>Heartbeat</em>). Mientras los routers Backup sigan recibiendo estos anuncios del Master, permanecen a la escucha pasiva. Si dejan de recibirlos durante el intervalo de caída (<em>Master Down Interval</em> ~3,6 segundos), deducen que el Master ha fallado y uno de los Backups se autoproclama nuevo Master.</p>
+</details>
+<details class="question">
+<summary>8. ¿Qué ventaja de rendimiento ofrece el modo de balanceo Direct Server Return (DSR) frente al modo Router/NAT?</summary>
+<p><strong>Respuesta:</strong> En el modo DSR, el balanceador sólo procesa las peticiones entrantes de los clientes y los servidores reales <strong>responden directamente a los clientes de Internet</strong> sin pasar por el balanceador. Esto elimina el cuello de botella en el balanceador, permitiéndole gestionar granjas masivas de tráfico web y multimedia.</p>
+</details>
+<details class="question">
+<summary>9. En un balanceador de carga, ¿cuál es la diferencia entre el algoritmo Round Robin y el algoritmo Least Connections?</summary>
+<p><strong>Respuesta:</strong> Round Robin reparte las conexiones en estricto turno rotatorio secuencial sin considerar la carga real. Least Connections entrega la nueva petición al servidor que en ese momento tiene el menor número de sesiones TCP activas, siendo mucho más eficiente ante peticiones con duraciones de procesamiento desiguales.</p>
+</details>
+<details class="question">
+<summary>10. ¿Para qué se utiliza la directiva 'vrrp_script' en la configuración de Keepalived?</summary>
+<p><strong>Respuesta:</strong> Permite definir un script o comando de comprobación (por ejemplo, <code>killall -0 apache2</code> o <code>systemctl is-active apache2</code>) que se ejecuta periódicamente para monitorizar la salud de un servicio de aplicación. Si el script falla, Keepalived reduce automáticamente la prioridad del nodo o lo fuerza a pasar a estado FAULT, conmutando la IP virtual al otro servidor sin esperar a que la máquina se apague.</p>
+</details>
+<hr>
+<h2 id="7-practica-de-la-unidad">7. Práctica de la Unidad</h2>
+<p>Aplica los conocimientos teóricos adquiridos en el laboratorio práctico oficial de la unidad:</p>
+<ul>
+<li><strong><a href="../P10_1_alta_disponibilidad_vrrp/">Práctica 10.1: Redundancia y Tolerancia a Fallos de Pasarelas y Servicios Web con VRRP en MikroTik y Linux</a></strong>: Despliegue en GNS3 de routers MikroTik redundantes con VRRP, servidores web Apache en alta disponibilidad con Keepalived y simulación empírica de fallos y conmutación.</li>
+</ul></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "toc.integrate", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

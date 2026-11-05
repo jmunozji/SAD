@@ -1,0 +1,2401 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jmunozji.github.io/SAD/Ud9%20Proteccion%20Perimetral%20Servidores%20Proxy/Ud9_proteccion_perimetral_servidores_proxy/">
+      
+      
+        <link rel="prev" href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/P8_1_vpn_ipsec_site_to_site/">
+      
+      
+        <link rel="next" href="../P9_1_proxy_squid_filtrado/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>UD9. Protección perimetral mediante Servidores Proxy - Seguridad y alta disponibilidad</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-3NX5MD5C8H"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-3NX5MD5C8H",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-3NX5MD5C8H",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ud9-proteccion-perimetral-mediante-servidores-proxy" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-header__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Seguridad y alta disponibilidad
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              UD9. Protección perimetral mediante Servidores Proxy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-orange"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Seguridad y alta disponibilidad" class="md-nav__button md-logo" aria-label="Seguridad y alta disponibilidad" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    Seguridad y alta disponibilidad
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Introduccion/Ud1_introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1. Fundamentos de Seguridad Informática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Normativa%20y%20SGSI/Ud2_normativa_y_sgsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2. Normativa y sistemas de gestión de la seguridad de la información
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud3 Criptografia
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud3 Criptografia
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/Ud3_criptografia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3. Criptografía y Mecanismos de Certificación Digital
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.1: Cifrado Simétrico con GnuPG (GPG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.2: Criptografía Asimétrica y Gestión de Claves con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.3: Funciones Hash y Verificación de Integridad de Datos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.4: Firma Digital y Verificación de la Integridad con GPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Criptografia/P05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 3.5: PKI - Gestión de Claves con Easy-RSA en Servidores Separados
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud4 Control de Acceso
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud4 Control de Acceso
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/Ud4_control_de_acceso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4. Control de accesos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.1: Protección del Gestor de Arranque GRUB2 con Contraseña
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.2: Listas de Control de Acceso (ACLs POSIX) en GNU/Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud4%20Control%20de%20Acceso/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 4.3: Monitorización de Accesos y Defensa Activa con Fail2ban en SSH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud5 Seguridad Activa y Auditorias
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud5 Seguridad Activa y Auditorias
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/Ud5_seguridad_activa_auditorias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD5: Seguridad Activa y Auditorías en Redes Corporativas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_1_diagnostico_sockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.1: Diagnóstico Local de Sockets y Conexiones de Red con ss y netstat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_2_auditoria_nmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.2: Auditoría e Inventariado de Redes con Nmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_3_monitorizacion_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.3: Monitorización Activa y Análisis de Registros de Auditoría en Linux y Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_4_mitm_arp_spoofing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.4: Intercepción Man-In-The-Middle (MITM) y ARP Spoofing con Ettercap y Wireshark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_5_servidor_radius/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.5: Despliegue de un Servidor de Autenticación RADIUS con FreeRADIUS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/P5_6_hotspot_mikrotik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 5.6: Configuración de un Hotspot con Portal Cautivo en MikroTik RouterOS mediante WebFig
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Seguridad%20Activa%20y%20Auditorias/PO5_1_escaner_vulnerabilidades/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica Opcional 5.1: Auditoría Automatizada de Vulnerabilidades con OpenVAS / Greenbone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud6 Copias de Seguridad y Recuperacion
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud6 Copias de Seguridad y Recuperacion
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/Ud6_copias_de_seguridad_y_recuperacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD6: Copias de Seguridad, Recuperación ante Desastres y Borrado Seguro
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_1_copias_deja_dup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.1: Copias de Seguridad en GNU/Linux con Déjà Dup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_2_recuperacion_testdisk_photorec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.2: Recuperación de Archivos y Particiones con TestDisk y PhotoRec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Copias%20de%20Seguridad%20y%20Recuperacion/P6_3_borrado_seguro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 6.3: Borrado Seguro de Datos y Sanitización de Soportes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud7 Seguridad Perimetral Cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud7 Seguridad Perimetral Cortafuegos y DMZ
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/Ud7_seguridad_perimetral_cortafuegos_y_dmz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD7. Seguridad perimetral: cortafuegos y DMZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_1_cortafuegos_mikrotik_basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.1: Configuración de Cortafuegos de Red y Filtrado con Estado en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_2_dmz_un_router/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.2: Despliegue de una DMZ con un Cortafuegos de Tres Interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20Seguridad%20Perimetral%20Cortafuegos%20y%20DMZ/P7_3_dmz_dos_routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 7.3: Arquitectura Avanzada de DMZ con Doble Cortafuegos en Cascada
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud8 Seguridad Perimetral Acceso Remoto y VPN
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud8 Seguridad Perimetral Acceso Remoto y VPN
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/Ud8_seguridad_perimetral_acceso_remoto_y_vpn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD8. Seguridad perimetral: Acceso remoto y Redes Privadas Virtuales (VPN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud8%20Seguridad%20Perimetral%20Acceso%20Remoto%20y%20VPN/P8_1_vpn_ipsec_site_to_site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 8.1: VPN Sitio a Sitio (Site-to-Site) con IPsec en MikroTik RouterOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud9 Proteccion Perimetral Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud9 Proteccion Perimetral Servidores Proxy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD9. Protección perimetral mediante Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD9. Protección perimetral mediante Servidores Proxy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduccion-y-concepto-de-servidor-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introducción y Concepto de Servidor Proxy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Introducción y Concepto de Servidor Proxy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#el-principio-de-ruptura-de-conexion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        El Principio de Ruptura de Conexión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beneficios-principales-de-un-servidor-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beneficios Principales de un Servidor Proxy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-clasificacion-funcional-proxy-directo-vs-proxy-inverso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Clasificación Funcional: Proxy Directo vs Proxy Inverso
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Clasificación Funcional: Proxy Directo vs Proxy Inverso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-proxy-directo-forward-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Proxy Directo (Forward Proxy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-proxy-inverso-reverse-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Proxy Inverso (Reverse Proxy)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B. Proxy Inverso (Reverse Proxy)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#beneficios-clave-del-proxy-inverso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beneficios Clave del Proxy Inverso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-modos-de-implementacion-de-un-proxy-directo-explicito-vs-transparente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Modos de Implementación de un Proxy Directo: Explícito vs Transparente
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C. Modos de Implementación de un Proxy Directo: Explícito vs Transparente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-proxy-explicito-configured-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Proxy Explícito (Configured Proxy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-proxy-transparente-intercepting-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Proxy Transparente (Intercepting Proxy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-funcionalidades-clave-de-un-proxy-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Funcionalidades Clave de un Proxy Web
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Funcionalidades Clave de un Proxy Web">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-cache-web-optimizacion-y-frescura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Caché Web: Optimización y Frescura
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="A. Caché Web: Optimización y Frescura">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estados-de-registro-en-la-cache-accesslog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estados de Registro en la Caché (access.log)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cabeceras-http-de-control-de-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cabeceras HTTP de Control de Caché
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-autenticacion-de-usuarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Autenticación de Usuarios
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-listas-de-control-de-acceso-acls-y-filtrado-de-contenidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Listas de Control de Acceso (ACLs) y Filtrado de Contenidos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C. Listas de Control de Acceso (ACLs) y Filtrado de Contenidos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tipos-principales-de-acl-en-squid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tipos Principales de ACL en Squid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regla-de-oro-en-la-evaluacion-de-acls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Regla de Oro en la Evaluación de ACLs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-el-desafio-del-trafico-https-en-los-proxies-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. El Desafío del Tráfico HTTPS en los Proxies Web
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D. El Desafío del Tráfico HTTPS en los Proxies Web">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tunel-ciego-mediante-http-connect-comportamiento-estandar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Túnel Ciego mediante HTTP CONNECT (Comportamiento Estándar)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-inspeccion-profunda-ssl-ssl-bumping-mitm-corporativo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Inspección Profunda SSL (SSL Bumping / MitM Corporativo)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-ecosistema-de-software-proxy-en-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Ecosistema de Software Proxy en Linux
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cuestionario-de-autoevaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cuestionario de Autoevaluación
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-practica-de-la-unidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Práctica de la Unidad
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P9_1_proxy_squid_filtrado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 9.1: Servidor Proxy-Caché, Control de Acceso y Filtrado Web con Squid en Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ud10 Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ud10 Soluciones de Alta Disponibilidad
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud10%20Soluciones%20de%20Alta%20Disponibilidad/Ud10_soluciones_de_alta_disponibilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD10. Soluciones de Alta Disponibilidad
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud10%20Soluciones%20de%20Alta%20Disponibilidad/P10_1_alta_disponibilidad_vrrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Práctica 10.1: Redundancia y Tolerancia a Fallos de Pasarelas y Servicios Web con VRRP en MikroTik y Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="ud9-proteccion-perimetral-mediante-servidores-proxy">UD9. Protección perimetral mediante Servidores Proxy</h1>
+<div class="admonition note">
+<p class="admonition-title">Datos de la Unidad Didáctica</p>
+<ul>
+<li><strong>Módulo:</strong> Seguridad y Alta Disponibilidad (SAD - 0378)</li>
+<li><strong>Ciclo Formativo:</strong> Administración de Sistemas Informáticos en Red (ASIR) - 2º Curso</li>
+<li><strong>Duración estimada:</strong> 8 horas</li>
+<li><strong>Resultados de aprendizaje:</strong> Diseñar, configurar y evaluar servicios proxy para la securización del perímetro de red, optimizando el rendimiento mediante mecanismos de caché y aplicando directivas granulares de autenticación, filtrado de contenidos e intermediación tanto en sentido directo como inverso.</li>
+</ul>
+</div>
+<hr>
+<h2 id="1-introduccion-y-concepto-de-servidor-proxy">1. Introducción y Concepto de Servidor Proxy</h2>
+<p>En la arquitectura clásica de redes, un cortafuegos (<em>firewall</em>) opera filtrando paquetes en las capas de red y transporte (Capas 3 y 4 del modelo OSI) evaluando direcciones IP, puertos y estados de conexión. Sin embargo, un cortafuegos tradicional es incapaz de comprender la semántica de las aplicaciones web ni de examinar el contenido de las peticiones que viajan en el interior de los paquetes.</p>
+<p>Un <strong>Servidor Proxy</strong> (del inglés <em>proxy</em>, que significa «representante» o «intermediario») es un dispositivo o servicio de software que se interpone entre un cliente que solicita un recurso y el servidor que lo proporciona, operando en la <strong>Capa de Aplicación (Capa 7 OSI)</strong>:</p>
+<div class="mermaid">sequenceDiagram
+    autonumber
+    actor Cli as Cliente (Navegador)
+    actor Prx as Servidor Proxy (Squid)
+    actor Srv as Servidor Web Destino
+
+    Note over Cli,Prx: Conexión TCP 1 (Cliente ↔ Proxy)
+    Cli-&gt;&gt;Prx: 1. Solicitud HTTP (GET /recurso)
+    Note over Prx: Inspección de Capa 7 (ACLs, URLs, Caché)
+
+    Note over Prx,Srv: Conexión TCP 2 (Proxy ↔ Servidor Web)
+    Prx-&gt;&gt;Srv: 2. Solicitud HTTP propia en nombre del cliente
+    Srv--&gt;&gt;Prx: 3. Respuesta HTTP (200 OK + Payload)
+    Note over Prx: Análisis de contenido y almacenamiento en caché
+    Prx--&gt;&gt;Cli: 4. Respuesta HTTP entregada al cliente</div>
+<h3 id="el-principio-de-ruptura-de-conexion">El Principio de Ruptura de Conexión</h3>
+<p>A diferencia de un router o un conmutador, que simplemente reenvían paquetes de un segmento a otro, <strong>el servidor proxy rompe la conexión extremo a extremo</strong>:</p>
+<ol>
+<li>El cliente no establece una conexión de transporte TCP directa con el servidor de destino final; se conecta única y exclusivamente con el servidor proxy (<strong>Conexión 1</strong>).</li>
+<li>El proxy recibe la petición de capa 7 (por ejemplo, una petición <code>GET /index.html HTTP/1.1</code>), la analiza, verifica que cumple las políticas de seguridad de la organización y, si está autorizada, abre una conexión completamente independiente con el servidor de Internet (<strong>Conexión 2</strong>) en nombre del cliente.</li>
+<li>El servidor de Internet recibe la petición creyendo que el solicitante es el propio proxy; desconoce la dirección IP real y la existencia del cliente interno.</li>
+<li>El proxy recibe la respuesta del servidor web, la procesa (evaluando si la almacena en su memoria caché) y se la entrega al cliente a través de la primera conexión.</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Recursos de Introducción al Funcionamiento del Proxy</p>
+<p>Para visualizar de forma dinámica cómo interactúa un proxy en la red y las ventajas que aporta a la seguridad corporativa, consulta estos recursos recomendados:</p>
+<ul>
+<li><a href="https://youtu.be/LMC0ZOUm4kc" target="_blank">Vídeo: ¿QUÉ ES un PROXY? ¿Cómo Funciona? | Todo lo que Necesitas Saber (8:53)</a></li>
+<li><a href="https://openwebinars.net/blog/que-es-un-servidor-proxy/" target="_blank">Artículo: Qué es un servidor proxy (OpenWebinars)</a></li>
+</ul>
+</div>
+<hr>
+<h3 id="beneficios-principales-de-un-servidor-proxy">Beneficios Principales de un Servidor Proxy</h3>
+<ul>
+<li><strong>Anonimato y Ocultación de Topología:</strong> Oculta las direcciones IP privadas y la estructura de la red interna corporativa frente al exterior.</li>
+<li><strong>Control de Acceso y Filtrado Perimetral:</strong> Permite definir qué usuarios pueden navegar, en qué horarios y hacia qué sitios web o dominios específicos.</li>
+<li><strong>Ahorro de Ancho de Banda y Aceleración:</strong> Almacena copias de los recursos más solicitados en su memoria caché local (<em>Web Caching</em>), respondiendo de forma instantánea a peticiones repetidas sin sobrecargar la línea de acceso a Internet.</li>
+<li><strong>Registro y Auditoría Exhaustiva (<em>Logging</em>):</strong> Registra cada solicitud HTTP con indicación de fecha, hora, dirección IP de origen, usuario autenticado, URL completa solicitada, código de estado HTTP y bytes transferidos, facilitando la detección de anomalías e incidentes de seguridad.</li>
+</ul>
+<hr>
+<h2 id="2-clasificacion-funcional-proxy-directo-vs-proxy-inverso">2. Clasificación Funcional: Proxy Directo vs Proxy Inverso</h2>
+<p>Dependiendo de a quién proteja y en qué sentido del flujo de tráfico se sitúe el intermediario, los proxies se dividen en dos categorías fundamentales:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌──────────────────────────────────────────────┐  ┌──────────────────────────────────────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│        PROXY DIRECTO (Forward Proxy)         │  │         PROXY INVERSO (Reverse Proxy)        │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├──────────────────────────────────────────────┤  ├──────────────────────────────────────────────┤
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│ • Se sitúa delante de los CLIENTES.          │  │ • Se sitúa delante de los SERVIDORES.        │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│ • Los clientes son CONOCIDOS (red interna).  │  │ • Los clientes son DESCONOCIDOS (Internet).   │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│ • Los destinos son DESCONOCIDOS (Internet).  │  │ • Los destinos son CONOCIDOS (servidores web)│
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│ • Protege, filtra y audita la red local.     │  │ • Protege, balancea y acelera los servidores.│
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>└──────────────────────────────────────────────┘  └──────────────────────────────────────────────┘
+</code></pre></div>
+<hr>
+<h3 id="a-proxy-directo-forward-proxy">A. Proxy Directo (<em>Forward Proxy</em>)</h3>
+<p>El <strong>Proxy Directo</strong> se encuentra situado dentro de la red corporativa, frente a los clientes locales, actuando como puerta de enlace obligatoria para acceder a los recursos de Internet:</p>
+<p><img alt="Esquema de funcionamiento de un Proxy Directo" src="../img/proxy-directo.svg"></p>
+<ul>
+<li><strong>Objetivo de diseño:</strong> Proteger a los usuarios de la red local y aplicar las directivas de seguridad de la organización.</li>
+<li><strong>Aislamiento:</strong> Ningún servidor de Internet puede iniciar comunicaciones hacia los clientes de la LAN, ni conoce sus IPs privadas.</li>
+<li><strong>Aplicaciones habituales:</strong> Entornos educativos y empresariales donde se requiere restringir el acceso a redes sociales, portales de juego o sitios potencialmente maliciosos, además de optimizar la velocidad de navegación mediante almacenamiento en caché.</li>
+<li><strong>Software de referencia:</strong> <strong>Squid</strong>, Privoxy.</li>
+</ul>
+<hr>
+<h3 id="b-proxy-inverso-reverse-proxy">B. Proxy Inverso (<em>Reverse Proxy</em>)</h3>
+<p>El <strong>Proxy Inverso</strong> se ubica en el perímetro de la organización (habitualmente en una DMZ), situado directamente delante de uno o varios servidores web de origen (<em>backend</em>):</p>
+<p><img alt="Esquema de funcionamiento de un Proxy Inverso" src="../img/proxy-inverso.svg"></p>
+<p><img alt="Arquitectura de un Proxy Inverso" src="../img/reverse_proxy.png"></p>
+<ul>
+<li><strong>Objetivo de diseño:</strong> Proteger, acelerar y optimizar los servidores web de la organización frente a las peticiones procedentes de Internet.</li>
+<li><strong>Aislamiento:</strong> Los clientes externos nunca interactúan directamente con los servidores de aplicaciones internos; todas las peticiones públicas llegan a la IP pública del proxy inverso.</li>
+</ul>
+<h4 id="beneficios-clave-del-proxy-inverso">Beneficios Clave del Proxy Inverso</h4>
+<ol>
+<li><strong>Protección y Ocultación del Backend:</strong> Los servidores web reales (que pueden albergar bases de datos, código fuente y aplicaciones sensibles) no son expuestos directamente a Internet. Un atacante no puede escanear sus puertos ni conocer su sistema operativo o versión de software.</li>
+<li><strong>Terminación SSL/TLS (<em>TLS Termination Proxy</em>):</strong> El proxy inverso asume la carga computacional de descifrar y cifrar las sesiones HTTPS de los clientes de Internet, comunicándose con los servidores backend en HTTP plano (o HTTPS ligero en una red segura). Esto libera a los servidores de aplicaciones de una sobrecarga significativa de CPU y centraliza la gestión de los certificados digitales (Let's Encrypt / certificados corporativos) en un único punto.</li>
+<li><strong>Cortafuegos de Aplicaciones Web (WAF):</strong> El proxy inverso puede equiparse con módulos WAF (como ModSecurity en Nginx/Apache o Coraza) para inspeccionar la carga útil de las peticiones HTTP/HTTPS, bloqueando ataques comunes como inyección SQL (SQLi), Cross-Site Scripting (XSS), inclusión remota de archivos (RFI) y mitigando ataques de denegación de servicio (DDoS).</li>
+<li><strong>Equilibrio de Carga (<em>Load Balancing</em>):</strong> Si la infraestructura dispone de múltiples servidores web idénticos, el proxy inverso reparte las peticiones entre ellos según algoritmos como <em>Round Robin</em>, <em>Least Connections</em> (menor número de conexiones activas) o <em>IP Hash</em> (persistencia de sesión), permitiendo el escalado horizontal transparente.</li>
+<li><strong>Caché y Compresión Web:</strong> Almacena respuestas estáticas (imágenes, hojas de estilo CSS, scripts JavaScript) en su memoria RAM de alta velocidad y aplica algoritmos de compresión como Gzip o Brotli al vuelo, reduciendo drásticamente los tiempos de carga y el consumo de ancho de banda.</li>
+<li><strong>Software de referencia:</strong> <strong>Nginx</strong>, <strong>HAProxy</strong>, Apache HTTP Server (<code>mod_proxy</code>), <strong>Varnish</strong> Cache, Traefik y servicios CDN globales (Cloudflare, Akamai).</li>
+</ol>
+<hr>
+<h3 id="c-modos-de-implementacion-de-un-proxy-directo-explicito-vs-transparente">C. Modos de Implementación de un Proxy Directo: Explícito vs Transparente</h3>
+<p>Al desplegar un proxy directo en una red local existen dos filosofías de integración con los equipos cliente:</p>
+<h4 id="1-proxy-explicito-configured-proxy">1. Proxy Explícito (<em>Configured Proxy</em>)</h4>
+<ul>
+<li><strong>Mecanismo:</strong> El navegador o sistema operativo del cliente está explícitamente configurado para enviar todo el tráfico al proxy indicando su dirección IP y puerto (por defecto TCP 3128 en Squid, o puertos como 8080).</li>
+<li><strong>Despliegue:</strong> Puede configurarse manualmente, mediante políticas de grupo (GPO de Active Directory), archivos de configuración automática de proxy (<strong>PAC - Proxy Auto-Config</strong>) o el protocolo de autodescubrimiento <strong>WPAD (<em>Web Proxy Auto-Discovery Protocol</em>)</strong> a través de DHCP y DNS.</li>
+<li><strong>Seguridad perimetral:</strong> Para evitar que un usuario avanzado se salte el proxy borrando su configuración en el navegador, el cortafuegos perimetral del router debe bloquear de forma estricta cualquier salida directa de los clientes hacia los puertos TCP 80 y 443 de Internet.</li>
+</ul>
+<h4 id="2-proxy-transparente-intercepting-proxy">2. Proxy Transparente (<em>Intercepting Proxy</em>)</h4>
+<ul>
+<li><strong>Mecanismo:</strong> El cliente <strong>no tiene ningún proxy configurado</strong> en su navegador; cree que está conectando directamente a Internet. Sin embargo, cuando sus paquetes atraviesan el router o pasarela por defecto, una regla de cortafuegos (usualmente mediante <code>iptables</code> o directivas DNAT) intercepta silenciosamente el tráfico dirigido a los puertos 80 y lo redirige hacia el puerto local donde escucha el servidor proxy:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Redirección en el router perimetral (iptables):</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-A<span class="w"> </span>PREROUTING<span class="w"> </span>-i<span class="w"> </span>eth1<span class="w"> </span>-p<span class="w"> </span>tcp<span class="w"> </span>--dport<span class="w"> </span><span class="m">80</span><span class="w"> </span>-j<span class="w"> </span>REDIRECT<span class="w"> </span>--to-port<span class="w"> </span><span class="m">3128</span>
+</code></pre></div></li>
+<li><strong>Ventajas:</strong> Despliegue inmediato en redes masivas (hoteles, campus universitarios, redes corporativas heterogéneas) sin necesidad de tocar la configuración de los dispositivos de los usuarios.</li>
+<li><strong>Limitaciones técnicas con HTTPS:</strong> Debido a la naturaleza del cifrado SSL/TLS, interceptar de forma transparente el puerto 443 provoca advertencias graves de seguridad en los navegadores (rompe la cadena de confianza del certificado), requiriendo soluciones complejas de inspección de certificados (<em>SSL Bump</em>).</li>
+</ul>
+<hr>
+<h2 id="3-funcionalidades-clave-de-un-proxy-web">3. Funcionalidades Clave de un Proxy Web</h2>
+<hr>
+<h3 id="a-cache-web-optimizacion-y-frescura">A. Caché Web: Optimización y Frescura</h3>
+<p>El servicio de <strong>caché web</strong> almacena copias de respuestas HTTP previamente solicitadas para satisfacer solicitudes idénticas posteriores de forma instantánea:</p>
+<div class="mermaid">graph TD
+    Client([Cliente solicita recurso Web]) --&gt; Proxy{¿Está en la Caché&lt;br&gt;del Servidor Proxy?}
+
+    Proxy -- Sí (TCP_HIT) --&gt; Fresh{¿El objeto sigue&lt;br&gt;siendo fresco?}
+    Fresh -- Sí --&gt; ServeFast[Entrega inmediata desde disco o RAM&lt;br&gt;• Latencia casi nula&lt;br&gt;• Cero consumo de WAN]
+    Fresh -- No (TCP_REFRESH) --&gt; Revalidate[Petición condicional al origen&lt;br&gt;If-Modified-Since]
+
+    Revalidate --&gt; Modified{¿El servidor responde&lt;br&gt;304 Not Modified?}
+    Modified -- Sí --&gt; UpdateTimer[Actualiza tiempo de frescura y entrega caché]
+    Modified -- No --&gt; FetchNew[Descarga nuevo recurso y actualiza caché]
+
+2. Petición posterior del Cliente 2:
+[ Cliente 2 ] ── GET /logo.png ──&gt; [ Proxy ] (HIT: ¡está en caché!)
+[ Cliente 2 ] &lt;── 200 OK (logo) ── [ Proxy ] (Respuesta inmediata; 0 tráfico a Internet)</div>
+<h4 id="estados-de-registro-en-la-cache-accesslog">Estados de Registro en la Caché (<code>access.log</code>)</h4>
+<p>Al analizar los registros del servidor proxy (como el archivo <code>/var/log/squid/access.log</code>), se identifican los siguientes códigos fundamentales:</p>
+<ul>
+<li><code>TCP_HIT</code>: El recurso solicitado se encontraba almacenado en la caché del proxy y se entregó directamente al cliente sin consultar al servidor de Internet. Ahorro de tiempo y ancho de banda del 100%.</li>
+<li><code>TCP_MISS</code>: El recurso no estaba en la caché (primera vez que se solicita o fue purgado). El proxy tuvo que conectarse al servidor remoto para descargarlo.</li>
+<li><code>TCP_REFRESH_UNMODIFIED</code>: El recurso estaba en la caché pero su tiempo de validez había expirado. El proxy realizó una petición condicional al servidor de origen mediante la cabecera <code>If-Modified-Since</code> o <code>If-None-Match</code> (ETag); el servidor respondió con un código <code>304 Not Modified</code> indicando que el contenido no ha cambiado, por lo que el proxy sirvió la versión que ya tenía almacenada.</li>
+<li><code>TCP_DENIED</code>: La petición fue rechazada por las directivas de control de acceso (ACLs) del proxy (código HTTP <code>403 Forbidden</code> o <code>407 Proxy Authentication Required</code>).</li>
+</ul>
+<h4 id="cabeceras-http-de-control-de-cache">Cabeceras HTTP de Control de Caché</h4>
+<p>El comportamiento de la caché se rige por las directivas que los servidores y clientes envían en sus cabeceras HTTP:
+* <code>Cache-Control: public</code>: Indica que cualquier proxy intermedio puede almacenar el recurso.
+* <code>Cache-Control: private</code>: El recurso contiene información personal de un usuario y sólo puede almacenarlo su propio navegador, <strong>nunca un proxy compartido</strong>.
+* <code>Cache-Control: no-cache</code> / <code>no-store</code>: Prohíbe almacenar el recurso en la caché.
+* <code>Cache-Control: max-age=segundos</code>: Tiempo máximo de validez del recurso antes de considerarse obsoleto (<em>stale</em>).
+* <code>ETag</code>: Identificador único (hash) de la versión del archivo para validación condicional rápida.</p>
+<hr>
+<h3 id="b-autenticacion-de-usuarios">B. Autenticación de Usuarios</h3>
+<p>Para aplicar políticas diferenciadas y auditar qué personas navegan por la red corporativa, el proxy puede exigir que el usuario se autentique antes de concederle salida hacia Internet:</p>
+<ol>
+<li>El cliente envía una petición HTTP ordinaria.</li>
+<li>El proxy intercepta la petición y responde con un código de error <strong>HTTP 407 Proxy Authentication Required</strong> junto con la cabecera <code>Proxy-Authenticate: Basic realm="..."</code>.</li>
+<li>El navegador del usuario muestra una ventana emergente solicitando usuario y contraseña.</li>
+<li>El navegador reenvía la petición original incluyendo la cabecera <code>Proxy-Authorization: Basic &lt;credenciales_en_base64&gt;</code>.</li>
+<li>El proxy valida las credenciales contra su base de datos local (fichero <code>/etc/squid/passwd</code> generado con la utilidad <code>htpasswd</code>) o contra un servidor de directorio corporativo centralizado (<strong>LDAP / Active Directory</strong>).</li>
+</ol>
+<div class="mermaid">sequenceDiagram
+    autonumber
+    actor User as Navegador Web
+    actor Proxy as Servidor Proxy Squid
+    actor Web as Servidor Web Destino
+
+    User-&gt;&gt;Proxy: 1. GET http://ejemplo.com
+    Note over Proxy: Inspecciona ACL: autenticación obligatoria
+    Proxy--&gt;&gt;User: 2. HTTP 407 Proxy Authentication Required&lt;br&gt;Proxy-Authenticate: Basic realm="Acceso Corporativo"
+    Note over User: Ventana emergente: usuario y contraseña
+    User-&gt;&gt;Proxy: 3. GET http://ejemplo.com&lt;br&gt;Proxy-Authorization: Basic dXNlcjpwYXNz
+    Note over Proxy: Valida credenciales contra /etc/squid/passwd (ncsa_auth)
+    Proxy-&gt;&gt;Web: 4. GET / HTTP/1.1 (Conexión propia del Proxy hacia Internet)
+    Web--&gt;&gt;Proxy: 5. HTTP 200 OK + Contenido Web
+    Proxy--&gt;&gt;User: 6. HTTP 200 OK + Contenido Web entregado</div>
+<hr>
+<h3 id="c-listas-de-control-de-acceso-acls-y-filtrado-de-contenidos">C. Listas de Control de Acceso (ACLs) y Filtrado de Contenidos</h3>
+<p>El mecanismo central para gobernar el comportamiento de Squid son las <strong>Listas de Control de Acceso (<em>Access Control Lists - ACLs</em>)</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c"># 1. Definición de la lista:</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">acl</span><span class="w"> </span>&lt;nombre_lista&gt;<span class="w"> </span>&lt;tipo_acl&gt;<span class="w"> </span>&lt;argumentos...&gt;
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c"># 2. Aplicación de la directiva de permiso o denegación:</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">http_access</span><span class="w"> </span><span class="no">allow</span><span class="w"> </span>&lt;nombre_lista&gt;
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">http_access</span><span class="w"> </span><span class="no">deny</span><span class="w"> </span>&lt;nombre_lista&gt;
+</code></pre></div>
+<h4 id="tipos-principales-de-acl-en-squid">Tipos Principales de ACL en Squid</h4>
+<ul>
+<li><code>src</code>: Dirección IP o subred de origen del cliente (ej. <code>acl red_alumnos src 192.168.100.0/24</code>).</li>
+<li><code>dstdomain</code>: Nombre de dominio o subdominio de destino. El punto inicial indica coincidencia con el dominio y todos sus subdominios (ej. <code>acl google_drive dstdomain drive.google.com</code>).</li>
+<li><code>url_regex</code>: Búsqueda de patrones mediante expresiones regulares en la URL completa (ej. <code>acl descargas_prohibidas url_regex -i \.(exe|iso|torrent)$</code>).</li>
+<li><code>proxy_auth</code>: Requiere que el usuario esté autenticado en el sistema (ej. <code>acl usuarios_validos proxy_auth REQUIRED</code>).</li>
+<li><code>time</code>: Filtrado basado en días de la semana y franjas horarias (ej. <code>acl horario_lectivo time M T W H F 08:00-14:00</code>).</li>
+<li><code>port</code>: Puertos de destino autorizados (ej. <code>acl Safe_ports port 80 443</code>).</li>
+</ul>
+<h4 id="regla-de-oro-en-la-evaluacion-de-acls">Regla de Oro en la Evaluación de ACLs</h4>
+<p>Las reglas <code>http_access</code> se evalúan de forma estrictamente <strong>secuencial, de arriba hacia abajo</strong>. En el momento en que una petición cumple todas las condiciones de una línea, el proxy toma la decisión de inmediato (<code>allow</code> o <code>deny</code>) y <strong>detiene la evaluación</strong>. Si ninguna regla coincide, se aplica la directiva por defecto final (habitualmente <code>http_access deny all</code>).</p>
+<hr>
+<h3 id="d-el-desafio-del-trafico-https-en-los-proxies-web">D. El Desafío del Tráfico HTTPS en los Proxies Web</h3>
+<p>Hoy en día, más del 95% del tráfico web mundial viaja cifrado mediante <strong>HTTPS (TLS/SSL)</strong>. Esto supone un cambio de paradigma para los proxies web:</p>
+<h4 id="1-tunel-ciego-mediante-http-connect-comportamiento-estandar">1. Túnel Ciego mediante HTTP CONNECT (Comportamiento Estándar)</h4>
+<p>Cuando un navegador necesita acceder a un sitio HTTPS (puerto 443) a través de un proxy explícito:
+* El navegador envía al proxy la petición: <code>CONNECT www.banco.com:443 HTTP/1.1</code>.
+* El proxy lee el nombre del dominio solicitado a través de la extensión <strong>SNI (<em>Server Name Indication</em>)</strong> de la negociación TLS.
+* Si el dominio está autorizado por las ACLs, el proxy responde con <code>HTTP/1.1 200 Connection established</code> y a partir de ese momento se limita a reenviar bytes cifrados de forma ciega entre el cliente y el servidor.
+* <strong>Limitación:</strong> El proxy <strong>no puede ver la ruta exacta</strong> (<code>/login</code>, <code>/transferencia</code>), ni el contenido HTML, ni aplicar filtrado por palabras clave ni almacenar el contenido en caché.</p>
+<h4 id="2-inspeccion-profunda-ssl-ssl-bumping-mitm-corporativo">2. Inspección Profunda SSL (<em>SSL Bumping / MitM Corporativo</em>)</h4>
+<p>Para que una empresa pueda inspeccionar antivirus, prevenir fugas de datos (DLP) y filtrar contenidos en conexiones HTTPS, el proxy debe realizar una interceptación activa (<em>Man-in-the-Middle</em> controlado):
+* El proxy intercepta el handshake TLS con el servidor web remoto y crea una sesión TLS independiente hacia Internet.
+* A continuación, el proxy genera dinámicamente un <strong>certificado falso al vuelo</strong> para <code>www.sitio.com</code> y se lo presenta al navegador del cliente.
+* Para que el navegador no muestre una alarma roja de certificado no seguro, los administradores deben instalar previamente el <strong>certificado de la Autoridad de Certificación (CA) del proxy</strong> en el almacén de certificados de confianza de todos los equipos corporativos.
+* <strong>Consideraciones éticas y legales:</strong> Aunque es común en el ámbito militar y financiero, la inspección SSL puede vulnerar la privacidad de los trabajadores si se descifra tráfico bancario o de salud. En Squid se configuran excepciones explícitas (<em>SSL Bump splice</em>) para omitir la inspección en dominios financieros o gubernamentales.</p>
+<hr>
+<h2 id="4-ecosistema-de-software-proxy-en-linux">4. Ecosistema de Software Proxy en Linux</h2>
+<p>En entornos corporativos y centros de datos conviven diferentes herramientas especializadas según la función requerida:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Software</th>
+<th style="text-align: left;">Tipo Principal</th>
+<th style="text-align: left;">Fortalezas Técnicas</th>
+<th style="text-align: left;">Casos de Uso Típicos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Squid</strong></td>
+<td style="text-align: left;">Proxy Directo y Caché</td>
+<td style="text-align: left;">Madurez insuperable, motor de ACLs extremadamente flexible, autenticación diversa (NCSA, LDAP, Kerberos), soporte de proxy transparente.</td>
+<td style="text-align: left;">Control de navegación en empresas, colegios, universidades y optimización de ancho de banda.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Nginx</strong></td>
+<td style="text-align: left;">Proxy Inverso</td>
+<td style="text-align: left;">Rendimiento asíncrono no bloqueante (<em>event-driven</em>), bajísimo consumo de RAM, terminación TLS veloz, compresión Gzip/Brotli.</td>
+<td style="text-align: left;">Publicación de aplicaciones web, frontend de arquitecturas de microservicios, balanceo HTTP.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>HAProxy</strong></td>
+<td style="text-align: left;">Proxy Inverso y Balanceador</td>
+<td style="text-align: left;">Rendimiento extremo en Capas 4 (TCP) y 7 (HTTP), monitorización avanzada de la salud de los backends (<em>health checks</em>), alta disponibilidad.</td>
+<td style="text-align: left;">Balanceo de carga de tráfico crítico en centros de datos y pasarelas de pago.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Varnish</strong></td>
+<td style="text-align: left;">Acelerador Web Caché</td>
+<td style="text-align: left;">Almacenamiento ultrarrápido en memoria RAM, lenguaje de configuración VCL (<em>Varnish Configuration Language</em>).</td>
+<td style="text-align: left;">Aceleración de periódicos digitales, comercios electrónicos masivos y portales de contenidos.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Privoxy</strong></td>
+<td style="text-align: left;">Proxy Directo Ligero</td>
+<td style="text-align: left;">Filtrado avanzado de cabeceras HTTP, bloqueo de publicidad, rastreadores y protección de la privacidad personal.</td>
+<td style="text-align: left;">Integración con navegadores individuales o enrutamiento a través de la red Tor.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>E2Guardian</strong></td>
+<td style="text-align: left;">Filtro de Contenido</td>
+<td style="text-align: left;">Análisis semántico y heurístico de contenido web, bloqueo por categorías de texto y control parental avanzado.</td>
+<td style="text-align: left;">Filtrado de contenidos en entornos educativos combinado habitualmente como backend de Squid.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="5-cuestionario-de-autoevaluacion">5. Cuestionario de Autoevaluación</h2>
+<p>Comprueba tu asimilación de los contenidos teóricos respondiendo a las siguientes cuestiones:</p>
+<details class="question">
+<summary>1. ¿En qué nivel del modelo OSI opera un servidor proxy y en qué se diferencia su funcionamiento del de un router tradicional?</summary>
+<p><strong>Respuesta:</strong> Opera en la <strong>Capa de Aplicación (Capa 7 OSI)</strong>. A diferencia de un router (que enruta paquetes en Capa 3 manteniendo la conexión de transporte entre emisor y receptor), el proxy <strong>rompe la conexión de extremo a extremo</strong>: mantiene una conexión TCP independiente con el cliente y otra con el servidor final, actuando como intermediario y evaluando la semántica del protocolo de aplicación (HTTP/HTTPS).</p>
+</details>
+<details class="question">
+<summary>2. Explica la diferencia funcional esencial entre un Proxy Directo (<em>Forward Proxy</em>) y un Proxy Inverso (<em>Reverse Proxy</em>).</summary>
+<p><strong>Respuesta:</strong> Un Proxy Directo se sitúa frente a los clientes de una red local interna para protegerlos, filtrar su navegación hacia Internet y ahorrar ancho de banda. Un Proxy Inverso se sitúa frente a los servidores de origen de una organización para protegerlos de ataques externos procedentes de Internet, realizar terminación SSL/TLS, balancear la carga entre varios backends y acelerar la entrega de contenidos.</p>
+</details>
+<details class="question">
+<summary>3. En los registros de un proxy-caché, ¿qué significan los códigos TCP_HIT y TCP_MISS?</summary>
+<p><strong>Respuesta:</strong> <code>TCP_HIT</code> indica que el objeto web solicitado ya se encontraba almacenado en la memoria caché del proxy y fue entregado al cliente de inmediato sin consultar a Internet. <code>TCP_MISS</code> indica que el objeto no estaba en la caché, por lo que el proxy tuvo que descargarlo del servidor remoto de Internet.</p>
+</details>
+<details class="question">
+<summary>4. ¿Qué código de estado HTTP emite un servidor proxy cuando exige que el usuario se autentique antes de navegar?</summary>
+<p><strong>Respuesta:</strong> El código de error <strong>HTTP 407 Proxy Authentication Required</strong>, acompañado de la cabecera <code>Proxy-Authenticate</code> que indica el mecanismo de desafío (por ejemplo, <code>Basic</code>).</p>
+</details>
+<details class="question">
+<summary>5. ¿Qué ventaja y qué limitación presenta un Proxy Transparente frente a uno Explícito?</summary>
+<p><strong>Respuesta:</strong> La ventaja es que no requiere configuración manual en los navegadores ni en los dispositivos de los usuarios (el router redirige el tráfico silenciosamente). La limitación principal es que en conexiones HTTPS el proxy no puede interceptar el tráfico de forma nativa sin generar alertas críticas de seguridad de certificados en los clientes.</p>
+</details>
+<details class="question">
+<summary>6. ¿Qué función cumple el comando 'squid -z' en una instalación de Squid?</summary>
+<p><strong>Respuesta:</strong> Se encarga de inicializar y crear la estructura jerárquica de subdirectorios en el disco duro definidos en la directiva <code>cache_dir</code> para almacenar los archivos de la caché antes de arrancar el servicio por primera vez.</p>
+</details>
+<details class="question">
+<summary>7. Al evaluar las directivas http_access en squid.conf, ¿por qué es crítico el orden en el que se escriben las reglas?</summary>
+<p><strong>Respuesta:</strong> Porque Squid evalúa las reglas de forma secuencial, de arriba hacia abajo. En cuanto una petición coincide con una directiva, la acción (<code>allow</code> o <code>deny</code>) se aplica de inmediato y la evaluación se detiene. Si se coloca una regla permisiva demasiado arriba, las restricciones posteriores quedarán anuladas.</p>
+</details>
+<details class="question">
+<summary>8. ¿Cómo maneja un proxy web estándar el tráfico HTTPS mediante el método HTTP CONNECT?</summary>
+<p><strong>Respuesta:</strong> El navegador solicita al proxy abrir un túnel hacia el puerto 443 del dominio de destino (<code>CONNECT www.dominio.com:443</code>). El proxy lee el nombre del dominio en la cabecera SNI, valida si está autorizado por sus ACLs y, de estarlo, abre un túnel TCP ciego por el que fluyen los bytes cifrados sin descifrar el contenido ni ver las rutas internas.</p>
+</details>
+<details class="question">
+<summary>9. ¿Qué ventajas aporta la 'Terminación SSL/TLS' en un proxy inverso como Nginx?</summary>
+<p><strong>Respuesta:</strong> Libera a los servidores backend de la intensa carga computacional de descifrar y cifrar las claves criptográficas, centraliza la renovación y gestión de los certificados digitales en un único punto y permite al proxy inverso inspeccionar el tráfico en claro para aplicar reglas de WAF o balanceo avanzado.</p>
+</details>
+<details class="question">
+<summary>10. ¿Por qué se desaconseja utilizar la directiva 'Cache-Control: private' en recursos que se desean almacenar en un proxy corporativo?</summary>
+<p><strong>Respuesta:</strong> Porque la directiva <code>private</code> indica explícitamente que la respuesta contiene datos personales exclusivos para un usuario concreto y prohíbe que cualquier caché compartida o proxy intermedio almacene una copia, restringiendo su almacenamiento únicamente a la caché del navegador local del usuario.</p>
+</details>
+<hr>
+<h2 id="6-practica-de-la-unidad">6. Práctica de la Unidad</h2>
+<p>Aplica los conceptos teóricos aprendidos desplegando y configurando un servidor proxy corporativo completo:</p>
+<ul>
+<li><strong><a href="../P9_1_proxy_squid_filtrado/">Práctica 9.1: Servidor Proxy-Caché, Control de Acceso y Filtrado Web con Squid en Linux</a></strong>: Instalación de Squid en Debian sobre GNS3, configuración de almacenamiento en disco, autenticación básica de usuarios con <code>htpasswd</code>, filtrado selectivo de subdominios de Google mediante ACLs y verificación desde cliente gráfico Firefox.</li>
+</ul></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "toc.integrate", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>
