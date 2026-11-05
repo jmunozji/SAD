@@ -34,25 +34,29 @@ Cuando un usuario o sistema operativo elimina un archivo de forma ordinaria (por
 
 Aunque ambas herramientas forman parte de la misma suite desarrollada por Christophe Grenier, su metodología de recuperación es radicalmente diferente:
 
-```text
-               ┌────────────────────────────────────────────────────────┐
-               │          UNIDAD DE ALMACENAMIENTO DE PRUEBA            │
-               │   [Tabla Particiones] [Entrada Directorio] [Clústeres] │
-               └───────────────────────────┬────────────────────────────┘
-                                           │
-                 ┌─────────────────────────┴─────────────────────────┐
-                 │                                                   │
-                 ▼                                                   ▼
-       ┌──────────────────┐                                ┌──────────────────┐
-       │     TestDisk     │                                │     PhotoRec     │
-       └─────────┬────────┘                                └─────────┬────────┘
-                 │ Lee metadatos y entradas borradas                 │ Escaneo en bruto (Carving)
-                 │ Busca la marca '0xE5'                             │ Ignora el sistema de ficheros
-                 │ Reconstruye la cadena de clústeres                │ Busca Magic Numbers (Cabecera/Pie)
-                 ▼                                                   ▼
-       ✔ Recupera nombre original                          ✘ Pierde el nombre original
-       ✔ Mantiene la ruta de carpetas                      ✘ Pierde jerarquía (recup_dir.*)
-       ✔ Conserva fechas originales                        ✔ Funciona aun con filesystem destruido
+```mermaid
+flowchart TD
+    Unidad["💾 UNIDAD DE ALMACENAMIENTO DE PRUEBA<br>[Tabla Particiones] [Entrada Directorio] [Clústeres de Datos]"]
+
+    Unidad --> TD["🛠️ <b>TestDisk</b><br><i>Análisis Estructural y Metadatos</i>"]
+    Unidad --> PR["🔍 <b>PhotoRec</b><br><i>Tallado en Bruto (File Carving)</i>"]
+
+    subgraph ResTestDisk ["Resultados TestDisk"]
+        TD1["• Lee metadatos y entradas borradas<br>• Busca marca de borrado '0xE5'<br>• Reconstruye cadenas de clústeres<br><br>✔ <b>Recupera nombre original</b><br>✔ <b>Mantiene rutas y carpetas</b><br>✔ <b>Conserva fechas y permisos</b>"]
+    end
+
+    subgraph ResPhotoRec ["Resultados PhotoRec"]
+        PR1["• Ignora el sistema de ficheros<br>• Escaneo sector a sector en crudo<br>• Busca firmas Magic Numbers (cabecera/pie)<br><br>✘ <b>Pierde el nombre original (f0123...)</b><br>✘ <b>Pierde jerarquía (recup_dir.*)</b><br>✔ <b>Funciona con filesystem destruido</b>"]
+    end
+
+    TD --> ResTestDisk
+    PR --> ResPhotoRec
+
+    style Unidad fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style TD fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style PR fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style ResTestDisk fill:#f1f8e9,stroke:#81c784,stroke-width:1px
+    style ResPhotoRec fill:#fffde7,stroke:#ffd54f,stroke-width:1px
 ```
 
 | Característica | TestDisk | PhotoRec |

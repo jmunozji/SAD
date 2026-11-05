@@ -34,26 +34,33 @@ Déjà Dup actúa como una interfaz gráfica intuitiva construida sobre **Duplic
 2. **Cifrado criptográfico con GnuPG:** Antes de abandonar la máquina cliente, todos los volúmenes de respaldo se cifran de extremo a extremo con el algoritmo AES simétrico mediante una frase de paso definida por el usuario. Aunque un atacante intercepte el canal o comprometa el servidor de destino, no podrá leer la información.
 3. **Transporte seguro en red:** Admite el envío a través de protocolos seguros como SSH/SFTP, WebDAV o proveedores de almacenamiento en la nube.
 
-```text
- [ Cliente: Ubuntu Desktop / MATE ]
-   Carpeta local: ~/Documentos
-          │
-          ▼
-   [ Déjà Dup / Duplicity ]
-   - Filtra carpetas excluidas
-   - Comprime (tar.gz)
-   - Cifra simétricamente (GPG)
-          │
-          ▼ Conexión SSH (SFTP / TCP 22)
-  ══════════════════════════════════════════════════════════
-          │
-          ▼
- [ Servidor: Ubuntu Server LTS ]
-   Repositorio remoto: /home/admin01/backups/
-   Archivos resultantes:
-   - duplicity-full.*.vol1.difftar.gpg  (Copia Completa)
-   - duplicity-inc.*.vol1.difftar.gpg   (Copia Incremental)
-   - duplicity-*.manifest.gpg           (Metadatos y firmas)
+```mermaid
+flowchart TD
+    subgraph Cliente ["💻 Cliente: Ubuntu Desktop / MATE"]
+        Origen["Carpeta local de origen<br><code>~/Documentos</code>"]
+        DD["<b>Déjà Dup / Duplicity</b><br>• Filtra carpetas y extensiones excluidas<br>• Comprime bloques de datos (tar.gz)<br>• Cifra simétricamente con AES (GnuPG)"]
+        Origen --> DD
+    end
+
+    subgraph Red ["🌐 Canal de Transporte Seguro"]
+        Canal["Túnel SSH (SFTP / TCP puerto 22)"]
+    end
+
+    subgraph Servidor ["🖥️ Servidor Remoto: Ubuntu Server LTS"]
+        Destino["Repositorio remoto en disco<br><code>/home/admin01/backups/</code>"]
+        Archivos["<b>Archivos resultantes cifrados:</b><br>• <code>duplicity-full.*.vol1.difftar.gpg</code> (Full)<br>• <code>duplicity-inc.*.vol1.difftar.gpg</code> (Incremental)<br>• <code>duplicity-*.manifest.gpg</code> (Firmas y metadatos)"]
+        Destino --> Archivos
+    end
+
+    DD --> Canal
+    Canal --> Destino
+
+    style Cliente fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Red fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Servidor fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style DD fill:#ffffff,stroke:#388e3c,stroke-width:1px
+    style Canal fill:#ffffff,stroke:#f57c00,stroke-width:1px
+    style Archivos fill:#ffffff,stroke:#0288d1,stroke-width:1px
 ```
 
 ### Elementos del Laboratorio

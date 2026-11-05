@@ -29,15 +29,18 @@ Como se comprobó en la práctica anterior, el borrado estándar mediante el exp
 
 Para garantizar la confidencialidad, la seguridad informática recurre a la **sanitización lógica por sobrescritura (*Data Overwrite*)**, que consiste en escribir nuevos patrones de bits directamente sobre los sectores que ocupaba la información sensible.
 
-```text
-  [ Archivo Confidencial ] ──> [ Sobrescritura con shred / nwipe ] ──> [ Sectores con Ruido / Ceros ]
-                                                                                   │
-                                                                   ¿Es recuperable?
-                                                                                   ▼
-                                                                  [ Auditoría TestDisk / PhotoRec ]
-                                                                  - Metadatos destruidos
-                                                                  - Cero firmas legibles
-                                                                  ✔ Sanitización CERTIFICADA
+```mermaid
+flowchart LR
+    A["📄 <b>Archivo Confidencial</b><br>Datos sensibles en sectores"] --> B["🧹 <b>Sobrescritura Lógica</b><br>Utilidades: <code>shred</code> / <code>nwipe</code> / <code>dd</code><br>Patrones pseudoaleatorios y ceros"]
+    B --> C["💾 <b>Sectores Sanitizados</b><br>Ruido criptográfico / Ceros <code>0x00</code>"]
+    C --> D{"🔍 <b>Auditoría Forense</b><br>TestDisk / PhotoRec"}
+    D -->|Verificación negativa| E["✅ <b>Sanitización Certificada</b><br>• Metadatos destruidos<br>• Cero firmas legibles (Magic Numbers)<br>• Recuperación imposible"]
+
+    style A fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style B fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style D fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style E fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
 
 ### Estándares Internacionales de Sanitización

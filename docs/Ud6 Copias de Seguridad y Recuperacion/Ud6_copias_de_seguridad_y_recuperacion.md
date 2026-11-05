@@ -12,19 +12,29 @@
 La información es el activo más valioso de cualquier organización o usuario particular. Mientras que la **seguridad activa** comprende todas las barreras y defensas preventivas orientadas a evitar que ocurra un incidente (cortafuegos, contraseñas robustas, detección de intrusos o parches de seguridad), la **seguridad pasiva** entra en acción cuando el incidente o desastre ya se ha producido, con el objetivo de **minimizar el impacto de los daños y restaurar la operatividad en el menor tiempo posible**.
 
 Las pérdidas de información no solo tienen su origen en ciberataques maliciosos (como infecciones por ransomware o sabotajes internos), sino frecuentemente en:
+
 * Averías físicas del hardware (fallos mecánicos de cabezales en discos HDD o degradación de celdas flash en SSD).
 * Errores humanos involuntarios (borrado accidental de carpetas, sobreescritura de bases de datos o formateos erróneos).
 * Desastres ambientales o de infraestructura (incendios, inundaciones, picos de tensión o cortes eléctricos prolongados).
 
-```
- ┌──────────────────────────────────────┐     ┌──────────────────────────────────────┐
- │           SEGURIDAD ACTIVA           │     │          SEGURIDAD PASIVA            │
- ├──────────────────────────────────────┤     ├──────────────────────────────────────┤
- │ * Prevención y detección en vivo.    │     │ * Recuperación y respuesta al daño.  │
- │ * Control de acceso y cifrado.       │     │ * Copias de seguridad (Backups).     │
- │ * Cortafuegos, IDS/IPS y antivirus.  │     │ * Herramientas de recuperación.      │
- │ * Evita que el desastre ocurra.      │     │ * Permite volver a operar tras fallo.│
- └──────────────────────────────────────┘     └──────────────────────────────────────┘
+```mermaid
+graph TD
+    Root["Estrategia de Seguridad Integral"]
+
+    subgraph Activa ["🛡️ SEGURIDAD ACTIVA (Preventiva)"]
+        A1["• Prevención y detección en tiempo real<br>• Control de acceso y cifrado de datos<br>• Cortafuegos, IDS/IPS y antivirus / EDR<br>• <b>Objetivo:</b> Evitar que ocurra el incidente"]
+    end
+
+    subgraph Pasiva ["🔄 SEGURIDAD PASIVA (Mitigación y Recuperación)"]
+        P1["• Minimizar el impacto y daños del desastre<br>• Copias de seguridad periódicas (Backups)<br>• Herramientas de rescate forense y reparación<br>• <b>Objetivo:</b> Restaurar operatividad en mínimo RTO"]
+    end
+
+    Root --> Activa
+    Root --> Pasiva
+
+    style Root fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Activa fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Pasiva fill:#fff3e0,stroke:#f57c00,stroke-width:2px
 ```
 
 ---
@@ -100,8 +110,6 @@ graph TD
 
 En función de cómo gestionan los ficheros modificados a lo largo del tiempo, se distinguen tres modalidades principales:
 
-![Esquema general de tipos de copias de seguridad](img/esquema_copias.png)
-
 #### 1. Copia de Seguridad Completa (*Full Backup*)
 * **Mecánica:** Respalda absolutamente todos los ficheros, carpetas y estructuras de datos seleccionados, independientemente de si han cambiado o no desde la última copia.
 * **Ventajas:** Máxima sencillez y rapidez de restauración (todo lo necesario para restaurar el sistema se encuentra en un único contenedor o soporte).
@@ -123,6 +131,10 @@ En función de cómo gestionan los ficheros modificados a lo largo del tiempo, s
 * **Ventajas:** Restauración muy rápida y sencilla: únicamente se requiere la última copia completa y la última copia diferencial.
 * **Inconvenientes:** A medida que pasan los días tras la copia completa, el tamaño de la copia diferencial crece progresivamente, aumentando el tiempo necesario para completarla.
 
+En función del volumen de datos a guardar se pueden seguir varias estrategias:
+
+![Esquema general de tipos de copias de seguridad](img/esquema_copias.png)
+
 ---
 
 ### Tabla Comparativa de Estrategias de Backup
@@ -135,6 +147,32 @@ En función de cómo gestionan los ficheros modificados a lo largo del tiempo, s
 | **Archivos para restaurar** | Solo el último backup completo | Copia completa + **todas** las incrementales | Copia completa + **última** diferencial |
 | **Velocidad de recuperación** | Muy rápida | Lenta (proceso secuencial) | Rápida |
 | **Riesgo ante corrupción** | Mínimo | Alto (si falla una incremental intermedia) | Bajo |
+
+```mermaid
+flowchart TD
+    subgraph Incremental ["🔄 Copia Incremental (Cambios desde el ÚLTIMO backup)"]
+        I0["Domingo<br><b>Copia Completa (100 GB)</b>"] --> I1["Lunes<br><b>Δ Lunes (+5 GB)</b>"]
+        I1 --> I2["Martes<br><b>Δ Martes (+3 GB)</b>"]
+        I2 --> I3["Miércoles<br><b>Δ Miércoles (+4 GB)</b>"]
+        
+        IR["<b>Restauración Miércoles:</b><br>Domingo + Lunes + Martes + Miércoles<br><i>(Copia rápida en ventana diaria, restauración secuencial lenta)</i>"]
+        I3 -.-> IR
+    end
+
+    subgraph Diferencial ["📊 Copia Diferencial (Cambios acumulados desde el FULL)"]
+        D0["Domingo<br><b>Copia Completa (100 GB)</b>"] --> D1["Lunes<br><b>Δ Lunes (+5 GB)</b>"]
+        D0 --> D2["Martes<br><b>Δ Lunes + Martes (+8 GB)</b>"]
+        D0 --> D3["Miércoles<br><b>Δ Lunes + Martes + Miércoles (+12 GB)</b>"]
+
+        DR["<b>Restauración Miércoles:</b><br>Domingo + Miércoles<br><i>(Mayor consumo de espacio diario, restauración rápida en 2 pasos)</i>"]
+        D3 -.-> DR
+    end
+
+    style Incremental fill:#f1f8e9,stroke:#689f38,stroke-width:2px
+    style Diferencial fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style IR fill:#fff9c4,stroke:#fbc02d,stroke-width:1px
+    style DR fill:#fff9c4,stroke:#fbc02d,stroke-width:1px
+```
 
 ---
 
@@ -164,26 +202,29 @@ Cuando falla la estrategia de copias de seguridad (por ejemplo, ante archivos cr
 
 Para comprender cómo es posible recuperar un archivo borrado, es imprescindible entender cómo organizan los datos los sistemas de archivos modernos (como `ext4` en Linux o `NTFS` en Windows):
 
-```
-                        SISTEMA DE ARCHIVOS (EJEMPLO)
- ┌──────────────────────────────────────┬──────────────────────────────────────┐
- │    TABLA DE METADATOS / ÍNDICE       │          BLOQUES DE DATOS            │
- │  (Inodos en ext4 / MFT en NTFS)      │       (Contenido real del archivo)   │
- ├──────────────────────────────────────┼──────────────────────────────────────┤
- │ Archivo: balance.pdf                 │ [ Bloque 1024 ]  "Contenido binario  │
- │ Puntero -> Bloques 1024, 1025, 1026  │ [ Bloque 1025 ]   del documento PDF  │
- │ Estado: ACTIVO                       │ [ Bloque 1026 ]   sin alterar..."    │
- └──────────────────────────────────────┴──────────────────────────────────────┘
-                                  │
-                  EL USUARIO PULSA "ELIMINAR"
-                                  ▼
- ┌──────────────────────────────────────┬──────────────────────────────────────┐
- │    TABLA DE METADATOS / ÍNDICE       │          BLOQUES DE DATOS            │
- ├──────────────────────────────────────┼──────────────────────────────────────┤
- │ Archivo: balance.pdf                 │ [ Bloque 1024 ]  "Contenido binario  │
- │ Puntero -> ELIMINADO                 │ [ Bloque 1025 ]   del documento PDF  │
- │ Estado: LIBRE / DISPONIBLE           │ [ Bloque 1026 ]   SIGUE INTACTO"     │
- └──────────────────────────────────────┴──────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph Estado1 ["1. ESTADO INICIAL: Archivo Activo en el Sistema de Archivos"]
+        M1["<b>Tabla de Metadatos (Inodo en ext4 / MFT en NTFS)</b><br>• Archivo: balance.pdf<br>• Puntero: Bloques 1024, 1025, 1026<br>• Estado: <b>OCUPADO / ACTIVO</b>"]
+        B1["<b>Bloques Físicos de Datos en Disco</b><br>[Bloque 1024] [Bloque 1025] [Bloque 1026]<br>Contenido binario original del PDF"]
+        M1 -->|Apunta a| B1
+    end
+
+    Accion["❌ Usuario pulsa 'Eliminar' o ejecuta 'rm balance.pdf'<br><i>(Borrado Lógico a nivel de Metadatos)</i>"]
+
+    subgraph Estado2 ["2. TRAS EL BORRADO: La Información Sigue en el Soporte"]
+        M2["<b>Tabla de Metadatos (Inodo / MFT)</b><br>• Puntero desvinculado / eliminado<br>• Estado: <b>LIBRE / DISPONIBLE PARA ESCRITURA</b>"]
+        B2["<b>Bloques Físicos de Datos en Disco</b><br>[Bloque 1024] [Bloque 1025] [Bloque 1026]<br>⚠️ <b>DATOS 100% INTACTOS Y RECUPERABLES</b><br><i>(Permanecen hasta que un nuevo archivo los sobrescriba)</i>"]
+        M2 -. Desvinculado .-> B2
+    end
+
+    Estado1 --> Accion
+    Accion --> Estado2
+
+    style Estado1 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Accion fill:#ffebee,stroke:#d32f2f,stroke-width:2px
+    style Estado2 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style B2 fill:#fffde7,stroke:#fbc02d,stroke-width:2px
 ```
 
 1. **Estructura en dos capas:** El sistema de archivos separa los **metadatos** (nombre del archivo, permisos, fechas de modificación y punteros a los bloques físicos) de los **bloques de datos** donde residen los bytes de la información.
@@ -205,6 +246,21 @@ El comportamiento descrito anteriormente es válido para discos duros magnético
 ### Técnicas de Recuperación de Datos
 
 Existen dos aproximaciones técnicas principales a la hora de rescatar información de un soporte dañado:
+
+```mermaid
+flowchart TD
+    Disco["💾 Unidad de Almacenamiento Afectada<br>(Borrado accidental o partición dañada)"]
+
+    Disco --> TD["🛠️ <b>TestDisk</b><br><i>Reconstrucción Lógica</i>"]
+    Disco --> PR["🔍 <b>PhotoRec</b><br><i>Tallado Binario (File Carving)</i>"]
+
+    TD --> TD1["• Inspecciona MBR / GPT y superbloques<br>• Analiza inodos y entradas de directorio borradas<br>• <b>Conserva nombres originales y jerarquía</b><br>• Requiere estructuras lógicas mínimas legibles"]
+    PR --> PR1["• Ignora el sistema de ficheros por completo<br>• Escanea sectores buscando firmas binarias (Magic Numbers)<br>• <b>Pierde nombres originales y rutas</b> (ej. f01234.pdf)<br>• Funciona aun con disco formateado o sistema corrupto"]
+
+    style Disco fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style TD fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style PR fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+```
 
 #### 1. Reconstrucción de Estructuras del Sistema de Archivos (`TestDisk`)
 * Actúa a nivel lógico de particiones y metadatos.
@@ -237,6 +293,22 @@ El reverso de la recuperación de datos es la necesidad de **impedir que tercero
 * **Vaciar la Papelera de Reciclaje o usar `rm`:** Deja el 100% del archivo intacto en los sectores de disco.
 * **Formateo Rápido (*Quick Format*):** Simplemente recrea las tablas de asignación vacías, pero no sobreescribe un solo bloque de datos.
 * **Formateo Normal del Sistema Operativo:** En muchas versiones solo realiza una comprobación de sectores defectuosos sin garantizar la limpieza de los datos subyacentes.
+
+```mermaid
+flowchart TD
+    Tipo{"Tipo de Soporte y Destino"}
+
+    Tipo -->|Discos HDD Magnéticos<br>Reutilización| HDD["<b>Sobrescritura Lógica</b><br>• Utilidades: shred, dd (/dev/zero o /dev/urandom)<br>• 1 pasada (NIST SP 800-88) suficiente en discos modernos"]
+    
+    Tipo -->|Unidades SSD / NVMe<br>Reutilización| SSD["<b>Sanitización por Firmware / Criptográfica</b><br>• Sobrescritura ineficaz por <i>Wear Leveling</i><br>• Comandos ATA Secure Erase / NVMe Sanitize<br>• Criptoborrado (Destrucción de clave en SED / LUKS)"]
+    
+    Tipo -->|Fin de ciclo de vida /<br>Información crítica| Fisico["<b>Destrucción Física Certificada</b><br>• Desmagnetizado (Degaussing) para discos magnéticos<br>• Triturado mecánico industrial (Shredding físico)"]
+
+    style Tipo fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style HDD fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style SSD fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Fisico fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+```
 
 ---
 
