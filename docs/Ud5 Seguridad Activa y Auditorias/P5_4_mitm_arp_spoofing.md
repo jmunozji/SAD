@@ -129,8 +129,15 @@ Ettercap es una herramienta integral para ataques MITM en redes locales que auto
     ```
     sudo apt install ettercap-text-only 
     ```
+   Si la appliance Webterm te da un error del tipo `E: Failed to fetch http://deb.debian.org/debian/pool/main/e/ethtool/ethtool_6.1-1_amd64.deb  403  Forbidden [IP: 151.101.130.132 80]` deberemos hacer un pequeño cambio en la forma en que apt descarga los paquetes:
 
-2. En la terminal del **Atacante**, lanza Ettercap indicando los dos objetivos (Target 1: Víctima, Target 2: Pasarela):
+   ```bash
+   # nano /etc/apt/sources.list.d/debian.sources
+   ```
+   Cambia http por https.
+    
+
+3. En la terminal del **Atacante**, lanza Ettercap indicando los dos objetivos (Target 1: Víctima, Target 2: Pasarela):
     ```bash
     sudo ettercap -T -q -M arp:remote /192.168.122.V// /192.168.122.1//
     ```
@@ -140,9 +147,14 @@ Ettercap es una herramienta integral para ataques MITM en redes locales que auto
     * `-M arp:remote`: Módulo MITM de envenenamiento ARP bidireccional remoto.
     * `/192.168.122.V// /192.168.122.1//`: Sintaxis interna de objetivos `[IPs]/[Puertos]/[MACs]/[VLANs]`.
 
-3. Continúa en la tarea 4.
+4. Continúa en la tarea 4.
 
 #### Método B: Modo Gráfico (GUI)
+
+1. Instala el comando de ettercap en modo texto
+    ```
+    sudo apt install ettercap-graphical
+    ```
 
 1. En la máquina atacante, abre la interfaz gráfica de Ettercap:
     ```bash
