@@ -3,7 +3,7 @@
 !!! note "Datos de la Práctica"
     * **Módulo:** Seguridad y Alta Disponibilidad (SAD - 0378)
     * **Unidad Didáctica:** UD6 - Copias de Seguridad y Recuperación de la Información
-    * **Requisitos:** Dos máquinas virtuales en VirtualBox configuradas en modo red adaptador puente (o red interna común):
+    * **Requisitos:** Dos máquinas virtuales Linux:
         1. **Servidor Linux:** Ubuntu Server o Debian sin entorno gráfico, con servidor SSH (`openssh-server`) activo.
         2. **Cliente Linux:** Ubuntu Desktop o Ubuntu MATE con entorno gráfico y la utilidad Déjà Dup instalada.
     * **Permisos:** Privilegios de superusuario (`sudo`) en ambas máquinas.
@@ -47,7 +47,7 @@ flowchart TD
     end
 
     subgraph Servidor ["🖥️ Servidor Remoto: Ubuntu Server LTS"]
-        Destino["Repositorio remoto en disco<br><code>/home/admin01/backups/</code>"]
+        Destino["Repositorio remoto en disco<br><code>/home/debian/backups/</code>"]
         Archivos["<b>Archivos resultantes cifrados:</b><br>• <code>duplicity-full.*.vol1.difftar.gpg</code> (Full)<br>• <code>duplicity-inc.*.vol1.difftar.gpg</code> (Incremental)<br>• <code>duplicity-*.manifest.gpg</code> (Firmas y metadatos)"]
         Destino --> Archivos
     end
@@ -65,10 +65,16 @@ flowchart TD
 
 ### Elementos del Laboratorio
 
+Nosotros realizaremos la práctica en GNS3 con un Ubuntu Desktop 24.04 que hará de cliente gráfico y un Debian sin entorno gráfico que hará de Servidor Backup
+
 | Máquina Virtual | Sistema Operativo | Rol en el Laboratorio | Configuración de Red |
 | :--- | :--- | :--- | :--- |
-| **Servidor Backup** | Ubuntu Server LTS / Debian | Destino remoto de almacenamiento SSH | Adaptador Puente (IP ej. `192.168.1.100`) |
-| **Cliente Desktop** | Ubuntu Desktop / MATE | Origen de datos y ejecución de Déjà Dup | Adaptador Puente (IP ej. `192.168.1.101`) |
+| **Servidor Backup** |  Debian | Destino remoto de almacenamiento SSH |  (IP ej. `192.168.122.S`) |
+| **Cliente Desktop** | Ubuntu Desktop  | Origen de datos y ejecución de Déjà Dup | (IP ej. `192.168.122.C`) |
+
+
+![escenario](img/P6_1escenario.png)
+
 
 !!! tip "Vídeos Explicativos de Apoyo"
     Para familiarizarse con el flujo visual de la herramienta:
@@ -84,7 +90,7 @@ flowchart TD
 
 ### Fase 1: Configuración del Repositorio en el Servidor Remoto
 
-1. Inicia sesión en la máquina **Ubuntu Server LTS**.
+1. Inicia sesión en la máquina **Debian**.
 
 2. Comprueba que el servicio SSH está en ejecución escuchando en el puerto TCP 22:
 
@@ -96,17 +102,13 @@ flowchart TD
 
 3. Identifica la dirección IP del servidor mediante `ip a` o `hostname -I`.
 
-4. Asegúrate de disponer de un usuario estándar para gestionar los respaldos (por ejemplo, `admin01`). Si no existe, puedes crearlo:
+4. Asegúrate de disponer de un usuario estándar para gestionar los respaldos (por ejemplo, `debian`). 
+
+5. Inicia sesión como `debian` (o mediante `su - debian`) y crea el directorio que actuará como repositorio de copias. Solo ese usuario tendrà a los backups:
 
     ```bash
-    sudo adduser admin01
-    ```
-
-5. Inicia sesión como `admin01` (o mediante `su - admin01`) y crea el directorio que actuará como repositorio de copias:
-
-    ```bash
-    mkdir -p /home/admin01/backups
-    chmod 700 /home/admin01/backups
+    mkdir -p /home/debian/backups
+    chmod 700 /home/debian/backups
     ```
 
 ---
@@ -122,10 +124,12 @@ flowchart TD
     sudo apt install deja-dup duplicity -y
     ```
 
+3. Comprueba que entre las aplicaciónes ahora está "Backups"
+
 3. **Paso crítico de verificación SSH:** Antes de configurar la herramienta gráfica, establece una conexión SSH manual por terminal hacia el servidor:
 
     ```bash
-    ssh admin01@<IP_DEL_SERVIDOR>
+    ssh debian@<IP_DEL_SERVIDOR>
     ```
 
     * Acepta la huella digital del servidor tecleando `yes` cuando pregunte `Are you sure you want to continue connecting (yes/no/[fingerprint])?`.
@@ -145,12 +149,12 @@ flowchart TD
 
 ### Fase 3: Configuración de la Política de Respaldo en Déjà Dup
 
-1. Abre el menú de aplicaciones del cliente y busca **"Copias de seguridad"** (o **"Respaldos"** en Ubuntu MATE / GNOME).
+1. Abre el menú de aplicaciones del cliente y busca **Backups** (o **"Copias de seguridad"** o **"Respaldos"** en Ubuntu).
 
 2. En la ventana principal, accede a la sección de configuración y define las siguientes directivas:
 
     * **Carpetas para guardar (Inclusión):**
-        * Añade la carpeta personal o específicamente `~/Documentos`.
+        * Añade la carpeta personal.
     * **Carpetas que ignorar (Exclusión):**
         * Añade a la lista de exclusión:
             * `Papelera`
@@ -159,15 +163,12 @@ flowchart TD
     * **Ubicación del almacenamiento:**
         * Tipo de almacenamiento: **Ubicación de red / Servidor de red**.
         * Protocolo: **SSH**.
-        * Servidor: Introduce la dirección IP de tu máquina servidor (`<IP_DEL_SERVIDOR>`).
-        * Puerto: `22`.
-        * Carpeta / Directorio: `/home/admin01/backups` (o simplemente `backups` relativo a la home de `admin01`).
-        * Nombre de usuario: `admin01`.
+        * Servidor: Introduce el protocolo ssh y la dirección IP de tu máquina servidor (`ssh://192.168.122.S`)
+        * Carpeta / Directorio: `/home/debian/backups` (o simplemente `backups` relativo a la home de `debian`).
+        * Nombre de usuario: `debian`.
     * **Programación y Retención:**
         * Frecuencia: **Diaria**.
         * Conservación: **Al menos un año** (o *"Hasta que se quede sin espacio"*).
-
-3. Realiza capturas de pantalla de cada una de las pestañas de configuración configuradas.
 
 ---
 
@@ -177,21 +178,19 @@ flowchart TD
 
 2. El asistente solicitará proteger el respaldo con contraseña:
     * Marca la opción de **proteger la copia de seguridad con contraseña**.
-    * Introduce una contraseña robusta y anótala (si se pierde la clave, los datos serán irrecuperables).
+    * Introduce una contraseña robusta y anótala (si se pierde la clave, los datos serán irrecuperables): `ieselcaminas`.
 
-3. El sistema solicitará la contraseña del usuario `admin01` del servidor SSH para autorizar la transferencia por red.
+3. El sistema solicitará la contraseña del usuario `debian` del servidor SSH para autorizar la transferencia por red.
 
 4. Espera a que finalice la copia de seguridad hasta recibir la confirmación de *"Copia de seguridad finalizada"*.
 
-5. **Auditoría en el Servidor:** Vuelve a la máquina **Ubuntu Server** y consulta el contenido del directorio de almacenamiento:
+5. **Auditoría en el Servidor:** Vuelve a la máquina **Debian** y consulta el contenido del directorio de almacenamiento:
 
     ```bash
-    ls -lh /home/admin01/backups/
+    ls -lh /home/debian/backups/
     ```
 
     *Comprobarás la aparición de una serie de volúmenes con el prefijo `duplicity-full.*.difftar.gpg`, ficheros de firmas `.sigtar.gpg` y archivos `.manifest.gpg`.*
-
-6. Toma una captura de pantalla del listado del directorio en el servidor donde se aprecie claramente el prefijo `full`.
 
 ---
 
@@ -216,15 +215,13 @@ flowchart TD
 
 3. Introduce la contraseña de cifrado establecida cuando el asistente la requiera.
 
-4. **Auditoría de Cambios en el Servidor:** Una vez completada, lista nuevamente el contenido de `/home/admin01/backups/` en el servidor:
+4. **Auditoría de Cambios en el Servidor:** Una vez completada, lista nuevamente el contenido de `/home/debian/backups/` en el servidor:
 
     ```bash
-    ls -lh /home/admin01/backups/
+    ls -lh /home/debian/backups/
     ```
 
     *Observa los nuevos ficheros creados con el prefijo `duplicity-inc.*.difftar.gpg` junto a los volúmenes completos anteriores.*
-
-5. Realiza una captura de pantalla del listado completo de `/home/admin01/backups/`.
 
 ---
 
@@ -232,15 +229,17 @@ flowchart TD
 
 Vamos a verificar los dos métodos de restauración que ofrece la plataforma:
 
-#### Método A: Restauración Selectiva desde el Explorador de Archivos (Menú Contextual)
+#### Método A: Restauración Selectiva
 
-1. En el cliente, abre el gestor de archivos (Caja / Nautilus / Archivos) y navega hasta tu carpeta personal.
-2. Localiza la carpeta `Documentos`.
-3. Haz clic con el botón secundario del ratón (botón derecho) sobre `Documentos` y selecciona en el menú contextual la opción **"Volver a la versión anterior..."** (o *"Restaurar versión previa"*).
-4. El asistente de Déjà Dup se abrirá automáticamente consultando el catálogo de fechas del repositorio remoto:
-    * Selecciona la fecha y hora correspondiente al **primer respaldo** realizado.
-    * Solicitará la contraseña de descifrado del backup y la contraseña SSH de `admin01`.
-5. Comprueba cómo se restablece el archivo eliminado (`balance_2026.txt`).
+Vamos a recuperar el archivo `balance_2026.txt` que borramos antes del 2º backup.
+
+2. Abre la aplicación **Déjà Dup** y pulsa en la pestaña o botón **"Restaurar"** (*Restore*).
+3. Sigue el asistente:
+    * Selecciona la primera fecha en la que realizamos el backup.
+    * Selecciona el fichero `balance_2026.txt`
+    * Elige restaurar los ficheros en su **ubicación original**.
+4. Verifica que el fichero `balance_2026.txt` se ha restaurado en la carpeta `~/Documentos`.
+
 
 #### Método B: Restauración Completa desde la Interfaz de Déjà Dup
 
@@ -252,7 +251,6 @@ Vamos a verificar los dos métodos de restauración que ofrece la plataforma:
 
 2. Abre la aplicación **Déjà Dup** y pulsa en la pestaña o botón **"Restaurar"** (*Restore*).
 3. Sigue el asistente:
-    * Indica que los respaldos se encuentran en la ubicación de red SSH del servidor.
     * Selecciona la fecha más reciente disponible.
     * Elige restaurar los ficheros en su **ubicación original**.
 4. Verifica que la carpeta `~/Documentos` y todos sus archivos se han recuperado con éxito.
@@ -264,29 +262,13 @@ Vamos a verificar los dos métodos de restauración que ofrece la plataforma:
 Responde de forma justificada y detallada a las siguientes preguntas en tu memoria de prácticas:
 
 1. **Análisis de Volúmenes en el Servidor:**
-    * Examina la nomenclatura de los archivos almacenados en `/home/admin01/backups/`.
+    * Examina la nomenclatura de los archivos almacenados en `/home/debian/backups/`.
     * ¿Qué diferencia existe entre los ficheros con prefijo `duplicity-full` y los de prefijo `duplicity-inc`?
     * ¿Por qué el tamaño de los ficheros `duplicity-inc` es notablemente inferior al de los `duplicity-full`? Justifícalo según los tipos de copia estudiados en la teoría.
 2. **Seguridad y Confidencialidad en Tránsito y Reposo:**
     * El canal de red empleado utiliza SSH (cifrado en tránsito). ¿Por qué sigue siendo fundamental activar además la contraseña de cifrado propia de Déjà Dup (cifrado en reposo)?
-    * Si el administrador del servidor `Ubuntu Server` intentase abrir o descomprimir con `tar` uno de los volúmenes `.gpg` ubicados en `/home/admin01/backups/`, ¿podría leer su contenido? ¿Por qué?
+    * Si el administrador del servidor `Ubuntu Server` intentase abrir o descomprimir con `tar` uno de los volúmenes `.gpg` ubicados en `/home/debian/backups/`, ¿podría leer su contenido? ¿Por qué?
 3. **Estrategia 3-2-1:**
     * ¿En qué medida la práctica realizada cumple con la regla de oro 3-2-1 del almacenamiento de copias de seguridad? ¿Qué componente faltaría para un cumplimiento estricto?
 
 ---
-
-## 5. Entregables
-
-Elabora un único documento en formato **PDF** que incluya:
-
-1. **Datos de cabecera:** Nombre y apellidos del alumno, fecha y módulo.
-2. **Configuración de red:** Capturas de pantalla de la salida de `ip a` en el servidor y en el cliente demostrando conectividad.
-3. **Configuración de Déjà Dup:** Capturas de pantalla de:
-    * Carpetas incluidas y excluidas.
-    * Parámetros de conexión SSH al servidor remoto.
-    * Diálogo de protección con contraseña durante el primer respaldo.
-4. **Evidencias en el Servidor:** Capturas de pantalla legibles de la terminal del servidor con el comando `ls -lh /home/admin01/backups/`:
-    * Tras finalizar el primer respaldo (evidenciando la copia completa).
-    * Tras finalizar el segundo respaldo (evidenciando la copia incremental generada tras los cambios).
-5. **Evidencias de Restauración:** Captura del menú contextual *"Volver a la versión anterior"* y del resultado final en la carpeta restaurada.
-6. **Respuestas argumentadas:** Respuestas redactadas a las cuestiones del apartado 4.
