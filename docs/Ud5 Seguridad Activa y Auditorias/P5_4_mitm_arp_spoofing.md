@@ -1,4 +1,4 @@
-# Práctica 5.4: Intercepción Man-In-The-Middle (MITM) y ARP Spoofing con Ettercap y Wireshark
+# Práctica 5.4: Intercepción Man-In-The-Middle (MITM) y ARP Spoofing con Ettercap
 
 !!! note "Datos de la Práctica"
     * **Módulo:** Seguridad y Alta Disponibilidad (SAD - 0378)
@@ -17,7 +17,6 @@
 * Analizar la mecánica del ataque de **envenenamiento de caché ARP** (*ARP Spoofing / ARP Poisoning*) para situarse en la trayectoria del tráfico (**Man-In-The-Middle - MITM**).
 * Habilitar y comprobar el reenvío de paquetes IP (*IP Forwarding*) en el kernel del atacante para evitar la denegación de servicio (DoS) involuntaria.
 * Utilizar la herramienta **Ettercap** en modo consola y modo gráfico para ejecutar el ataque de envenenamiento bidireccional entre la víctima y la pasarela.
-* Capturar e inspeccionar tráfico de red en tiempo real mediante **Wireshark**, filtrando flujos de autenticación para extraer credenciales transmitidas en texto claro (HTTP y FTP).
 * Analizar e implementar contramedidas defensivas tanto a nivel de host (entradas ARP estáticas) como a nivel de infraestructura de conmutación (Inspección Dinámica de ARP - *DAI* y *DHCP Snooping*).
 
 ---
@@ -187,7 +186,7 @@ Ettercap es una herramienta integral para ataques MITM en redes locales que auto
 
 ---
 
-### Tarea 5: Intercepción de Tráfico y Extracción de Credenciales en Wireshark
+### Tarea 5: Intercepción de Tráfico y Extracción de Credenciales
 
 Con el ataque activo, todo el tráfico generado por la víctima fluye a través de la interfaz de red del atacante antes de salir al exterior.
 
