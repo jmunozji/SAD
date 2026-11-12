@@ -183,6 +183,8 @@ Para que el punto de acceso Wi-Fi o router pueda enviar peticiones al servidor R
 
 Si dispones de un punto de acceso (AP) físico o emulador conectado a la misma red local que el servidor FreeRADIUS, podrás realizar una prueba de validación con un cliente móvil o PC inalámbrico.
 
+En nuestro laboratorio GNS3 no podremos incluir un AP físico, ya que no podremos conectarlo a la red 192.168.122.0/24 a la que está conectado el servidor FreeRadius y, por tanto, el AP físico no podría acceder a él.
+
 1. Accede a la interfaz web de administración de tu router o AP Wi-Fi.
 2. En la sección de configuración de la red inalámbrica, selecciona el modo de seguridad corporativo:
     * **Modo de Seguridad:** WPA2-Enterprise / WPA3-Enterprise (IEEE 802.1X).
