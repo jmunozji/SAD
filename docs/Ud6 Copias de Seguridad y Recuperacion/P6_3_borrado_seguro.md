@@ -98,7 +98,7 @@ sudo apt install coreutils nwipe secure-delete testdisk -y
 
 ### Fase 1: Creación de Archivos Confidenciales de Prueba
 
-1. Monta la partición de tu pendrive en un directorio temporal:
+1. Probablemente la unidad estará montada en /media/admin01/HD64MB. Sino monta la partición de tu pendrive en un directorio temporal:
 
     ```bash
     sudo mkdir -p /mnt/pendrive
@@ -108,20 +108,20 @@ sudo apt install coreutils nwipe secure-delete testdisk -y
 2. Genera dentro del pendrive varios ficheros de prueba con información que simule datos corporativos confidenciales:
 
     ```bash
-    cd /mnt/pendrive
-    sudo bash -c 'echo "Claves de Acceso Root Servidores Produccion 2026: P@ssw0rdSecure!" > passwords_servidores.txt'
-    sudo bash -c 'echo "Datos Contables y Cuentas Bancarias IBAN ES9121000418450200051332" > contabilidad_bancaria.txt'
-    sudo bash -c 'echo "Registro de Auditoria de Empleados y Salarios" > nominas_personal.txt'
+    cd /media/admin01/HD64MB
+    echo "Claves de Acceso Root Servidores Produccion 2026: P@ssw0rdSecure!" > passwords_servidores.txt
+    echo "Datos Contables y Cuentas Bancarias IBAN ES9121000418450200051332" > contabilidad_bancaria.txt
+    echo "Registro de Auditoria de Empleados y Salarios" > nominas_personal.txt
     
     # Descargar un archivo de imagen real para comprobar su cabecera binaria
-    sudo wget -q https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/200px-Tux.svg.png -O logotipo_confidencial.png
+    wget -q --user-agent="Mozilla/5.0 (compatible; MiScript/1.0)" -O Tux.svg 'https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original'
     ```
 
 3. Comprueba el listado de archivos creados y calcula sus resúmenes hash:
 
     ```bash
-    ls -la /mnt/pendrive
-    md5sum /mnt/pendrive/*.txt
+    ls -la /media/admin01/HD64MB
+    md5sum /media/admin01/HD64MB/*.txt
     ```
 
 4. Abre el gestor de archivos gráfico del sistema (Caja / Nautilus) y accede a la memoria USB para ver visualmente la presencia de los ficheros.
@@ -142,7 +142,7 @@ El comando `shred` sobrescribe repetidamente los bloques de datos asignados a lo
 1. Ejecuta el borrado seguro de dos de los archivos confidenciales aplicando **3 pasadas aleatorias y una pasada final con ceros**:
 
     ```bash
-    sudo shred -u -z -v -n 3 /mnt/pendrive/passwords_servidores.txt /mnt/pendrive/contabilidad_bancaria.txt
+    sudo shred -u -z -v -n 3 /media/admin01/HD64MB/passwords_servidores.txt /media/admin01/HD64MB/contabilidad_bancaria.txt
     ```
 
 2. Observa cómo `shred` renombra temporalmente el archivo, sobrescribe sus sectores en cada pasada (`pass 1/4 (random)`, `pass 2/4 (random)`, `pass 3/4 (random)`, `pass 4/4 (000000)`) y finalmente lo elimina.
@@ -160,7 +160,7 @@ El comando `shred` sobrescribe repetidamente los bloques de datos asignados a lo
 1. Desmonta la unidad de prueba para realizar el análisis en modo solo lectura:
 
     ```bash
-    sudo umount /mnt/pendrive
+    sudo umount /media/admin01/HD64MB
     ```
 
 2. Inicia TestDisk:
@@ -177,8 +177,8 @@ El comando `shred` sobrescribe repetidamente los bloques de datos asignados a lo
     * Sal de TestDisk y abre el archivo recuperado mediante un visor hexadecimal o la terminal:
 
     ```bash
-    cat /home/usuario/recuperados_shred/passwords_servidores.txt
-    xxd /home/usuario/recuperados_shred/passwords_servidores.txt | head -n 10
+    cat /home/usuario/recuperados_shred/0000000000
+    xxd /home/usuario/recuperados_shred/0000000000 | head -n 10
     ```
 
 5. **Toma una captura de pantalla del visor o del comando `xxd`/`cat` donde se demuestre que el contenido original es completamente irrecuperable (aparecerán únicamente ceros `00` o secuencias de ruido aleatorio).**
@@ -192,13 +192,13 @@ Cuando en un soporte se han eliminado archivos en el pasado mediante el comando 
 1. Monta de nuevo la unidad:
 
     ```bash
-    sudo mount /dev/sdb1 /mnt/pendrive
+    sudo mount /dev/sdb1 /media/admin01/HD64MB
     ```
 
 2. Ejecuta `sfill` en modo rápido sobre el punto de montaje:
 
     ```bash
-    sudo sfill -v -z -l /mnt/pendrive
+    sudo sfill -v -z -l /media/admin01/HD64MB
     ```
 
     * `-v`: Muestra el progreso en tiempo real.
@@ -216,7 +216,7 @@ En ocasiones se requiere sanitizar un disco entero (por ejemplo, antes de donar 
 1. Asegúrate de que la unidad está desmontada:
 
     ```bash
-    sudo umount /mnt/pendrive
+    sudo umount /media/admin01/HD64MB
     ```
 
 2. Ejecuta `nwipe` en la consola:
@@ -239,6 +239,7 @@ En ocasiones se requiere sanitizar un disco entero (por ejemplo, antes de donar 
         * *Gutmann (35 pasadas)*
         * *PRNG Stream (sobrescritura pseudoaleatoria)*
     * Selecciona **`Quick Erase`** (o `DoD Short`) para realizar la prueba en el tiempo del laboratorio. Pulsa `Enter`.
+    * Si estás usando el disco virtual HD64MB cualquiera de los otros métodos será rápido. Puedes probar otros métodos.
 
 5. **Ejecución del borrado masivo:**
     * Pulsa la tecla **`S`** (*Start*) para iniciar el proceso de destrucción de datos.

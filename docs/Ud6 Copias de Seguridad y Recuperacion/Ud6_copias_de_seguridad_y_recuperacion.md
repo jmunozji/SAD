@@ -552,6 +552,7 @@ La sanitización lógica consiste en **escribir nuevos patrones de datos (ceros,
 En discos de estado sólido (SSD / NVMe), el software de sobreescritura tradicional (`dd`, `shred`) no garantiza la destrucción total de los datos debido al controlador interno de nivelación de desgaste (*Wear Leveling*), que reasigna los bloques lógicos de forma transparente a celdas físicas de reserva fuera del alcance del sistema operativo.
 
 Para sanitizar un SSD se emplean métodos específicos de firmware y criptografía:
+
 * **ATA Secure Erase / NVMe Sanitize:** Comandos enviados directamente al controlador del disco para aplicar una descarga de voltaje a todas las celdas de memoria, devolviéndolas a su estado de fábrica.
 * **Criptoborrado (*Crypto-Erase*):** En unidades con cifrado de hardware nativo (unidades SED - *Self-Encrypting Drives* o volúmenes LUKS/BitLocker), la destrucción instantánea de la **clave maestra de cifrado** convierte la totalidad de los datos del disco en ruido criptográfico indescifrable de forma inmediata.
 
@@ -560,6 +561,7 @@ Para sanitizar un SSD se emplean métodos específicos de firmware y criptograf�
 ### Destrucción Física de Soportes
 
 Cuando los discos alcanzan el fin de su ciclo de vida y han contenido información de nivel de confidencialidad crítico, la normativa exige la destrucción material del soporte:
+
 * **Desmagnetización (*Degaussing*):** Exposición de discos magnéticos a potentes campos electromagnéticos que destruyen los dominios magnéticos de los platos y los chips de control.
 * **Triturado Mecánico (*Shredding* físico):** Máquinas trituradoras industriales que reducen los discos a fragmentos metálicos de pocos milímetros, haciendo físicamente imposible su ensamblaje.
 

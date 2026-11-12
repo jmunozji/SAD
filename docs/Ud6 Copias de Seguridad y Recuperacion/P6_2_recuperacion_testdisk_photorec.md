@@ -4,7 +4,7 @@
     * **Módulo:** Seguridad y Alta Disponibilidad (SAD - 0378)
     * **Unidad Didáctica:** UD6 - Copias de Seguridad y Recuperación de la Información
     * **Requisitos:** Máquina virtual Linux (Ubuntu Desktop, Ubuntu MATE o Debian) con privilegios de superusuario (`sudo`).
-    * **Soporte de almacenamiento de prueba:** Memoria USB física (opción por defecto recomendada) con una partición formateada en FAT32. Como alternativa en caso de no disponer de pendrive, puede utilizarse el disco virtual preconfigurado [`HD64MB.vdi`](recursos/HD64MB.vdi) o un archivo de imagen *loopback*.
+    * **Soporte de almacenamiento de prueba:** Memoria USB física (opción por defecto recomendada) con una partición formateada en FAT32. Como alternativa en caso de no disponer de pendrive, puede utilizarse el disco virtual preconfigurado [`HD64MB.vdi`](recursos/HD64MB.vdi).
 
 ---
 
@@ -71,6 +71,8 @@ flowchart TD
 
 ## 3. Preparación del Soporte de Prueba
 
+En clase utilizaremos una máquina virtual Ubuntu Mate 20.04 LTS en VirtualBox. Es una versión antigua pero que no tiene excesivos requerimientos de memoria y procesador y será suficiente para nuestras necesidades.
+
 Para realizar las operaciones de análisis y rescate forense sin poner en peligro el disco del sistema operativo, utilizaremos una unidad de almacenamiento externa o secundaria. La opción principal y recomendada es utilizar una memoria USB real:
 
 ### Opción A (Por defecto y recomendada): Memoria USB Física (Pendrive)
@@ -101,29 +103,6 @@ Si no dispones de un pendrive físico en el aula o estás realizando la práctic
 3. En el **Controlador SATA** (o IDE), pulsa el icono de **"Añadir disco duro"** → **Añadir** → Selecciona el fichero descargado `HD64MB.vdi`.
 4. Inicia la máquina virtual. El disco aparecerá reconocido en el sistema (habitualmente como `/dev/sdb`).
 
----
-
-### Opción C (Alternativa por comandos): Creación de Disco Virtual mediante Loopback en Linux
-
-Si deseas generar un soporte de pruebas temporal directamente desde la línea de comandos sin necesidad de apagar la máquina virtual ni conectar dispositivos físicos:
-
-```bash
-# Crear un fichero imagen vacío de 64 MB
-dd if=/dev/zero of=~/disco_prueba.img bs=1M count=64
-
-# Asociar la imagen a un dispositivo loop
-sudo losetup -fP ~/disco_prueba.img
-
-# Comprobar el dispositivo asignado (ejemplo: /dev/loop0)
-losetup -a
-
-# Crear una tabla de particiones MBR y una partición FAT32
-sudo parted -s /dev/loop0 mklabel msdos
-sudo parted -s /dev/loop0 mkpart primary fat32 1MiB 100%
-
-# Formatear la partición en FAT32
-sudo mkfs.vfat -F 32 /dev/loop0p1
-```
 
 ---
 
@@ -150,9 +129,9 @@ sudo mkfs.vfat -F 32 /dev/loop0p1
     lsblk -f
     ```
 
-    *(Identifica la partición FAT32 de prueba, por ejemplo `/dev/sdb1` o `/dev/loop0p1`).*
+    *(Identifica la partición FAT32 de prueba, por ejemplo `/dev/sdb1`).*
 
-4. Monta la partición en un punto de montaje temporal (por ejemplo `/mnt/pendrive`):
+4. Probablemente la unidad esté montada automáticamente en /media/admin01/HD64MB. Si es así no hace falta hacer este paso. Sino monta la partición en un punto de montaje temporal (por ejemplo `/mnt/pendrive`):
 
     ```bash
     sudo mkdir -p /mnt/pendrive
@@ -162,35 +141,34 @@ sudo mkfs.vfat -F 32 /dev/loop0p1
 5. **Generación de archivos de prueba:** Copia o genera dentro de la unidad de prueba al menos 4 ficheros de distintos tipos y extensiones (documentos de texto, imágenes y PDFs):
 
     ```bash
-    cd /mnt/pendrive
-    sudo bash -c 'echo "Informe de Auditoria de Redes 2026" > informe_auditoria.txt'
-    sudo bash -c 'echo "Claves de Recuperacion de Cifrado" > claves_seguridad.txt'
-    sudo bash -c 'echo "Registro de Eventos y Accesos del Servidor" > log_servidor.txt'
+    echo "Informe de Auditoria de Redes 2026" > informe_auditoria.txt
+    echo "Claves de Recuperacion de Cifrado" > claves_seguridad.txt
+    echo "Registro de Eventos y Accesos del Servidor" > log_servidor.txt
     
     # Descargar o copiar una imagen real para comprobar el file carving
-    sudo wget -q https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/200px-Tux.svg.png -O logotipo_tux.png
+    sudo wget -q --user-agent="Mozilla/5.0 (compatible; MiScript/1.0)" -O Tux.svg 'https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original'
     ```
 
 6. Comprueba el listado de archivos en la unidad:
 
     ```bash
-    ls -la /mnt/pendrive
+    ls -la /media/admin01/HD64MB
     ```
 
 7. **Simulación del desastre (Borrado de ficheros):** Elimina permanentemente 3 de los ficheros creados para simular una pérdida de información:
 
     ```bash
-    sudo rm /mnt/pendrive/informe_auditoria.txt
-    sudo rm /mnt/pendrive/claves_seguridad.txt
-    sudo rm /mnt/pendrive/logotipo_tux.png
+    rm informe_auditoria.txt
+    rm claves_seguridad.txt
+    rm tux.svg
     ```
 
-8. Comprueba que en `/mnt/pendrive` solo queda el archivo no eliminado.
+8. Comprueba que en `/media/admin01/HD64MB` solo queda el archivo no eliminado.
 
 9. **Desmontaje preventivo (Buena práctica forense):** Desmonta la unidad para evitar que el sistema operativo escriba escrituras accidentales en la partición durante el análisis:
 
     ```bash
-    sudo umount /mnt/pendrive
+    sudo umount /media/admin01/HD64MB
     ```
 
 10. **Creación del directorio de destino seguro:** Crea en tu carpeta personal los directorios donde almacenarás los archivos recuperados:
@@ -213,7 +191,7 @@ sudo mkfs.vfat -F 32 /dev/loop0p1
     * En la primera pantalla, selecciona **`[ Create ]`** para registrar las operaciones en `testdisk.log`. Pulsa `Enter`.
 
 3. **Selección del medio de almacenamiento:**
-    * En la lista de discos detectados, desplázate con las flechas del teclado hasta seleccionar tu disco de prueba (ejemplo: `/dev/sdb` o `/dev/loop0`).
+    * En la lista de discos detectados, desplázate con las flechas del teclado hasta seleccionar tu disco de prueba (ejemplo: `/dev/sdb`).
     * Selecciona **`[ Proceed ]`** y pulsa `Enter`.
 
 4. **Tipo de tabla de particiones:**
@@ -260,10 +238,7 @@ sudo mkfs.vfat -F 32 /dev/loop0p1
     ```
 
 2. **Selección del soporte de almacenamiento:**
-    * Selecciona la misma unidad de prueba (`/dev/sdb` o `/dev/loop0`) y pulsa **`[ Proceed ]`**.
-
-3. **Tipo de tabla de particiones:**
-    * Confirma el tipo detectado (**`[ Intel ]`**).
+    * Selecciona la misma unidad de prueba (`/dev/sdb`) y pulsa **`[ Proceed ]`**.
 
 4. **Selección de partición y opciones de búsqueda:**
     * Sitúate sobre la partición de prueba.
