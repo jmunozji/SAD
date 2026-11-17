@@ -24,16 +24,21 @@ En los entornos corporativos contemporáneos, la implantación de la seguridad p
 
 La seguridad informática no debe depender de un único punto de control. Si una barrera es vulnerada, deben existir capas defensivas subsiguientes que detengan o retrasen al atacante. Este enfoque se conoce como **Defensa en Profundidad (*Defense in Depth*)**:
 
-```text
- ═══════════════════════════════════════════════════════════════════════════════
-  CAPA 1: Seguridad Perimetral (Cortafuegos, IDS/IPS, UTM, DMZ)
- ───────────────────────────────────────────────────────────────────────────────
-  CAPA 2: Seguridad de Red Interna (VLANs, Control de Acceso 802.1X, WPA3-Ent)
- ───────────────────────────────────────────────────────────────────────────────
-  CAPA 3: Seguridad de Host (Hardening SO, Cortafuegos Personal, EDR/Antivirus)
- ───────────────────────────────────────────────────────────────────────────────
-  CAPA 4: Seguridad de la Aplicación y Datos (Cifrado, ACLs, Copias de Seguridad)
- ═══════════════════════════════════════════════════════════════════════════════
+```mermaid
+flowchart TD
+    Atacante(["Vector de Amenaza Externa"]) --> C1
+
+    subgraph CapasDefensa ["Modelo de Defensa en Profundidad"]
+        direction TB
+        C1["1. Seguridad Perimetral<br><small>Cortafuegos, IDS/IPS, UTM, DMZ y VPN</small>"]
+        C2["2. Seguridad de Red Interna<br><small>Segmentación VLANs, Control 802.1X, WPA3-Enterprise</small>"]
+        C3["3. Seguridad de Host<br><small>Hardening SO, Cortafuegos Personal, EDR / Antivirus</small>"]
+        C4["4. Seguridad de Aplicación y Datos<br><small>Cifrado en reposo y tránsito, ACLs, Copias de Seguridad</small>"]
+
+        C1 --> C2 --> C3 --> C4
+    end
+
+    C4 --> Activo[("Datos e Infraestructura Crítica")]
 ```
 
 El cortafuegos perimetral constituye la **primera línea de defensa**, impidiendo que el escaneo masivo y los vectores de ataque indiscriminados alcancen los sistemas internos de la organización.
@@ -44,28 +49,16 @@ El cortafuegos perimetral constituye la **primera línea de defensa**, impidiend
 
 Para administrar eficazmente el tráfico de red, los límites perimetrales se dividen en **zonas de seguridad** homogéneas en función de su nivel de confianza:
 
-```text
-               ┌───────────────────────────────────────────────┐
-               │              RED EXTERNA (WAN)                │
-               │             Nivel Confianza: NULO             │
-               │                   (Internet)                  │
-               └───────────────────────┬───────────────────────┘
-                                       │
-                                       ▼
-                         ┌───────────────────────────┐
-                         │   CORTAFUEGOS PERIMETRAL  │
-                         └─────────────┬─────────────┘
-                                       │
-                 ┌─────────────────────┴─────────────────────┐
-                 │                                           │
-                 ▼                                           ▼
-   ┌───────────────────────────┐               ┌───────────────────────────┐
-   │    ZONA DESMILITARIZADA   │               │     RED INTERNA (LAN)     │
-   │           (DMZ)           │               │   Nivel Confianza: ALTO   │
-   │   Nivel Confianza: MEDIO  │               │                           │
-   │  (Web, Correo, DNS, FTP)  │               │   (Estaciones, BBDD,      │
-   └───────────────────────────┘               │    Controlador Dominio)   │
-                                               └───────────────────────────┘
+```mermaid
+flowchart TD
+    WAN["Red Externa (WAN / Internet)<br><b>Nivel de Confianza: NULO</b>"]
+    FW["Cortafuegos Perimetral<br><i>Inspección y Control de Flujos</i>"]
+    DMZ["Zona Desmilitarizada (DMZ)<br><b>Nivel de Confianza: MEDIO</b><br><small>Servidores públicos: Web, Correo, DNS, FTP</small>"]
+    LAN["Red Interna (LAN Corporativa)<br><b>Nivel de Confianza: ALTO</b><br><small>Estaciones, BBDD internas, Controlador de Dominio</small>"]
+
+    WAN <-->|Tráfico inspeccionado| FW
+    FW <-->|Tráfico condicional| DMZ
+    FW <-->|Tráfico filtrado| LAN
 ```
 
 1. **Red Externa (WAN / Internet):** Zona no confiable donde residen los clientes públicos, pero también los atacantes, *botnets* y sistemas automatizados de escaneo.
@@ -84,14 +77,16 @@ A la hora de configurar cualquier dispositivo de filtrado perimetral, el adminis
 | **Política Restrictiva**<br>*(Default Deny / Lista Blanca)* | **DENEGAR TODO**<br>(Drop / Reject por defecto) | Se bloquea cualquier comunicación por defecto. El administrador debe habilitar **explícitamente** cada puerto, protocolo e IP de origen y destino imprescindibles para el negocio. | **Máxima seguridad (Recomendada).** Garantiza el cumplimiento del principio de mínimo privilegio. |
 | **Política Permisiva**<br>*(Default Allow / Lista Negra)* | **PERMITIR TODO**<br>(Accept por defecto) | Se permite todo el tráfico por defecto y se crean reglas puntuales para bloquear únicamente amenazas conocidas o puertos peligrosos. | **Muy vulnerable.** Inviable en entornos corporativos, ya que cualquier servicio nuevo u olvido del administrador queda expuesto. |
 
-!!! tip "Recursos de Apoyo: Fundamentos de Seguridad Perimetral"
-    Para asimilar los conceptos de segmentación y defensa en profundidad, puedes consultar los siguientes recursos audiovisuales y guías de referencia:
+!!! tip "Buena Práctica: Política Restrictiva (Default Deny)"
+    En entornos corporativos y de producción, la política por defecto en las cadenas de filtrado perimetral debe ser **DROP**. Cualquier regla permisiva debe ser la mínima necesaria (*principio de mínimo privilegio*), acotando explícitamente rangos de IPs de origen/destino y puertos de servicio autorizados.
 
-    * [Vídeo: Intypedia - Lección 5: Seguridad Perimetral (Alejandro Ramos Fraile)](https://www.youtube.com/watch?v=sxg1nq17xj4){:target="_blank"}:
-        * *Escena 1 (01:17):* Fundamentos de la seguridad perimetral e introducción a los cortafuegos.
-        * *Escena 2 (05:13):* Sistemas de detección de intrusiones (IDS) y Honeypots.
-        * *Escena 3 (09:42):* Tráfico en la Red: Antivirus perimetral, antispam y VPNs.
-        * *Escena 4 (11:26):* Gestión Unificada de Amenazas (UTM) y conclusiones.
+!!! note "Recurso Audiovisual: Lección 5 - Seguridad Perimetral (Intypedia)"
+    ![type:video](https://www.youtube.com/embed/sxg1nq17xj4)
+
+    * **Escena 1 (01:17):** Fundamentos de la seguridad perimetral e introducción a los cortafuegos.
+    * **Escena 2 (05:13):** Sistemas de detección de intrusiones (IDS) y Honeypots.
+    * **Escena 3 (09:42):** Tráfico en la Red: Antivirus perimetral, antispam y VPNs.
+    * **Escena 4 (11:26):** Gestión Unificada de Amenazas (UTM) y conclusiones.
 
 ---
 
@@ -105,17 +100,13 @@ Un **cortafuegos (*firewall*)** es un dispositivo hardware o software capaz de e
 
 Es un error común asumir que un cortafuegos proporciona protección total. Un cortafuegos es una herramienta de control de flujos de red, con capacidades y límites bien definidos:
 
-```text
- ┌──────────────────────────────────────────────┐  ┌──────────────────────────────────────────────┐
- │          QUÉ CONTROLA EL CORTAFUEGOS         │  │          QUÉ NO EVITA EL CORTAFUEGOS         │
- ├──────────────────────────────────────────────┤  ├──────────────────────────────────────────────┤
- │ ✔ Accesos a equipos y servicios específicos  │  │ ✘ Ataques físicos directos a los servidores  │
- │ ✔ Conexiones salientes no autorizadas        │  │ ✘ Uso remoto de credenciales legítimas       │
- │ ✔ Filtrado de flujos según origen y destino  │  │ ✘ Ataques web en puertos abiertos (SQLi, XSS)│
- │ ✔ Tráfico no deseado entre distintas zonas   │  │ ✘ Infección por malware recibido por correo  │
- │ ✔ Ataques de escaneo y sondeo de puertos     │  │ ✘ Amenazas internas originadas en la LAN     │
- └──────────────────────────────────────────────┘  └──────────────────────────────────────────────┘
-```
+| Qué SÍ Controla el Cortafuegos | Qué NO Evita el Cortafuegos |
+| :--- | :--- |
+| ✅ Accesos a equipos y servicios específicos por IP y puerto | ❌ Ataques físicos directos sobre los servidores o cableado |
+| ✅ Conexiones salientes no autorizadas de aplicaciones | ❌ Uso indebido o remoto de credenciales legítimas de usuario |
+| ✅ Filtrado granular de flujos según origen, destino y estado | ❌ Ataques web en capas de aplicación sobre puertos autorizados (SQLi, XSS) |
+| ✅ Tráfico no deseado o no autorizado entre distintas zonas | ❌ Infección por malware recibido mediante correo electrónico o descargas |
+| ✅ Ataques de escaneo masivo, sondeos ICMP y barridos de puertos | ❌ Amenazas internas, fugas de información y sabotajes originados en la LAN |
 
 El cortafuegos reduce drásticamente la **superficie de ataque expuesta**, pero debe complementarse con autenticación robusta, sistemas IDS/IPS, WAF (*Web Application Firewall*), antimalware y copias de seguridad.
 
@@ -147,10 +138,25 @@ El cortafuegos reduce drásticamente la **superficie de ataque expuesta**, pero 
 
 La capacidad de filtrado de un cortafuegos depende de la profundidad con la que examina los paquetes en las capas del modelo OSI:
 
-```text
- [ Capa 7: Aplicación ] ──> 3ª GENERACIÓN: Cortafuegos de Aplicación / WAF / NGFW (DPI)
- [ Capa 4: Transporte ] ──> 2ª GENERACIÓN: Filtrado con Estado (Stateful Inspection / SPI)
- [ Capa 3: Red        ] ──> 1ª GENERACIÓN: Filtrado de Paquetes sin Estado (Stateless)
+```mermaid
+flowchart LR
+    subgraph OSI ["Capas del Modelo OSI"]
+        direction TB
+        C7["Capa 7: Aplicación"]
+        C4["Capa 4: Transporte"]
+        C3["Capa 3: Red"]
+    end
+
+    subgraph GEN ["Generaciones de Cortafuegos"]
+        direction TB
+        G3["3ª Generación: WAF / NGFW<br><small>Inspección Profunda de Paquetes (DPI)</small>"]
+        G2["2ª Generación: Filtrado con Estado<br><small>Stateful Packet Inspection (SPI) / Conntrack</small>"]
+        G1["1ª Generación: Filtrado sin Estado<br><small>Stateless Packet Filtering (Cabeceras aisladas)</small>"]
+    end
+
+    C7 -->|Inspecciona carga útil y protocolos L7| G3
+    C4 -->|Rastrea sesiones TCP/UDP y banderas| G2
+    C3 -->|Filtra direcciones IP y protocolos L3| G1
 ```
 
 #### 1ª Generación: Filtrado de Paquetes sin Estado (*Stateless Packet Filtering*)
@@ -187,23 +193,17 @@ La capacidad de filtrado de un cortafuegos depende de la profundidad con la que 
 En los sistemas basados en Linux y en el sistema operativo **RouterOS de MikroTik**, el motor de filtrado organiza las reglas en **cadenas (*chains*)** según el recorrido que siguen los paquetes:
 
 ```mermaid
-graph TD
-    In([Paquete llega a la interfaz del Router]) --> Dest{¿La IP destino es la<br>del propio Router?}
+flowchart TD
+    In(["Paquete llega a la interfaz del Router"]) --> Dest{"¿La IP destino es la<br>del propio Router?"}
     
     Dest -- Sí --> Input["Cadena INPUT<br>Procesos locales del router:<br>WebFig, WinBox, SSH, DNS cache"]
-    Input --> LocalProc([Procesado localmente])
+    Input --> LocalProc(["Procesado localmente"])
     
     Dest -- No --> Forward["Cadena FORWARD<br>Tráfico en tránsito entre interfaces:<br>LAN, WAN y DMZ"]
-    Forward --> OutInt([Encaminado hacia interfaz de salida])
+    Forward --> OutInt(["Encaminado hacia interfaz de salida"])
 
-    RouterGen([El Router genera un paquete local]) --> Output["Cadena OUTPUT<br>Pings del router, NTP, actualizaciones"]
+    RouterGen(["El Router genera un paquete local"]) --> Output["Cadena OUTPUT<br>Pings del router, NTP, actualizaciones"]
     Output --> OutInt
-
-    style In fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style Dest fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style Input fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style Forward fill:#f3e5f5,stroke:#8e24aa,stroke-width:2px
-    style Output fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
 ```
 
 1. **Cadena `INPUT`:** Procesa los paquetes dirigidos a las direcciones IP del propio cortafuegos (por ejemplo, cuando un administrador se conecta a la interfaz WebFig del router o mediante SSH).
@@ -248,10 +248,6 @@ Se implementa entonces **Destination NAT (DNAT)**:
 flowchart TD
     Cli["Cliente en Internet<br>Petición HTTP: IP_PÚBLICA:80"] -->|ether1 WAN| Mkt["Router MikroTik RouterOS<br>Regla DNAT: dst-port=80 action=dst-nat<br>to-addresses=192.168.101.11"]
     Mkt -->|ether3 DMZ| Srv["Servidor Web DMZ<br>192.168.101.11:80"]
-
-    style Cli fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
-    style Mkt fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style Srv fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
 ```
 
 1. El router perimetral recibe una petición dirigida a su propia interfaz externa (`dst-address=IP_WAN`) en un puerto específico (ej. TCP 80).
@@ -297,6 +293,9 @@ El principio rector de la DMZ es la **contención perimetral**: los servidores d
 | **DMZ** | **LAN** | **DENEGADO ESTRICTO** | **Regla de oro de la DMZ:** Si un atacante compromete el servidor web, el cortafuegos le impide escanear o saltar a la red local. |
 | **DMZ** | **Internet (WAN)** | **Restringido** | Generalmente denegado por defecto, permitiendo únicamente salidas puntuales (actualizaciones de paquetes `apt`, peticiones DNS a servidores específicos). |
 
+!!! warning "Regla de Oro de la DMZ: Aislamiento Estricto hacia la LAN"
+    Los servidores de la DMZ pueden recibir conexiones legítimas desde la WAN o la LAN, pero **bajo ningún concepto deben tener permitido iniciar conexiones hacia la red corporativa interna**. Si un atacante compromete un servidor público (por ejemplo, mediante un exploit en el servidor web), el cortafuegos perimetral impedirá de raíz que pueda pivotar (*pivot*) para escanear y atacar las bases de datos o los puestos de trabajo de la LAN.
+
 ---
 
 ### 4.3. Topologías de Despliegue de DMZ
@@ -306,14 +305,12 @@ El principio rector de la DMZ es la **contención perimetral**: los servidores d
 Utiliza un único dispositivo de encaminamiento dotado de al menos tres interfaces de red físicas: una para la WAN, otra para la LAN corporativa y una tercera para la DMZ.
 
 ```mermaid
-graph TD
-    subgraph WANZone ["Zona Externa (No Confiable)"]
-        WAN["INTERNET / WAN<br>(Red Externa)"]
-    end
+flowchart TD
+    WAN(["☁️ INTERNET / WAN<br>Red Externa (No Confiable)"])
 
-    subgraph FWZone ["Cortafuegos Perimetral"]
-        MKT["Router MikroTik RouterOS<br>Three-Legged Firewall"]
-    end
+    WAN -->|"ether1 (WAN): Tráfico público"| MKT
+
+    MKT{{"🛡️ Router MikroTik RouterOS<br>Cortafuegos Perimetral (Three-Legged)"}}
 
     subgraph DMZZone ["Zona DMZ (Semi-Confiable)"]
         Web["Servidor Web Apache (HTTP :80)<br>Servidor FTP (:21)<br>Subred: 192.168.101.0/24"]
@@ -323,17 +320,12 @@ graph TD
         LAN["PC Administrador y Estaciones<br>Subred: 192.168.100.0/24"]
     end
 
-    WAN -->|ether1 WAN| MKT
-    MKT -->|ether3 DMZ: Publicación controlada| DMZZone
-    MKT -->|ether2 LAN: Protegida de WAN y DMZ| LANZone
-    LANZone -.->|Tráfico saliente autorizado| WAN
-    LANZone -.->|Gestión autorizada| DMZZone
-    DMZZone -.-x|PROHIBIDO: Conexión entrante DMZ hacia LAN| LANZone
+    MKT -->|"ether3 (DMZ): Publicación controlada"| DMZZone
+    MKT -->|"ether2 (LAN): Red corporativa protegida"| LANZone
 
-    style WANZone fill:#ffebee,stroke:#e53935,stroke-width:1px
-    style FWZone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style DMZZone fill:#fff8e1,stroke:#ffa000,stroke-width:1px
-    style LANZone fill:#e8f5e9,stroke:#43a047,stroke-width:1px
+    LANZone -.-|"Gestión autorizada (LAN → DMZ)<br>❌ Prohibido tráfico DMZ → LAN"| DMZZone
+
+    style MKT fill:#0288d1,stroke:#01579b,stroke-width:2px,color:#ffffff
 ```
 
 * **Ventajas:** Menor coste de equipamiento y configuración centralizada en un único equipo.
@@ -351,37 +343,31 @@ graph TD
 Representa el estándar de alta seguridad para infraestructuras críticas. La DMZ queda emparedada físicamente entre dos cortafuegos diferenciados:
 
 ```mermaid
-graph TD
-    subgraph WANZone ["Zona Externa / Internet"]
-        WAN["INTERNET / WAN"]
-    end
+flowchart TD
+    WAN(["☁️ INTERNET / WAN<br>Red Externa (No Confiable)"])
 
-    subgraph FrontZone ["Primer Nivel de Defensa"]
-        FW1["Cortafuegos Externo (Frontal)<br>Filtro estricto WAN ↔ DMZ"]
-    end
+    WAN -->|"Tráfico público de Internet"| FW1
 
-    subgraph DMZZone ["Zona Desmilitarizada (DMZ)"]
+    FW1{{"🛡️ Cortafuegos Frontal (Externo)<br>Primer Nivel de Defensa (WAN ↔ DMZ)"}}
+
+    FW1 -->|"Publicación controlada (DNAT)"| DMZZone
+
+    subgraph DMZZone ["Zona Desmilitarizada: DMZ (Semi-Confiable)"]
         DMZ["Servidores Públicos<br>• Servidor Web Apache<br>• Servidor de Correo"]
     end
 
-    subgraph BackZone ["Segundo Nivel de Defensa"]
-        FW2["Cortafuegos Interno (Trasero)<br>Filtro estricto DMZ ↔ LAN"]
-    end
+    DMZZone -->|"Filtro estricto: Tráfico DMZ a LAN bloqueado"| FW2
 
-    subgraph LANZone ["Zona Corporativa Interna (LAN)"]
+    FW2{{"🛡️ Cortafuegos Trasero (Interno)<br>Segundo Nivel de Defensa (DMZ ↔ LAN)"}}
+
+    FW2 -->|"Acceso corporativo protegido"| LANZone
+
+    subgraph LANZone ["Zona Corporativa Interna: LAN (Confiable)"]
         LAN["Red Corporativa LAN<br>• Base de Datos confidencial<br>• Estaciones de trabajo"]
     end
 
-    WAN --> FW1
-    FW1 --> DMZ
-    DMZ --> FW2
-    FW2 --> LAN
-
-    style WANZone fill:#ffebee,stroke:#e53935,stroke-width:1px
-    style FrontZone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style DMZZone fill:#fff8e1,stroke:#ffa000,stroke-width:1px
-    style BackZone fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style LANZone fill:#e8f5e9,stroke:#43a047,stroke-width:1px
+    style FW1 fill:#0288d1,stroke:#01579b,stroke-width:2px,color:#ffffff
+    style FW2 fill:#0288d1,stroke:#01579b,stroke-width:2px,color:#ffffff
 ```
 
 * **Cortafuegos Frontal (*Frontend*):** Conectado directamente a Internet. Filtra el tráfico hacia la DMZ y bloquea cualquier paquete anómalo.
@@ -399,9 +385,11 @@ graph TD
 
 Para ampliar la visión sobre diseño seguro de perímetros y normativas aplicables:
 
-* [INCIBE: Qué es una DMZ y cómo te puede ayudar a proteger tu empresa](https://www.incibe.es/protege-tu-empresa/blog/dmz-y-te-puede-ayudar-proteger-tu-empresa){:target="_blank"}.
-* [Vídeo URJCx: Seguridad perimetral - Firewalls y DMZ](https://youtu.be/OsaOKS7Q-cE){:target="_blank"}.
-* [ComputerHoy: ¿Qué es Firewall y en qué consiste?](https://computerhoy.com/reportajes/tecnologia/que-es-firewall-541885){:target="_blank"}.
+* [INCIBE: Qué es una DMZ y cómo te puede ayudar a proteger tu empresa](https://www.incibe.es/protege-tu-empresa/blog/dmz-y-te-puede-ayudar-proteger-tu-empresa){target="_blank"}.
+* [ComputerHoy: ¿Qué es Firewall y en qué consiste?](https://computerhoy.com/reportajes/tecnologia/que-es-firewall-541885){target="_blank"}.
+
+!!! note "Recurso Audiovisual: Seguridad Perimetral - Firewalls y DMZ (URJCx)"
+    ![type:video](https://www.youtube.com/embed/OsaOKS7Q-cE)
 
 ---
 
