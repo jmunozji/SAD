@@ -6,7 +6,7 @@
     * **Entorno de trabajo:** Emulador de red **GNS3** con las siguientes máquinas y appliances:
         1. **Router MikroTik RouterOS** (Cloud Hosted Router - CHR).
         2. **Clientes ligeros VPCS** (PC1 y Atacante).
-        3. **Appliance Firefox** (o Webterm) para pruebas de navegación y acceso a la interfaz web del router.
+        3. **Appliance Webterm** (o Webterm) para pruebas de navegación y acceso a la interfaz web del router.
         4. **Servidor Linux Debian** para pruebas de publicación de servicios por SSH.
 
 ---
@@ -56,7 +56,7 @@ graph TD
     subgraph LAN ["Red Corporativa / LAN (192.168.100.0/24)"]
         SW["Switch LAN"]
         PC1["PC1 (VPCS)<br>192.168.100.2"]
-        Browser["Firefox (WebFig)<br>192.168.100.3"]
+        Browser["Webterm (WebFig)<br>192.168.100.3"]
         SSH["Servidor SSH Debian<br>192.168.100.10"]
         SW --- PC1
         SW --- Browser
@@ -76,7 +76,7 @@ graph TD
 | **Router MikroTik** | `ether2` (LAN) | `192.168.100.1` | `255.255.255.0` (`/24`) | -- | Puerta de enlace por defecto de la LAN. |
 | **PC1 (VPCS)** | `eth0` | `192.168.100.2` | `255.255.255.0` (`/24`) | `192.168.100.1` | Estación de usuario de la red interna. |
 | **Atacante (VPCS)** | `eth0` | Dinámica / Estática | Según WAN | `192.168.100.1` (ficticia) | Simula un equipo hostil en la red externa. |
-| **Firefox Appliance** | `eth0` | `192.168.100.3` | `255.255.255.0` (`/24`) | `192.168.100.1` | Cliente web para administrar y auditar WebFig. |
+| **Webterm Appliance** | `eth0` | `192.168.100.3` | `255.255.255.0` (`/24`) | `192.168.100.1` | Cliente web para administrar y auditar WebFig. |
 | **Servidor Debian** | `eth0` | `192.168.100.10` | `255.255.255.0` (`/24`) | `192.168.100.1` | Servidor interno para pruebas de DNAT. |
 
 ---
@@ -98,25 +98,36 @@ graph TD
     * **Switch Ethernet interno:** Conéctalo al puerto `ether2` del router MikroTik y añade el nodo VPCS `PC1`.
 
 3. **Configuración básica de MikroTik:**
-    * Inicia el router y accede a su consola (o mediante WebFig desde tu máquina real si utilizas la IP de la interfaz `virbr0`).
-    * Configura `ether1` como cliente DHCP para recibir salida a Internet y aplica Masquerade (NAT) para la red local:
 
-    ```routeros
-    # En la consola de RouterOS:
-    /ip dhcp-client add interface=ether1 disabled=no
-    /ip address add address=192.168.100.1/24 interface=ether2
-    /ip firewall nat add chain=srcnat out-interface=ether1 action=masquerade
-    ```
+    Puedes hacerlo todo con Quick Set
+
+    * Inicia el router y accede a su consola. Obtén la IP mediante `IP ADDRESS PRINT` y luego accede a través de un navegador a la IP obtenida.
+    * Por defecto ya tendrás `ether1` como cliente DHCP para recibir salida a Internet
+    * Configura `ether2` con IP 192.168.100.1/24
+    * No actives el DHCP en la red interna
+    * Aplica Masquerade (NAT) para la red local
+
 
 4. **Configuración de los nodos VPCS:**
-    * Abre la consola del nodo **PC1** y asígnale su IP fija:
+
+!!! info
+    Para configurar los VPCS puedes usar estos comandos:
+
+    - Ver IP: `show ip`
+    - Asignar IP fija: `ip <IP> <MASK> <GW>`
+    - Recibir IP por DHCP: `ip dhcp`
+    - Probar conectividad: `ping <IP>`
+    - Trazar ruta: `trace <IP>`
+    - Guardar la configuración para que se mantenga tras un reinicio: `save`
+
+* Abre la consola del nodo **PC1** y asígnale su IP fija:
 
     ```text
     PC1> ip 192.168.100.2 255.255.255.0 192.168.100.1
     PC1> save
     ```
 
-    * Abre la consola del nodo **Atacante** y solicita IP por DHCP:
+* Abre la consola del nodo **Atacante** y solicita IP por DHCP:
 
     ```text
     Atacante> ip dhcp
@@ -125,19 +136,25 @@ graph TD
 
 5. **Pruebas de conectividad iniciales:**
     * Desde **PC1**, haz ping a la IP del nodo Atacante y a Internet (`ping 8.8.8.8`). Comprobarás que hay respuesta gracias a la regla de `masquerade`.
-    * Desde **Atacante**, haz ping a `192.168.100.2`. El ping fallará porque el router externo no conoce la ruta hacia la subred privada `192.168.100.0/24`:
+    * Desde **Atacante**, haz ping a `192.168.100.2`. El ping fallará porque el router externo no conoce la ruta hacia la subred privada . En la figura puedes observar que el equipo Atacante, al no tener una entrada a la red interna en su tabla de enrutamiento, envía los paquetes a su puerta de enlace por defecto, es decir, el router que da acceso a Internet (Nube NAT). Cuando este paquete llega al router, este tampoco conoce dónde se encuentra la red (`192.168.100.0/24`), por lo que descarta el paquete por tratarse de una red privada o lo encamina hacia Internet. En todo caso, el paquete terminará descartado en algún momento. Si en lugar de ping lanzas un "trace" podrás comprobarlo.
 
     ![Tráfico descartado en el router de Internet](img/MikroTik - Configuración básica del cortafuegos - 02.png)
 
 6. **Simulación del Ataque (Demostración de la brecha sin cortafuegos):**
     * ¿Qué ocurre si el atacante configura una ruta estática en su máquina indicando que para llegar a `192.168.100.0/24` debe enviar los paquetes a la IP de `ether1` del MikroTik?
 
+    Para que el paquete llege a su destino se puede optar por configurar la tabla de enrutamiento del equipo Atacante o del router de Internet con una entrada que indique que, para ir a la red interna, tenga que enviar los paquetes a la dirección IP de ether1 de router MikroTik. Un atacante seguramente configurará la tabla de enrutamiento del ordenador Atacante porque no tendrá permisos de administración en el router de Internet.
+
+    A partir de ese momento, el atacante mandará el paquete al router MikroTiK que, al no tener configurado el cortafuegos, lo enrutará hacia el equipo situado en la red interna. Fíjate en la siguiente imagen.   
+
     ![Ataque exitoso hacia el interior sin cortafuegos](img/MikroTik - Configuración básica del cortafuegos - 03.png)
 
-    * En el VPCS **Atacante**, modifica temporalmente su puerta de enlace asignándole como gateway la IP del puerto `ether1` del MikroTik (por ejemplo, si la IP de ether1 es `192.168.122.50`):
+    Los equipos VPCS de GNS3 son muy básicos y no permiten introducir tablas de rutas. Pero podemos cambiar su puerta por defecto para que lo envíen todo a la IP del ether1 del MikroTik. 
+    
+    Manteniendo la IP que le asignó el DHCP al equipo Atancate configuralo con IP estática y ponle como GW la IP del ether1 del MikroTik. Prueba ahora a hace un ping y un trace al 192.168.100.2 y comprueba cómo ahora si llegamos al PC1 y podemos atacarlo.
 
     ```text
-    Atacante> ip 192.168.122.99 255.255.255.0 192.168.122.50
+    Atacante> ip 192.168.122.XX 255.255.255.0 192.168.122.1
     Atacante> ping 192.168.100.2
     ```
 
@@ -193,7 +210,7 @@ Para que la red sea segura y funcional, debemos permitir los paquetes de retorno
 
 4. **Copia de seguridad en RouterOS:**
     * En WebFig, accede a **Files** en el menú lateral.
-    * Pulsa el botón **Backup**, asígnale el nombre `firewall_basico.backup` (sin marcar *Don't Encrypt* o sin contraseña para el aula) y descárgalo a tu ordenador.
+    * Pulsa el botón **Backup**, asígnale el nombre `firewall_basico.backup` (marca *Don't Encrypt*) y descárgalo a tu ordenador.
 
 ---
 
@@ -201,20 +218,20 @@ Para que la red sea segura y funcional, debemos permitir los paquetes de retorno
 
 Además de proteger la red local (cadena `forward`), es fundamental proteger al propio router frente a intentos de intrusión en su consola web o SSH (cadena `input`).
 
-1. En GNS3, amplía la topología añadiendo un nodo **Firefox** conectado al switch interno con la dirección IP fija `192.168.100.3/24`:
+1. En GNS3, amplía la topología añadiendo un nodo **Webterm** conectado al switch interno con la dirección IP fija `192.168.100.3/24`:
 
-    ![Escenario con Firefox para gestión web](img/Selecció_006.png)
+    ![Escenario con Webterm para gestión web](img/Selecció_006.png)
 
 2. **Creación de la lista de administradores autorizados (*Address Lists*):**
     * En WebFig, ve a **IP → Firewall → Address Lists** y pulsa **Add New**:
-        * **Name:** `EquiposAdministradores`.
+        * **List:** `EquiposAdministradores`.
         * **Address:** Introduce la IP de tu equipo host en la red de gestión (por ejemplo, la IP de `virbr0`, ej. `192.168.122.1`).
         * **Comment:** *Administrador externo*.
         * Pulsa **OK**.
     * Añade una segunda entrada en la misma lista para el puesto de administración interno:
-        * **Name:** `EquiposAdministradores`.
+        * **List:** `EquiposAdministradores`.
         * **Address:** `192.168.100.3`.
-        * **Comment:** *Administrador interno Firefox*.
+        * **Comment:** *Administrador interno Webterm*.
         * Pulsa **OK**.
 
 3. **Reglas de filtrado para la cadena `INPUT`:**
@@ -235,8 +252,8 @@ Además de proteger la red local (cadena `forward`), es fundamental proteger al 
     ![Resumen de reglas de cortafuegos en WebFig](img/MikroTik%20-%20Configuración%20básica%20del%20cortafuegos.jpg)
 
 5. **Auditoría del control de acceso:**
-    * Desde **Firefox** (`192.168.100.3`): Accede a `http://192.168.100.1` → La interfaz WebFig responde y permite el inicio de sesión.
-    * Cambia la IP del Firefox a `192.168.100.4`: Comprueba que al recargar el navegador el acceso queda completamente cortado.
+    * Desde **Webterm** (`192.168.100.3`): Accede a `http://192.168.100.1` → La interfaz WebFig responde y permite el inicio de sesión.
+    * Cambia la IP del Webterm a `192.168.100.4`: Comprueba que al recargar el navegador el acceso queda completamente cortado.
     * Comprueba que los equipos no autorizados siguen pudiendo navegar hacia Internet sin problemas (el tráfico `forward` no se ve afectado por las restricciones de `input`).
 
 6. Guarda la configuración generando un nuevo respaldo: `firewall_adminweb.backup`.
@@ -319,7 +336,7 @@ Elabora un único documento en formato **PDF** que incluya:
     * Captura de pantalla de PC1 haciendo ping exitoso a Internet mientras Atacante permanece bloqueado.
 3. **Evidencias de la Parte 3 (Cadena INPUT y Address Lists):**
     * Captura de la tabla **Address Lists** con las entradas de `EquiposAdministradores`.
-    * Captura del navegador Firefox accediendo a WebFig desde la IP autorizada (`192.168.100.3`) y captura del bloqueo al cambiar su IP a `192.168.100.4`.
+    * Captura del navegador Webterm accediendo a WebFig desde la IP autorizada (`192.168.100.3`) y captura del bloqueo al cambiar su IP a `192.168.100.4`.
 4. **Evidencias de la Parte 4 (DNAT):**
     * Captura de la regla de NAT (`dstnat`) en WebFig.
     * Captura de la conexión SSH exitosa desde el host al puerto 2222 del router.
