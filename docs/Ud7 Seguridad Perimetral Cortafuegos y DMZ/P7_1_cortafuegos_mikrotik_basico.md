@@ -278,7 +278,10 @@ flowchart LR
 
 ![Flujo de paquetes con Port Forwarding](img/Selección_834.png)
 
-1. En GNS3, despliega el escenario incorporando un nodo servidor **Debian** conectado a la LAN interna con IP estática `192.168.100.10/24`:
+1. En GNS3, despliega el escenario siguiente
+    * MikroTik interfaz ether1 recibe IP por DHCP
+    * MikroTik interfaz ether2 IP 192.168.100.1/24. Activa NAT. No actives DHCP.
+    * Servidor **Debian** conectado a la LAN interna con IP estática `192.168.100.10/24`:
 
     ![Topología en GNS3 para redireccionamiento de puertos](img/Selecció_007.png)
 
@@ -291,8 +294,8 @@ flowchart LR
     * En WebFig, accede a **IP → Firewall → NAT** y pulsa **Add New**:
         * **Chain:** `dstnat`.
         * **In. Interface:** `ether1` *(¡Paso fundamental! Limita la redirección a peticiones entrantes por la WAN, evitando anomalías en el tráfico interno)*.
-        * **Protocol:** `6 (tcp)`.
-        * **Dst. Port:** `2222` *(Puerto público expuesto en la WAN)*.
+        * **Protocol:** `tcp`.
+        * **Dst. Port:** `2222` *(Puerto público expuesto en la WAN. No usamos el 22 para poder seguir accediendo por SSH al MikroTik)*.
         * **Action:** `dst-nat`.
         * **To Addresses:** `192.168.100.10`.
         * **To Ports:** `22` *(Puerto real del servicio SSH interno)*.

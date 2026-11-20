@@ -1,4 +1,4 @@
-# Práctica 7.3: Arquitectura Avanzada de DMZ con Doble Cortafuegos en Cascada
+# Práctica 7.4: Arquitectura Avanzada de DMZ con Doble Cortafuegos en Cascada
 
 !!! note "Datos de la Práctica"
     * **Módulo:** Seguridad y Alta Disponibilidad (SAD - 0378)

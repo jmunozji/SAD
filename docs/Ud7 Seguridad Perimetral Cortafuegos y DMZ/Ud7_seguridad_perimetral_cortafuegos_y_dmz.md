@@ -331,10 +331,9 @@ flowchart TD
 * **Ventajas:** Menor coste de equipamiento y configuración centralizada en un único equipo.
 * **Inconvenientes:** Si el router se ve comprometido a nivel de sistema operativo o firmware, el atacante obtiene control simultáneo sobre todas las zonas.
 
-!!! note "Práctica de Laboratorio"
-    **[Práctica 7.2: Despliegue de una DMZ con un Cortafuegos de Tres Interfaces](P7_2_dmz_un_router.md)**
-    
-    *En esta práctica implementarás en GNS3 un escenario de cortafuegos de tres interfaces sobre MikroTik RouterOS, aplicando la matriz completa de reglas de filtrado entre WAN, LAN y DMZ y validando las restricciones mediante pruebas de penetración controladas.*
+!!! note "Prácticas de Laboratorio"
+    * **[Práctica 7.2: MikroTik - DMZ básica](P7_2_dmz_basica.md):** Despliegue de la infraestructura de 3 interfaces en GNS3, configuración de Webterm, análisis de flujos iniciales y aplicación de las 6 directivas de la matriz INCIBE.
+    * **[Práctica 7.3: MikroTik - DMZ con un solo router](P7_3_dmz_un_router.md):** Publicación de servicios HTTP/FTP mediante Destination NAT (DNAT), configuración avanzada de Filter Rules con inspección con estado y política por defecto restrictiva (*Default Drop*).
 
 ---
 
@@ -375,7 +374,7 @@ flowchart TD
 * **Defensa de Doble Fabricante:** La mejor práctica recomienda emplear dispositivos de distintos fabricantes o sistemas operativos para el *front* y el *back*. Si un exploit de día cero compromete el cortafuegos externo, el cortafuegos interno resistirá el ataque al no compartir la misma vulnerabilidad.
 
 !!! note "Práctica de Laboratorio"
-    **[Práctica 7.3: Arquitectura Avanzada de DMZ con Doble Cortafuegos en Cascada](P7_3_dmz_dos_routers.md)**
+    **[Práctica 7.4: Arquitectura Avanzada de DMZ con Doble Cortafuegos en Cascada](P7_4_dmz_dos_routers.md)**
     
     *En esta práctica desplegarás un escenario perimetral avanzado en GNS3 con dos routers MikroTik en cascada, configurando la segmentación en doble barrera y analizando las ventajas de la defensa en profundidad perimetral.*
 
