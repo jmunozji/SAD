@@ -96,8 +96,6 @@ El laboratorio modela el entorno corporativo con la siguiente topología en GNS3
 
 ![Topología en GNS3 de DMZ con dos routers](img/escenario2.png)
 
-![Esquema de red y ejercicio final de evaluación](img/esquema_red_ejercicio_fw.png)
-
 ### Tabla de Direccionamiento IP del Laboratorio
 
 | Nodo / Dispositivo | Interfaz | Dirección IP | Máscara | Puerta de Enlace (GW) | Rol en el Laboratorio |
