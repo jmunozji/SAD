@@ -119,7 +119,7 @@ Si prefieres seguir la práctica en vídeo aquí tienes una descriipción comple
 
 ### Fase 1: Despliegue de la Topología y Conectividad Base mediante WebFig
 
-* **Archivo de escenario descargable:** Puedes acelerar el montaje descargando el proyecto preconfigurado con clientes y servidores en [Escenario DMZ con 1 router (SharePoint)](https://gvaedu-my.sharepoint.com/:u:/r/personal/j_munozjimeno_edu_gva_es/Documents/Documentos/Docencia/CompartidoAlumnado/P7_3DMZ1router.gns3project?d=w64ad8b0ab70e4c09a679f1c17bcc8edf&csf=1&web=1&e=mvOklY){target="_blank"}.
+* **Archivo de escenario descargable:** Puedes acelerar el montaje descargando el proyecto preconfigurado con clientes y servidores en [Escenario DMZ con 1 router (SharePoint)](https://gvaedu-my.sharepoint.com/:u:/r/personal/j_munozjimeno_edu_gva_es/Documents/Documentos/Docencia/CompartidoAlumnado/P7_3DMZ1router.gns3project?d=w1e0a47172a0d44dc94e7a775f097aef2&csf=1&web=1&e=bO6Pq4){target="_blank"}.
 
 Si  no puedes descargarlo o prefieres desarrollar el escenario puedes seguir estos pasos
 
