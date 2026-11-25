@@ -9,8 +9,8 @@
             * `ServerHTTP-SSH` (IP `192.168.101.2/24`): Servidor Web Apache2 (HTTP puerto 80) y administración remota SSH (puerto 22).
             * `ServerFTP-SSH` (IP `192.168.101.3/24`): Servidor FTP vsftpd (puerto 21) y administración remota SSH (puerto 22).
         3. **Estaciones de prueba y administración en LAN:** Dos appliances **Webterm** gráficos:
-            * `Webterm-Admin` (`PCAdmin` con IP fija `192.168.100.100/24`): Estación autorizada del administrador de red para gestionar el router mediante WebFig y los servidores vía SSH.
-            * `Webterm-Cliente` (`PCEscritorio` con IP fija `192.168.100.101/24`): Estación de trabajo estándar de usuario interno.
+            * `PCAdmin` (`PCAdmin` con IP fija `192.168.100.100/24`): Estación autorizada del administrador de red para gestionar el router mediante WebFig y los servidores vía SSH.
+            * `PCEscritorio` (`PCEscritorio` con IP fija `192.168.100.101/24`): Estación de trabajo estándar de usuario interno.
         4. **Cliente / Auditor externo en la WAN:** Nodo **Webterm** (`PCINET` con IP `192.168.122.100/24`) o el propio navegador web de la máquina anfitriona conectada a la nube NAT (`virbr0`).
 
 
@@ -24,7 +24,7 @@
     * Redirección del tráfico web (TCP 80) hacia el servidor `ServerHTTP-SSH` (`192.168.101.2`).
     * Redirección del tráfico de ficheros (TCP 21) hacia el servidor `ServerFTP-SSH` (`192.168.101.3`).
 * Diseñar la política de filtrado en la cadena `forward` para garantizar el aislamiento estricto: permitir que los clientes externos e internos accedan a los servicios públicos de la DMZ pero bloquear cualquier intento de acceso iniciado desde la DMZ hacia la red LAN interna (*Regla de oro de la DMZ*).
-* Establecer un control de acceso granular en la LAN: permitir que la estación de administración (`Webterm-Admin`) acceda por SSH (puerto 22) a los servidores de la DMZ, denegando dicho acceso a los usuarios convencionales (`Webterm-Cliente`).
+* Establecer un control de acceso granular en la LAN: permitir que la estación de administración (`PCAdmin`) acceda por SSH (puerto 22) a los servidores de la DMZ, denegando dicho acceso a los usuarios convencionales (`PCEscritorio`).
 * Securizar la cadena `input` del router MikroTik, restringiendo el acceso administrativo a **WebFig** únicamente a la red corporativa o a la IP del administrador.
 * Aplicar el principio de **inspección con estado (*Stateful Packet Inspection - SPI*)** para optimizar el rendimiento y autorizar el tráfico de retorno de conexiones legítimas.
 * Auditar el funcionamiento perimetral mediante una batería exhaustiva de pruebas técnicas desde las distintas zonas de red.
@@ -53,8 +53,8 @@ flowchart TD
     end
 
     subgraph LANZone ["Red Corporativa / LAN (ether2)"]
-        PCAdmin["Webterm-Admin (PCAdmin)<br>192.168.100.100<br>(Gestión WebFig y SSH)"]
-        PCEscritorio["Webterm-Cliente (PCEscritorio)<br>192.168.100.101<br>(Usuario Interno)"]
+        PCAdmin["PCAdmin (PCAdmin)<br>192.168.100.100<br>(Gestión WebFig y SSH)"]
+        PCEscritorio["PCEscritorio (PCEscritorio)<br>192.168.100.101<br>(Usuario Interno)"]
     end
 
     MKT -->|"ether3 (DMZ): 192.168.101.1/24"| DMZZone
@@ -107,8 +107,8 @@ Si prefieres seguir la práctica en vídeo aquí tienes una descriipción comple
 | **MikroTik RouterOS** | Router CHR | `ether3` (DMZ) | `192.168.101.1/24` | -- | Puerta de enlace predeterminada de la zona DMZ. |
 | **ServerHTTP-SSH** | Servidor Debian | `eth0` / `ens4` | `192.168.101.2/24` | `192.168.101.1` | Servidor Web Apache (HTTP :80) y administración SSH (:22). |
 | **ServerFTP-SSH** | Servidor Debian | `eth0` / `ens4` | `192.168.101.3/24` | `192.168.101.1` | Servidor FTP vsftpd (FTP :21) y administración SSH (:22). |
-| **Webterm-Admin** (`PCAdmin`) | Appliance Webterm | `eth0` | `192.168.100.100/24` | `192.168.100.1` | Puesto del administrador de red (WebFig y gestión SSH). |
-| **Webterm-Cliente** (`PCEscritorio`) | Appliance Webterm | `eth0` | `192.168.100.101/24` | `192.168.100.1` | Puesto cliente de usuario de la red corporativa. |
+| **PCAdmin** (`PCAdmin`) | Appliance Webterm | `eth0` | `192.168.100.100/24` | `192.168.100.1` | Puesto del administrador de red (WebFig y gestión SSH). |
+| **PCEscritorio** (`PCEscritorio`) | Appliance Webterm | `eth0` | `192.168.100.101/24` | `192.168.100.1` | Puesto cliente de usuario de la red corporativa. |
 | **Webterm-Externo** (`PCINET`) | Appliance Webterm | `eth0` | `192.168.122.100/24` | `192.168.122.2` | Simulación de auditor / usuario externo en Internet. |
 
 ---
@@ -125,7 +125,7 @@ Si  no puedes descargarlo o prefieres desarrollar el escenario puedes seguir est
 
 1. Monta la topología conectando:
     * `ether1` de MikroTik al switch WAN (`SwitchINET`), conectado a la Nube NAT (`virbr0`) y a `PCINET`.
-    * `ether2` al switch LAN (`SwitchLAN`), donde se conectan `PCAdmin` (`Webterm-Admin`) y `PCEscritorio` (`Webterm-Cliente`).
+    * `ether2` al switch LAN (`SwitchLAN`), donde se conectan `PCAdmin` (`PCAdmin`) y `PCEscritorio` (`PCEscritorio`).
     * `ether3` al switch DMZ (`SwitchDMZ`), donde se conectan `ServerHTTP-SSH` y `ServerFTP-SSH`.
 
 2. **Configuración de Red en los Equipos Finales:**
@@ -159,7 +159,7 @@ Si  no puedes descargarlo o prefieres desarrollar el escenario puedes seguir est
         systemctl status vsftpd
         ```
 
-    === "Webterm-Admin (PCAdmin)"
+    === "PCAdmin (PCAdmin)"
         Edita `/etc/network/interfaces` en `PCAdmin`:
         ```text
         auto eth0
@@ -170,7 +170,7 @@ Si  no puedes descargarlo o prefieres desarrollar el escenario puedes seguir est
         ```
         Aplica con `/etc/init.d/networking restart`.
 
-    === "Webterm-Cliente (PCEscritorio)"
+    === "PCEscritorio (PCEscritorio)"
         Edita `/etc/network/interfaces` en `PCEscritorio`:
         ```text
         auto eth0
@@ -229,9 +229,10 @@ Si  no puedes descargarlo o prefieres desarrollar el escenario puedes seguir est
 
 ### Fase 2: Publicación de los Servicios de la DMZ con DNAT (*Port Forwarding*)
 
-Para que los usuarios de Internet accedan a los servidores web y FTP empleando la IP pública de `ether1`, configuramos en WebFig las reglas de Destination NAT:
+En esta fase vamos a hacer que al acceder a la IP WAN del router MikroTik, puertos 80 ó 21, los paquetes se hagan llegar a los servidores `ServerHTTP-SSH` y `ServerFTP-SSH` respectivamente. Pero antes de realizar los pasos indicados a continuación hemos de modificar en IP - Services la forma en que gestionaremos el router MikroTik, que actualmente es en su puerto 80. En una práctica anterior ya vimos cómo hacerlo. Haz que la gestión del MikroTik se realice por el 8080 y comprueba que lo puedes gestionar por ese puerto antes de dar los pasos siguientes.
 
-OJO. SI HACEMOS ESTO PERDEMOS GESTIÓN DEL WEBFIG. ANTES HAY QUE PASAR LA GESTIÓN AL 8080
+Para que los usuarios de Internet accedan a los servidores web y FTP empleando la IP pública de `ether1`, configuramos en WebFig las reglas de Destination NAT.
+
 
 1. En WebFig, accede a **IP → Firewall → NAT** y pulsa **Add New**:
 
@@ -250,13 +251,15 @@ OJO. SI HACEMOS ESTO PERDEMOS GESTIÓN DEL WEBFIG. ANTES HAY QUE PASAR LA GESTI�
         * Pulsa nuevamente **Add New**:
         * **Chain:** `dstnat`
         * **In. Interface:** `ether1`
-        * **Protocol:** `6 (tcp)`
+        * **Protocol:** `tcp`
         * **Dst. Port:** `21`
         * **Action:** `dst-nat`
         * **To Addresses:** `192.168.101.3`
         * **To Ports:** `21`
         * **Comment:** *DNAT FTP hacia ServerFTP-SSH*
         * Pulsa **OK**.
+
+Comprueba que desde el host accedes al servidor `ServerHTTP-SSH` al acceder con un navegador a http://192.168.122.2 y a `ServerFTP-SSH` si accedes desde un terminal a `ftp debian@192.168.122.2`
 
 ---
 
@@ -268,32 +271,32 @@ Accede en WebFig a **IP → Firewall → Filter Rules** y añade pulsando **Add 
     * **Chain:** `forward`
     * **Connection State:** marca `established` y `related`
     * **Action:** `accept`
-    * **Comment:** *;;; Permitir establecidas y relacionadas*
+    * **Comment:** *Permitir establecidas y relacionadas*
     * Pulsa **OK**.
 
 2. **Regla 1 (Publicación de Servicios DMZ desde Internet):**
     * **Chain:** `forward`
     * **In. Interface:** `ether1`
     * **Out. Interface:** `ether3`
-    * **Protocol:** `6 (tcp)`
+    * **Protocol:** `tcp`
     * **Dst. Port:** `80,21`
     * **Action:** `accept`
-    * **Comment:** *;;; Permitir el tráfico de paso desde Internet a los servidores WEB y FTP de la DMZ*
+    * **Comment:** *Permitir el tráfico de paso desde Internet a los servidores WEB y FTP de la DMZ*
     * Pulsa **OK**.
 
 3. **Regla 2 (Bloqueo de Tráfico de Paso no Autorizado desde Internet):**
     * **Chain:** `forward`
     * **In. Interface:** `ether1`
     * **Action:** `reject` *(o `drop`)*
-    * **Comment:** *;;; Rechazo todo el tráfico de paso que venga de Internet*
+    * **Comment:** *Rechazo todo el tráfico de paso que venga de Internet*
     * Pulsa **OK**.
 
 4. **Regla 3 (Protección de la Entrada al Router desde Internet):**
     * **Chain:** `input`
     * **In. Interface:** `ether1`
-    * *(Opcional)* En **Src. Address** marca la casilla `!` (*not*) e introduce la IP autorizada de administración remota.
+    * *(Opcional)* En **Src. Address** marca la casilla `!` (*not*) e introduce la IP autorizada de administración remota: 192.168.122.1
     * **Action:** `reject` *(o `drop`)*
-    * **Comment:** *;;; Rechazo todo el tráfico de entrada que venga de internet que no sea de mi equipo*
+    * **Comment:** *Rechazo todo el tráfico de entrada que venga de internet que no sea de mi equipo*
     * Pulsa **OK**.
 
 5. **Regla 4 (Aislamiento de la LAN frente a la DMZ - ¡Regla de Oro de la DMZ!):**
@@ -301,37 +304,37 @@ Accede en WebFig a **IP → Firewall → Filter Rules** y añade pulsando **Add 
     * **In. Interface:** `ether3`
     * **Out. Interface:** `ether2`
     * **Action:** `reject` *(o `drop`)*
-    * **Comment:** *;;; Rechazo el tráfico de paso de DMZ a red interna*
+    * **Comment:** *Rechazo el tráfico de paso de DMZ a red interna*
     * Pulsa **OK**.
 
 6. **Regla 5 (Acceso LAN al Servidor Web DMZ):**
     * **Chain:** `forward`
     * **In. Interface:** `ether2`
     * **Dst. Address:** `192.168.101.2`
-    * **Protocol:** `6 (tcp)`
+    * **Protocol:** `tcp`
     * **Dst. Port:** `80`
     * **Action:** `accept`
-    * **Comment:** *;;; Permito el tráfico WEB desde la red interna al servidor WEB de la DMZ*
+    * **Comment:** *Permito el tráfico WEB desde la red interna al servidor WEB de la DMZ*
     * Pulsa **OK**.
 
 7. **Regla 6 (Acceso LAN al Servidor FTP DMZ):**
     * **Chain:** `forward`
     * **In. Interface:** `ether2`
     * **Dst. Address:** `192.168.101.3`
-    * **Protocol:** `6 (tcp)`
+    * **Protocol:** `tcp`
     * **Dst. Port:** `21`
     * **Action:** `accept`
-    * **Comment:** *;;; Permito el tráfico FTP desde la red interna al servidor FTP de la DMZ*
+    * **Comment:** *Permito el tráfico FTP desde la red interna al servidor FTP de la DMZ*
     * Pulsa **OK**.
 
 8. **Regla 7 (Gestión SSH Exclusiva para el Administrador):**
     * **Chain:** `forward`
     * **In. Interface:** `ether2`
-    * **Src. Address:** `192.168.100.100` *(IP de `Webterm-Admin`)*
+    * **Src. Address:** `192.168.100.100` *(IP de `PCAdmin`)*
     * **Protocol:** `6 (tcp)`
     * **Dst. Port:** `22`
     * **Action:** `accept`
-    * **Comment:** *;;; Permitir el tráfico de paso SSH desde el equipo del administrador a cualquier equipo de la DMZ*
+    * **Comment:** *Permitir el tráfico de paso SSH desde el equipo del administrador a cualquier equipo de la DMZ*
     * Pulsa **OK**.
 
 9. **Regla 8 (Bloqueo de Tráfico Restante de LAN hacia DMZ):**
@@ -339,7 +342,7 @@ Accede en WebFig a **IP → Firewall → Filter Rules** y añade pulsando **Add 
     * **In. Interface:** `ether2`
     * **Out. Interface:** `ether3`
     * **Action:** `reject` *(o `drop`)*
-    * **Comment:** *;;; Rechazo el tráfico de paso de red interna a DMZ*
+    * **Comment:** *Rechazo el tráfico de paso de red interna a DMZ*
     * Pulsa **OK**.
 
 > **Verificación Visual:** Comprueba que en WebFig tu lista de directivas coincide con la captura de referencia mostrada en la Sección 3, verificando que los comentarios coinciden y los contadores de paquetes (*Packets / Bytes*) comienzan a registrar actividad a medida que ejecutes las pruebas.
@@ -348,25 +351,28 @@ Accede en WebFig a **IP → Firewall → Filter Rules** y añade pulsando **Add 
 
 ## 6. Batería de Pruebas y Auditoría de Seguridad
 
+!!! warning
+    En la appliance Webterm no está instalado ftp. Deberás hacer un `apt update` y `apt install ftp` para poder hacer las pruebas.
+
 Ejecuta la siguiente batería de comprobaciones técnicas desde las diferentes estaciones de la maqueta y completa la matriz de resultados:
 
 | Prueba nº | Origen → Destino | Protocolo / Puerto | Comando / Acción ejecutada | Resultado esperado | ¿Superada? (Sí/No) | Regla aplicada en WebFig |
 | :---: | :--- | :--- | :--- | :--- | :--- | :--- |
-| **T1** | LAN → Internet | ICMP | `ping -c 3 8.8.8.8` desde `Webterm-Cliente` | Salida exitosa a Internet vía NAT | | NAT Masquerade |
-| **T2** | LAN → DMZ (Web) | HTTP (TCP 80) | `curl http://192.168.101.2` desde `Webterm-Cliente` | Muestra la página web de `ServerHTTP-SSH` | | Regla 5 |
-| **T3** | LAN → DMZ (FTP) | FTP (TCP 21) | `nc -zv 192.168.101.3 21` desde `Webterm-Cliente` | Conexión establecida con `ServerFTP-SSH` | | Regla 6 |
-| **T4** | LAN (Admin) → DMZ | SSH (TCP 22) | `ssh debian@192.168.101.2` desde `Webterm-Admin` | Conexión SSH autorizada | | Regla 7 |
-| **T5** | LAN (Admin) → DMZ | SSH (TCP 22) | `ssh debian@192.168.101.3` desde `Webterm-Admin` | Conexión SSH autorizada | | Regla 7 |
-| **T6** | LAN (Cliente) → DMZ | SSH (TCP 22) | `ssh debian@192.168.101.2` desde `Webterm-Cliente` | **¡RECHAZADO / BLOQUEADO!** | | Regla 8 |
+| **T1** | LAN → Internet | ICMP | `ping -c 3 8.8.8.8` desde `PCEscritorio` | Salida exitosa a Internet vía NAT | | NAT Masquerade |
+| **T2** | LAN → DMZ (Web) | HTTP (TCP 80) | `Navegar a http://192.168.101.2` desde `PCEscritorio` | Muestra la página web de `ServerHTTP-SSH` | | Regla 5 |
+| **T3** | LAN → DMZ (FTP) | FTP (TCP 21) | `ftp 192.168.101.3` desde `PCEscritorio` | Conexión establecida con `ServerFTP-SSH` | | Regla 6 |
+| **T4** | LAN (Admin) → DMZ | SSH (TCP 22) | `ssh debian@192.168.101.2` desde `PCAdmin` | Conexión SSH autorizada | | Regla 7 |
+| **T5** | LAN (Admin) → DMZ | SSH (TCP 22) | `ssh debian@192.168.101.3` desde `PCAdmin` | Conexión SSH autorizada | | Regla 7 |
+| **T6** | LAN (Cliente) → DMZ | SSH (TCP 22) | `ssh debian@192.168.101.2` desde `PCEscritorio` | **¡RECHAZADO / BLOQUEADO!** | | Regla 8 |
 | **T7** | WAN / Host → DMZ | HTTP (TCP 80) | Navegar a `http://192.168.122.2` desde `PCINET` | Web de `ServerHTTP-SSH` visible vía DNAT | | Regla 1 (DNAT) |
 | **T8** | WAN / Host → DMZ | FTP (TCP 21) | Conexión a `192.168.122.2:21` desde `PCINET` | Servicio FTP de `ServerFTP-SSH` visible vía DNAT | | Regla 1 (DNAT) |
 | **T9** | WAN / Host → DMZ | SSH (TCP 22) | `ssh debian@192.168.122.2` desde `PCINET` | **¡BLOQUEADO!** (No publicado hacia WAN) | | Regla 2 |
 | **T10** | WAN / Host → LAN | ICMP (Ping) | `ping -c 3 192.168.100.100` desde red WAN | **¡BLOQUEADO!** (Sin respuesta) | | Regla 2 |
 | **T11** | DMZ → LAN | ICMP (Ping) | `ping -c 3 192.168.100.100` desde `ServerHTTP-SSH` | **¡BLOQUEADO!** (0% éxito, Regla de Oro) | | Regla 4 |
 | **T12** | DMZ → LAN | ICMP (Ping) | `ping -c 3 192.168.100.100` desde `ServerFTP-SSH` | **¡BLOQUEADO!** (0% éxito, Regla de Oro) | | Regla 4 |
-| **T13** | DMZ → LAN | SSH / HTTP | Intentar `curl http://192.168.100.100` desde DMZ | **¡BLOQUEADO!** (Aislamiento total) | | Regla 4 |
-| **T14** | LAN (Admin) → Router | HTTP (WebFig) | Abrir `http://192.168.100.1` desde `Webterm-Admin` | Acceso concedido a WebFig | | Conexión local LAN |
-| **T15** | WAN / DMZ → Router | HTTP (WebFig) | Abrir navegador hacia `192.168.122.2` o `192.168.101.1` | **¡BLOQUEADO!** | | Regla 3 |
+| **T13** | DMZ → LAN | SSH | Intentar `ssh http://192.168.100.100` desde DMZ | **¡BLOQUEADO!** (Aislamiento total) | | Regla 4 |
+| **T14** | LAN (Admin) → Router | HTTP (WebFig) | Abrir `http://192.168.100.1:8080` desde `PCAdmin` | Acceso concedido a WebFig | | Conexión local LAN |
+| **T15** | WAN / DMZ → Router | HTTP (WebFig) | Abrir navegador hacia `192.168.122.2:8080` desde `PCINET` | **¡BLOQUEADO!** | | Regla 3 |
 
 ---
 
@@ -401,6 +407,6 @@ Presenta un documento en formato **PDF** con la siguiente estructura y contenido
     * Captura del navegador web en `PCINET` accediendo exitosamente a la web pública de `ServerHTTP-SSH` a través de la IP WAN del MikroTik.
     * Captura de la conexión FTP desde `PCINET` accediendo al servicio de `ServerFTP-SSH`.
     * Captura de las terminales de `ServerHTTP-SSH` y `ServerFTP-SSH` ejecutando `ping 192.168.100.100` demostrando el bloqueo total (0% de paquetes recibidos).
-    * Captura del acceso SSH concedido desde `Webterm-Admin` y bloqueado desde `Webterm-Cliente`.
+    * Captura del acceso SSH concedido desde `PCAdmin` y bloqueado desde `PCEscritorio`.
     * Tabla de comprobaciones del apartado 6 completada con los resultados verificados.
 5. **Cuestiones Técnicas:** Respuestas detalladas y razonadas a las cuestiones del apartado 7.
